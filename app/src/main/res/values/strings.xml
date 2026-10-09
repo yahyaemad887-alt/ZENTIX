@@ -1,3 +1,49 @@
 <resources>
+    <!-- App Branding & Top Bar -->
     <string name="app_name">ZENTIX</string>
+    <string name="app_subtitle">PERFORMANCE COMMAND CENTER</string>
+    <string name="settings_cd">Settings and Localization</string>
+
+    <!-- Quick Stats Bar (MSI Style) -->
+    <string name="stat_cpu_temp">CPU Temp</string>
+    <string name="stat_ram_usage">RAM Usage</string>
+    <string name="stat_fps">Target FPS</string>
+    <string name="stat_battery_temp">Battery Temp</string>
+
+    <!-- System Quick Action Buttons -->
+    <string name="btn_boost_now">BOOST SYSTEM NOW</string>
+    <string name="btn_boosting">BOOSTING SYSTEM...</string>
+    <string name="btn_boosted">OPTIMIZED &amp; CLEANED</string>
+    <string name="quick_fps_lock">FPS Lock: 60 FPS</string>
+    <string name="quick_osd_toggle">OSD Overlay</string>
+
+    <!-- Section 1: AI Engine -->
+    <string name="sec_ai_title">Predictive Thermal &amp; Lag AI Engine</string>
+    <string name="sec_ai_desc">Local On-Device ML model tracking real-time thermal throttling &amp; memory spikes before lag occurs.</string>
+    <string name="status_ai_active">AI ACTIVE</string>
+
+    <!-- Section 2: Benchmark Logger -->
+    <string name="sec_benchmark_title">Per-Game Thermal &amp; Benchmark Logger</string>
+    <string name="sec_benchmark_desc">Log gameplay sessions, generate throttling performance curves, and export technical PDF reports.</string>
+    <string name="status_benchmark_ready">LOG READY</string>
+
+    <!-- Section 3: Dynamic Hardware Profiles -->
+    <string name="sec_profiles_title">Auto-Booster &amp; Dynamic Profiles</string>
+    <string name="sec_profiles_desc">Automatic game detection via Usage Stats API to trigger instant cache clean &amp; CPU focus.</string>
+    <string name="status_profiles_auto">AUTO-DETECT</string>
+
+    <!-- Section 4: Rogue App Sentinel -->
+    <string name="sec_sentinel_title">Background Rogue App Sentinel</string>
+    <string name="sec_sentinel_desc">Deep Wakelock &amp; process monitoring to intercept battery-draining and thermal-raising background apps.</string>
+    <string name="status_sentinel_protect">PROTECTED</string>
+
+    <!-- Section 5: MSI Style OSD & HUD Recorder -->
+    <string name="sec_osd_title">In-Game HUD &amp; Performance Recorder</string>
+    <string name="sec_osd_desc">Floating real-time OSD overlay displaying FPS, hardware graph, and screen capture with watermark.</string>
+    <string name="status_osd_overlay">OVERLAY READY</string>
+
+    <!-- Section 6: Advanced Overclock Engine -->
+    <string name="sec_overclock_title">Advanced Overclock &amp; Kernel Engine</string>
+    <string name="sec_overclock_desc">Direct CPU/GPU frequency scaling and root-level governor management for maximum performance.</string>
+    <string name="status_root_disabled">ROOT OFF</string>
 </resources>
