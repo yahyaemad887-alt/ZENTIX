@@ -1,10 +1,7 @@
 package com.example.zentix.UI
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,37 +15,33 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zentix.R
 
-// ألوان الثيم الداكن المخصص للجيمنج والأداء
+// ألوان ثيم ZENTIX الداكن
 private val BackgroundDark = Color(0xFF090A0F)
 private val CardBackground = Color(0xFF12141D)
 private val CardBorder = Color(0xFF1E2230)
 private val NeonRed = Color(0xFFFF2A4B)
 private val NeonCyan = Color(0xFF00E5FF)
 private val NeonGreen = Color(0xFF00E676)
-private val NeonPurple = Color(0xFFB388FF)
 private val NeonAmber = Color(0xFFFFD600)
 
 @Composable
 fun HomeScreen(
     onNavigateToSettings: () -> Unit = {},
-    onNavigateToAI: () -> Unit = {},
+    onNavigateToMSISuite: () -> Unit = {},
     onNavigateToBenchmark: () -> Unit = {},
     onNavigateToProfiles: () -> Unit = {},
-    onNavigateToSentinel: () -> Unit = {},
-    onNavigateToOSD: () -> Unit = {},
     onNavigateToOverclock: () -> Unit = {}
 ) {
-    var boostState by remember { mutableStateOf(0) } // 0: Idle, 1: Boosting, 2: Boosted
-    var isOsdEnabled by remember { mutableStateOf(false) }
+    var boostState by remember { mutableStateOf(0) } // 0: Normal, 1: Boosting
 
     Box(
         modifier = Modifier
@@ -60,352 +53,298 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
             contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // 1. الشريط العلوي زر الإعدادات والترجمة
+            // 1. الهيدر العلوي: الشعار + اسم التطبيق + زر البوست الصغير + زر الإعدادات
             item {
-                TopAppBarSection(onSettingsClick = onNavigateToSettings)
-            }
-
-            // 2. شريط الإحصائيات الفورية لشاشة MSI Afterburner Style
-            item {
-                QuickStatsBar()
-            }
-
-            // 3. زر التسريع الفوري المتفاعل
-            item {
-                BoostActionButton(
+                TopAppBarSection(
                     boostState = boostState,
-                    onBoostClick = {
-                        if (boostState == 0) {
-                            boostState = 1
-                            // محاكاة عملية التسريع
-                        } else if (boostState == 2) {
-                            boostState = 0
-                        }
-                    }
+                    onBoostClick = { boostState = if (boostState == 0) 1 else 0 },
+                    onSettingsClick = onNavigateToSettings
                 )
             }
 
-            // 4. مفاتيح التحكم السريع (Quick Controls Row)
+            // 2. شريط الإحصائيات الفورية الرفيع
             item {
-                QuickTogglesRow(
-                    isOsdEnabled = isOsdEnabled,
-                    onOsdToggle = { isOsdEnabled = !isOsdEnabled }
-                )
+                SlimQuickStatsBar()
             }
 
-            // 5. قسم الذكاء الاصطناعي لتوقع الحرارة والتهنيج
+            // 3. كروت المميزات الرئيسية (2 Columns Grid)
+            // الصف الأول: FPS & Other + Game Logger
             item {
-                ZentixFeatureCard(
-                    title = stringResource(id = R.string.sec_ai_title),
-                    description = stringResource(id = R.string.sec_ai_desc),
-                    badgeText = stringResource(id = R.string.status_ai_active),
-                    accentColor = NeonPurple,
-                    icon = Icons.Default.Psychology,
-                    onClick = onNavigateToAI
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    ZabetStyleCard(
+                        modifier = Modifier.weight(1f),
+                        title = stringResource(id = R.string.sec_msi_title),
+                        description = stringResource(id = R.string.sec_msi_desc),
+                        accentColor = NeonRed,
+                        icon = Icons.Default.Monitor,
+                        onClick = onNavigateToMSISuite
+                    )
+                    ZabetStyleCard(
+                        modifier = Modifier.weight(1f),
+                        title = stringResource(id = R.string.sec_benchmark_title),
+                        description = stringResource(id = R.string.sec_benchmark_desc),
+                        accentColor = NeonCyan,
+                        icon = Icons.Default.Assessment,
+                        onClick = onNavigateToBenchmark
+                    )
+                }
             }
 
-            // 6. قسم مسجل ومحلل الاختناق الحراري والأداء
+            // الصف الثاني: Auto Profile + Kernel Engine
             item {
-                ZentixFeatureCard(
-                    title = stringResource(id = R.string.sec_benchmark_title),
-                    description = stringResource(id = R.string.sec_benchmark_desc),
-                    badgeText = stringResource(id = R.string.status_benchmark_ready),
-                    accentColor = NeonCyan,
-                    icon = Icons.Default.Assessment,
-                    onClick = onNavigateToBenchmark
-                )
-            }
-
-            // 7. قسم البروفايلات الذكية والتخصيص التلقائي
-            item {
-                ZentixFeatureCard(
-                    title = stringResource(id = R.string.sec_profiles_title),
-                    description = stringResource(id = R.string.sec_profiles_desc),
-                    badgeText = stringResource(id = R.string.status_profiles_auto),
-                    accentColor = NeonGreen,
-                    icon = Icons.Default.Speed,
-                    onClick = onNavigateToProfiles
-                )
-            }
-
-            // 8. قسم حماية الخلفية وتطبيقات السحب الشاذ
-            item {
-                ZentixFeatureCard(
-                    title = stringResource(id = R.string.sec_sentinel_title),
-                    description = stringResource(id = R.string.sec_sentinel_desc),
-                    badgeText = stringResource(id = R.string.status_sentinel_protect),
-                    accentColor = NeonAmber,
-                    icon = Icons.Default.Security,
-                    onClick = onNavigateToSentinel
-                )
-            }
-
-            // 9. قسم الشريط العائم ومسجل الفيديو في الألعاب OSD/HUD
-            item {
-                ZentixFeatureCard(
-                    title = stringResource(id = R.string.sec_osd_title),
-                    description = stringResource(id = R.string.sec_osd_desc),
-                    badgeText = stringResource(id = R.string.status_osd_overlay),
-                    accentColor = NeonRed,
-                    icon = Icons.Default.Videocam,
-                    onClick = onNavigateToOSD
-                )
-            }
-
-            // 10. قسم كسر السرعة والتحكم المباشر بالنواة (Advanced Engine)
-            item {
-                ZentixFeatureCard(
-                    title = stringResource(id = R.string.sec_overclock_title),
-                    description = stringResource(id = R.string.sec_overclock_desc),
-                    badgeText = stringResource(id = R.string.status_root_disabled),
-                    accentColor = Color.Gray,
-                    icon = Icons.Default.DeveloperBoard,
-                    onClick = onNavigateToOverclock
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    ZabetStyleCard(
+                        modifier = Modifier.weight(1f),
+                        title = stringResource(id = R.string.sec_profiles_title),
+                        description = stringResource(id = R.string.sec_profiles_desc),
+                        accentColor = NeonGreen,
+                        icon = Icons.Default.Speed,
+                        onClick = onNavigateToProfiles
+                    )
+                    ZabetStyleCard(
+                        modifier = Modifier.weight(1f),
+                        title = stringResource(id = R.string.sec_overclock_title),
+                        description = stringResource(id = R.string.sec_overclock_desc),
+                        accentColor = NeonAmber,
+                        icon = Icons.Default.DeveloperBoard,
+                        onClick = onNavigateToOverclock
+                    )
+                }
             }
         }
     }
 }
 
-// ---------------- مكونات واجهة المستخدم الفرعية ---------------- //
+// ---------------- 1. الهيدر العلوي مع الأيقونة والزر الصغير ---------------- //
 
 @Composable
-private fun TopAppBarSection(onSettingsClick: () -> Unit) {
+private fun TopAppBarSection(
+    boostState: Int,
+    onBoostClick: () -> Unit,
+    onSettingsClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                color = NeonRed,
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Black,
-                letterSpacing = 2.sp
-            )
-            Text(
-                text = stringResource(id = R.string.app_subtitle),
-                color = Color.Gray,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp
-            )
+        // الشعار والأيقونة واسم التطبيق
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            // أيقونة التطبيق العائمة بجانب الاسم
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(NeonRed.copy(alpha = 0.18f), CircleShape)
+                    .border(1.5.dp, NeonRed, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Bolt,
+                    contentDescription = null,
+                    tint = NeonRed,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
+            Column {
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    color = Color.White,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = 1.5.sp
+                )
+                Text(
+                    text = stringResource(id = R.string.app_subtitle),
+                    color = Color.Gray,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
 
-        IconButton(
-            onClick = onSettingsClick,
-            modifier = Modifier
-                .background(CardBackground, RoundedCornerShape(12.dp))
-                .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+        // الأزرار العلوية: زر البوست الصغير + زر الإعدادات
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = stringResource(id = R.string.settings_cd),
-                tint = Color.White
+            // زر البوست الصغير والأنيق
+            val buttonColor by animateColorAsState(
+                targetValue = if (boostState == 1) NeonAmber else NeonRed,
+                animationSpec = tween(300),
+                label = "BoostBtnColor"
             )
+
+            Button(
+                onClick = onBoostClick,
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                modifier = Modifier.height(38.dp),
+                shape = RoundedCornerShape(20.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Bolt,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = if (boostState == 1) stringResource(id = R.string.btn_boosting) else stringResource(id = R.string.btn_boost_now),
+                        color = Color.White,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            // زر الترس للإعدادات ⚙️
+            IconButton(
+                onClick = onSettingsClick,
+                modifier = Modifier
+                    .size(38.dp)
+                    .background(CardBackground, RoundedCornerShape(12.dp))
+                    .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(id = R.string.settings_cd),
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
     }
 }
 
+// ---------------- 2. شريط الأداء الحقيقي الرفيع (Slim Stats Bar) ---------------- //
+
 @Composable
-private fun QuickStatsBar() {
+private fun SlimQuickStatsBar() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
-        shape = RoundedCornerShape(16.dp),
+            .border(1.dp, CardBorder, RoundedCornerShape(14.dp)),
+        shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = CardBackground)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(vertical = 10.dp, horizontal = 12.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            StatBox(label = stringResource(id = R.string.stat_cpu_temp), value = "41°C", color = NeonCyan)
-            StatBox(label = stringResource(id = R.string.stat_ram_usage), value = "62%", color = NeonAmber)
-            StatBox(label = stringResource(id = R.string.stat_fps), value = "60 FPS", color = NeonGreen)
-            StatBox(label = stringResource(id = R.string.stat_battery_temp), value = "34°C", color = NeonPurple)
+            SlimStatBox(label = stringResource(id = R.string.stat_battery_temp), value = "34°C", color = NeonCyan)
+            VerticalDivider(modifier = Modifier.height(20.dp), color = CardBorder)
+            SlimStatBox(label = stringResource(id = R.string.stat_ram_usage), value = "62%", color = NeonAmber)
+            VerticalDivider(modifier = Modifier.height(20.dp), color = CardBorder)
+            SlimStatBox(label = stringResource(id = R.string.stat_cpu_temp), value = "41°C", color = NeonGreen)
         }
     }
 }
 
 @Composable
-private fun StatBox(label: String, value: String, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = label, color = Color.Gray, fontSize = 11.sp)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = value, color = color, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-    }
-}
-
-@Composable
-private fun BoostActionButton(boostState: Int, onBoostClick: () -> Unit) {
-    val buttonColor by animateColorAsState(
-        targetValue = when (boostState) {
-            1 -> NeonAmber
-            2 -> NeonGreen
-            else -> NeonRed
-        },
-        animationSpec = tween(500),
-        label = "BoostColorAnimation"
-    )
-
-    Button(
-        onClick = onBoostClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(58.dp),
-        shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                imageVector = if (boostState == 2) Icons.Default.CheckCircle else Icons.Default.Bolt,
-                contentDescription = null,
-                tint = Color.White
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = when (boostState) {
-                    1 -> stringResource(id = R.string.btn_boosting)
-                    2 -> stringResource(id = R.string.btn_boosted)
-                    else -> stringResource(id = R.string.btn_boost_now)
-                },
-                color = Color.White,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp
-            )
-        }
-    }
-}
-
-@Composable
-private fun QuickTogglesRow(isOsdEnabled: Boolean, onOsdToggle: () -> Unit) {
+private fun SlimStatBox(label: String, value: String, color: Color) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        // FPS Lock Shortcut Button
-        OutlinedButton(
-            onClick = { /* تغيير معدل الفريمات */ },
-            modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.outlinedButtonColors(containerColor = CardBackground),
-            border = androidx.compose.foundation.BorderStroke(1.dp, CardBorder)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Speed, contentDescription = null, tint = NeonCyan, modifier = Modifier.size(18.dp))
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(text = stringResource(id = R.string.quick_fps_lock), color = Color.White, fontSize = 12.sp)
-            }
-        }
-
-        // OSD Overlay Quick Toggle
-        OutlinedButton(
-            onClick = onOsdToggle,
-            modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = if (isOsdEnabled) NeonRed.copy(alpha = 0.2f) else CardBackground
-            ),
-            border = androidx.compose.foundation.BorderStroke(1.dp, if (isOsdEnabled) NeonRed else CardBorder)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Layers,
-                    contentDescription = null,
-                    tint = if (isOsdEnabled) NeonRed else Color.Gray,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = stringResource(id = R.string.quick_osd_toggle),
-                    color = if (isOsdEnabled) NeonRed else Color.White,
-                    fontSize = 12.sp
-                )
-            }
-        }
+        Text(text = label, color = Color.Gray, fontSize = 11.sp)
+        Text(text = value, color = color, fontSize = 13.sp, fontWeight = FontWeight.Bold)
     }
 }
 
+// ---------------- 3. كارت الميزات الشبكي بنفس طريقة ZABET ---------------- //
+
 @Composable
-private fun ZentixFeatureCard(
+private fun ZabetStyleCard(
+    modifier: Modifier = Modifier,
     title: String,
     description: String,
-    badgeText: String,
     accentColor: Color,
     icon: ImageVector,
     onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, CardBorder, RoundedCornerShape(16.dp))
+            .height(175.dp)
+            .border(1.dp, CardBorder, RoundedCornerShape(20.dp))
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = CardBackground)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(14.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            // الأيقونة العلوية في دائرة خلفيتها زاهية
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(accentColor.copy(alpha = 0.15f), CircleShape),
+                contentAlignment = Alignment.Center
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(38.dp)
-                            .background(accentColor.copy(alpha = 0.15f), CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(imageVector = icon, contentDescription = null, tint = accentColor)
-                    }
-                    Spacer(modifier = Modifier.width(12.dp))
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = accentColor,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+
+            // العنوان المكتوب مع السهم المتجه لليمين (>) والوصف
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         text = title,
                         color = Color.White,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                // شارة الحالة (Status Badge)
-                Surface(
-                    shape = RoundedCornerShape(8.dp),
-                    color = accentColor.copy(alpha = 0.12f),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, accentColor.copy(alpha = 0.4f))
-                ) {
-                    Text(
-                        text = badgeText,
-                        color = accentColor,
-                        fontSize = 10.sp,
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = accentColor,
+                        modifier = Modifier.size(18.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = description,
+                    color = Color.Gray,
+                    fontSize = 11.sp,
+                    lineHeight = 15.sp,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = description,
-                color = Color.Gray,
-                fontSize = 12.sp,
-                lineHeight = 18.sp
-            )
         }
     }
 }
