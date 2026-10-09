@@ -1,4 +1,4 @@
-package com.example.zentix.ui
+package com.example.zentix.UI
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
