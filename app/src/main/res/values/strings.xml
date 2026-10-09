@@ -28,4 +28,20 @@
     <!-- 4. Kernel Overclock -->
     <string name="sec_overclock_title">Kernel Engine</string>
     <string name="sec_overclock_desc">Direct CPU/GPU frequency scaling and governor control for rooted devices.</string>
+    <!-- Settings Screen -->
+    <string name="settings_title">SETTINGS</string>
+    <string name="setting_dark_mode">Dark Mode</string>
+    <string name="setting_dark_mode_desc">Enable dark gaming visual theme</string>
+
+    <string name="setting_ai_mode">AI Thermal &amp; Lag Guard</string>
+    <string name="setting_ai_mode_desc">Local ML predictive monitoring for throttling</string>
+
+    <string name="setting_language">Language / اللغة</string>
+    <string name="setting_game_timer">Game Session Timer</string>
+    <string name="setting_info">About ZENTIX</string>
+    <string name="setting_info_desc">Version 1.0.0 - Performance Command Center</string>
+
+    <!-- Dialog Actions -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_apply">Apply</string>
 </resources>
