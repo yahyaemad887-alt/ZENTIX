@@ -44,4 +44,119 @@
     <!-- Dialog Actions -->
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_apply">Apply</string>
+    <!-- Game Launcher Section -->
+    <string name="launcher_title">Game Launcher &amp; Boost</string>
+    <string name="add_game_cd">Add Game</string>
+    <string name="dialog_add_game_title">Add Game Shortcut</string>
+    <string name="dialog_add_game_desc">Select installed games to add to your direct boost launcher.</string>
+    <string name="btn_add_sample">Add Sample</string>
+    <!-- Game Logger Advanced Gaming Strings -->
+    <string name="game_logger_title">GAMING TELEMETRY &amp; HARDWARE</string>
+    <string name="tab_analytics">Hardware &amp; Performance</string>
+    <string name="tab_history">Session Logs</string>
+
+    <string name="metric_stability">Stability Score</string>
+    <string name="metric_power">Power Draw</string>
+    <string name="metric_driver">Active Driver</string>
+    <string name="metric_vram">VRAM Usage</string>
+
+    <string name="section_thermal_health">Thermal &amp; Throttling Status</string>
+    <string name="section_fps_breakdown">FPS Stability Distribution</string>
+    <string name="section_active_engines">Emulation &amp; Engine Profiles</string>
+    <string name="section_all_sessions">Recorded Game Sessions</string>
+
+    <string name="filter_all">All Games</string>
+    <string name="filter_heavy">Heavy PC Titles</string>
+    <!-- Advanced Hardware Features -->
+    <string name="section_bypass_charging">Bypass Charging &amp; Power Control</string>
+    <string name="desc_bypass_charging">Supply power directly to SoC without routing through battery to reduce heat by up to 12°C during emulation.</string>
+    <string name="status_bypass_active">Bypass Active (Direct SoC Power)</string>
+    <string name="status_bypass_disabled">Normal Charging Mode</string>
+    <!-- Auto Profiles Screen Strings -->
+    <string name="auto_profiles_title">AUTO PROFILES &amp; AUTOMATION</string>
+    <string name="master_auto_switch">Master Auto-Detection</string>
+    <string name="master_auto_desc">Automatically detect launched games and apply tailored hardware presets.</string>
+    <string name="section_profiles">Hardware Performance Profiles</string>
+    <string name="section_app_mapping">Game &amp; App Profile Mapping</string>
+    <string name="btn_create_profile">New Profile</string>
+
+    <!-- Profile Names & Details -->
+    <string name="profile_extreme">Extreme Gaming Turbo</string>
+    <string name="profile_balanced">Balanced Performance</string>
+    <string name="profile_saver">Thermal &amp; Battery Saver</string>
+    <!-- Auto Profiles & Automation Strings -->
+    <string name="auto_profiles_subtitle">Smart Game Detection &amp; Hardware Engine</string>
+
+    <string name="section_auto_engine">Automation Service &amp; Rules</string>
+    <string name="rule_auto_detect">Smart Game Auto-Detection</string>
+    <string name="rule_auto_detect_desc">Automatically switch hardware profiles when a game is launched in foreground.</string>
+    <string name="rule_ram_clean">Auto RAM Flush on Launch</string>
+    <string name="rule_ram_clean_desc">Purge background memory before initiating heavy emulation sessions.</string>
+    <string name="rule_thermal_guard">Thermal Auto-Throttle Guard</string>
+    <string name="rule_thermal_guard_desc">Switch to Thermal Saver profile if CPU temp exceeds 50°C.</string>
+
+    <string name="section_hardware_presets">Hardware Presets</string>
+    <string name="section_game_rules">Game-to-Profile Rules</string>
+
+    <string name="dialog_create_profile">Create Hardware Profile</string>
+    <string name="dialog_profile_name">Profile Name (e.g. Winlator Turbo)</string>
+    <string name="dialog_gov_select">Select CPU Governor</string>
+    <string name="btn_save_profile">Save &amp; Apply</string>
+    <string name="btn_cancel">Cancel</string>
+    <!-- Profile Detail & Game Selection Strings -->
+    <string name="profile_detail_title">PROFILE TARGETS &amp; TUNING</string>
+    <string name="section_assigned_games">Assigned Games for Profile</string>
+    <string name="desc_assigned_games">Select games that will automatically activate this hardware profile upon launch.</string>
+    <string name="section_preset_tuning">Hardware Parameters</string>
+    <string name="btn_save_changes">Save Profile Rules</string>
+    <!-- Kernel Engine & Overclocking Strings -->
+    <string name="kernel_title">KERNEL ENGINE &amp; OC</string>
+    <string name="kernel_subtitle">Hardware Overclocking &amp; Governor Tuning</string>
+
+    <string name="status_root_detected">Root Access: GRANTED (Kernel Control Active)</string>
+    <string name="status_no_root">Non-Root Mode: User-Space Optimization Active</string>
+
+    <string name="section_cpu_oc">CPU Core Clock Control</string>
+    <string name="section_gpu_oc">GPU Core Frequency</string>
+    <string name="section_extra_oc">Advanced Kernel Features</string>
+
+    <string name="label_stock_freq">Stock Base Frequency</string>
+    <string name="label_target_freq">Target Max Clock</string>
+
+    <string name="warn_safe">Status: Safe (Stock Limits)</string>
+    <string name="warn_moderate">Status: Moderate Overclock (Monitored Heat)</string>
+    <string name="warn_extreme">DANGER: Extreme Overclock (Risk of Thermal Shutdown)</string>
+
+    <string name="feature_undervolt">Kernel Undervolt (-50mV)</string>
+    <string name="feature_undervolt_desc">Reduces SoC power draw and core heat during high load.</string>
+
+    <string name="feature_high_priority">Game Process High Priority</string>
+    <string name="feature_high_priority_desc">Forces Android OS scheduler to give 90% CPU cycles to foreground game.</string>
+
+    <string name="btn_apply_kernel">Apply Clock Changes</string>
+    <!-- Kernel Root Check Strings -->
+    <string name="btn_check_root">Check Root Access</string>
+    <string name="root_status_locked">Kernel Engine Locked - Root Verification Required</string>
+    <string name="root_required_msg">Root permissions are required to unlock CPU/GPU core frequency sliders and voltage controls.</string>
+    <string name="root_success_msg">Root Access Granted! Kernel control interface unlocked.</string>
+    <string name="root_failed_msg">No Root Detected! Running in restricted non-root mode.</string>
+    <!-- FPS & MSI OSD Suite Strings -->
+    <string name="fps_screen_title">HUD, OSD &amp; VIDEO CAPTURE</string>
+    <string name="fps_screen_subtitle">Advanced MSI Afterburner OSD &amp; Recorder Suite</string>
+
+    <string name="tab_osd_monitoring">OSD Monitoring</string>
+    <string name="tab_recorder">Video Capture</string>
+
+    <string name="section_polling_rate">Hardware Polling Period</string>
+    <string name="section_monitoring_graphs">Active Monitoring Graphs (MSI Style)</string>
+    <string name="section_video_properties">Video Capture Properties</string>
+
+    <string name="btn_open_recorder_config">Configure Recorder Engine</string>
+    <string name="label_poll_ms">Polling Period: 1000 ms</string>
+    <!-- Enhanced OSD & Video Recorder Strings -->
+    <string name="master_osd_switch">Master OSD Overlay Service</string>
+    <string name="master_osd_desc">Enable floating real-time telemetry over active games.</string>
+    <string name="section_all_graphs">MSI Afterburner Complete Monitoring</string>
+    <string name="btn_open_folder">Open Captured Videos Folder</string>
+    <string name="recorder_status_active">Recorder Engine: READY / ACTIVE</string>
 </resources>

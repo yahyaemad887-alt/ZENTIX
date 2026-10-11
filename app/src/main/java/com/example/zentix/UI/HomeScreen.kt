@@ -5,8 +5,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -24,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zentix.R
 
-// ألوان ثيم ZENTIX الداكن
+// ألوان ثيم ZENTIX الداكن الاحترافي
 private val BackgroundDark = Color(0xFF090A0F)
 private val CardBackground = Color(0xFF12141D)
 private val CardBorder = Color(0xFF1E2230)
@@ -42,6 +44,10 @@ fun HomeScreen(
     onNavigateToOverclock: () -> Unit = {}
 ) {
     var boostState by remember { mutableStateOf(0) } // 0: Normal, 1: Boosting
+
+    // قائمة الألعاب الافتراضية للاختصارات السريعة
+    var savedGames by remember { mutableStateOf(listOf("Mafia II", "GTA IV", "Blur")) }
+    var showAddGameDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -69,8 +75,7 @@ fun HomeScreen(
                 SlimQuickStatsBar()
             }
 
-            // 3. كروت المميزات الرئيسية (2 Columns Grid)
-            // الصف الأول: FPS & Other + Game Logger
+            // 3. كروت المميزات الرئيسية (2 Columns Grid) - الصف الأول
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -95,7 +100,7 @@ fun HomeScreen(
                 }
             }
 
-            // الصف الثاني: Auto Profile + Kernel Engine
+            // كروت المميزات الرئيسية - الصف الثاني
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -119,11 +124,58 @@ fun HomeScreen(
                     )
                 }
             }
+
+            // 4. قسم مشغل واختصارات الألعاب السفلي (Game Launcher & Boost)
+            item {
+                GameLauncherSection(
+                    games = savedGames,
+                    onAddClick = { showAddGameDialog = true },
+                    onGameClick = { gameName ->
+                        // تفعيل وضع التسريع تلقائياً عند تشغيل اللعبة
+                        boostState = 1
+                    }
+                )
+            }
         }
+    }
+
+    // نافذة منبثقة لإضافة لعبة جديدة للاختصارات
+    if (showAddGameDialog) {
+        AlertDialog(
+            onDismissRequest = { showAddGameDialog = false },
+            containerColor = CardBackground,
+            title = {
+                Text(
+                    text = stringResource(id = R.string.dialog_add_game_title),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(id = R.string.dialog_add_game_desc),
+                    color = Color.Gray,
+                    fontSize = 12.sp
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    savedGames = savedGames + "New Game"
+                    showAddGameDialog = false
+                }) {
+                    Text(text = stringResource(id = R.string.btn_add_sample), color = NeonCyan)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showAddGameDialog = false }) {
+                    Text(text = stringResource(id = R.string.dialog_cancel), color = Color.Gray)
+                }
+            }
+        )
     }
 }
 
-// ---------------- 1. الهيدر العلوي مع الأيقونة والزر الصغير ---------------- //
+// ---------------- 1. الهيدر العلوي ---------------- //
 
 @Composable
 private fun TopAppBarSection(
@@ -138,12 +190,10 @@ private fun TopAppBarSection(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // الشعار والأيقونة واسم التطبيق
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            // أيقونة التطبيق العائمة بجانب الاسم
             Box(
                 modifier = Modifier
                     .size(40.dp)
@@ -176,12 +226,10 @@ private fun TopAppBarSection(
             }
         }
 
-        // الأزرار العلوية: زر البوست الصغير + زر الإعدادات
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // زر البوست الصغير والأنيق
             val buttonColor by animateColorAsState(
                 targetValue = if (boostState == 1) NeonAmber else NeonRed,
                 animationSpec = tween(300),
@@ -212,7 +260,6 @@ private fun TopAppBarSection(
                 }
             }
 
-            // زر الترس للإعدادات ⚙️
             IconButton(
                 onClick = onSettingsClick,
                 modifier = Modifier
@@ -231,7 +278,7 @@ private fun TopAppBarSection(
     }
 }
 
-// ---------------- 2. شريط الأداء الحقيقي الرفيع (Slim Stats Bar) ---------------- //
+// ---------------- 2. شريط الأداء الحقيقي الرفيع ---------------- //
 
 @Composable
 private fun SlimQuickStatsBar() {
@@ -269,7 +316,7 @@ private fun SlimStatBox(label: String, value: String, color: Color) {
     }
 }
 
-// ---------------- 3. كارت الميزات الشبكي بنفس طريقة ZABET ---------------- //
+// ---------------- 3. كارت الميزات الشبكي الأساسي ---------------- //
 
 @Composable
 private fun ZabetStyleCard(
@@ -295,7 +342,6 @@ private fun ZabetStyleCard(
                 .padding(14.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // الأيقونة العلوية في دائرة خلفيتها زاهية
             Box(
                 modifier = Modifier
                     .size(40.dp)
@@ -310,7 +356,6 @@ private fun ZabetStyleCard(
                 )
             }
 
-            // العنوان المكتوب مع السهم المتجه لليمين (>) والوصف
             Column {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -345,6 +390,122 @@ private fun ZabetStyleCard(
                     overflow = TextOverflow.Ellipsis
                 )
             }
+        }
+    }
+}
+
+// ---------------- 4. قسم مشغل واختصارات الألعاب السفلي ---------------- //
+
+@Composable
+private fun GameLauncherSection(
+    games: List<String>,
+    onAddClick: () -> Unit,
+    onGameClick: (String) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, CardBorder, RoundedCornerShape(20.dp)),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = CardBackground)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(NeonCyan.copy(alpha = 0.15f), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.SportsEsports,
+                            contentDescription = null,
+                            tint = NeonCyan,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Text(
+                        text = stringResource(id = R.string.launcher_title),
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                IconButton(
+                    onClick = onAddClick,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(NeonCyan, CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(id = R.string.add_game_cd),
+                        tint = BackgroundDark,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                games.forEach { game ->
+                    GameShortcutCard(gameName = game, onClick = { onGameClick(game) })
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GameShortcutCard(gameName: String, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .width(110.dp)
+            .height(75.dp)
+            .border(1.dp, CardBorder, RoundedCornerShape(14.dp))
+            .clickable { onClick() },
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF191D28))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = Icons.Default.PlayArrow,
+                contentDescription = null,
+                tint = NeonGreen,
+                modifier = Modifier.size(22.dp)
+            )
+            Text(
+                text = gameName,
+                color = Color.White,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }
