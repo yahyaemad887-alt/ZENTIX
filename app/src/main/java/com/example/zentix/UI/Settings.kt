@@ -1,11 +1,14 @@
 package com.example.zentix.UI
 
 import androidx.activity.compose.BackHandler
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -17,41 +20,118 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zentix.R
+import com.example.zentix.data.ZentixPrefs
 
-// ألوان ثيم ZENTIX الداكن الاحترافي
-private val BackgroundDark = Color(0xFF090A0F)
-private val CardBackground = Color(0xFF12141D)
-private val CardBorder = Color(0xFF1E2230)
+// ألوان الـ Neon ثابتة في الوضعين (الخلفية والكروت والنصوص جاية من ZentixTheme)
 private val NeonRed = Color(0xFFFF2A4B)
 private val NeonCyan = Color(0xFF00E5FF)
 private val NeonGreen = Color(0xFF00E676)
-private val NeonAmber = Color(0xFFFFD600)
 private val NeonPurple = Color(0xFFB388FF)
+private val NeonAmber = Color(0xFFFFD600)
+
+// نموذج اللغات التسع المدعومة في مشروعك
+data class AppLanguage(val code: String, val displayName: String, val nativeName: String)
+
+val SupportedLanguages = listOf(
+    AppLanguage("en", "English", "English"),
+    AppLanguage("ar", "Arabic", "العربية"),
+    AppLanguage("de", "German", "Deutsch"),
+    AppLanguage("fr", "French", "Français"),
+    AppLanguage("ja", "Japanese", "日本語"),
+    AppLanguage("ko", "Korean", "한국어"),
+    AppLanguage("ru", "Russian", "Русский"),
+    AppLanguage("tr", "Turkish", "Türkçe"),
+    AppLanguage("zh", "Chinese", "中文")
+)
+
+// خيارات مؤقت جلسات اللعب (minutes = 0 معناها متوقف)
+data class TimerOption(val label: String, val minutes: Int)
+
+val TimerOptions = listOf(
+    TimerOption("Disabled", 0),
+    TimerOption("30 Minutes", 30),
+    TimerOption("1 Hour", 60),
+    TimerOption("1.5 Hours", 90),
+    TimerOption("2 Hours", 120),
+    TimerOption("3 Hours", 180)
+)
 
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit = {}
 ) {
-    BackHandler {
-        onNavigateBack()
-    }
+    val context = LocalContext.current
+    val prefs = remember { ZentixPrefs.get(context) }
 
-    var isDarkTheme by remember { mutableStateOf(true) }
-    var performanceMode by remember { mutableStateOf(true) }
-    var notificationsEnabled by remember { mutableStateOf(false) }
-    var selectedLanguage by remember { mutableStateOf("English (US)") }
+    // الحالات كلها جاية من التخزين الدائم، فبتفضل محفوظة بعد قفل التطبيق
+    val isDarkModeEnabled by prefs.darkMode.collectAsState()
+    val isAiGuardEnabled by prefs.aiGuard.collectAsState()
+    val currentLanguageCode by prefs.languageCode.collectAsState()
+    val timerMinutes by prefs.sessionTimerMinutes.collectAsState()
+
+    // الثيم هنا بيتغير فورًا مع زرار Dark Mode
+    ZentixTheme(darkTheme = isDarkModeEnabled) {
+        SettingsContent(
+            isDarkModeEnabled = isDarkModeEnabled,
+            isAiGuardEnabled = isAiGuardEnabled,
+            currentLanguageCode = currentLanguageCode,
+            timerMinutes = timerMinutes,
+            onDarkModeChange = prefs::setDarkMode,
+            onAiGuardChange = prefs::setAiGuard,
+            onLanguageSelected = { code ->
+                prefs.setLanguage(code)
+                // تغيير لغة التطبيق على مستوى النظام (بيعمل recreate للـ Activity)
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(code))
+            },
+            onTimerSelected = prefs::setSessionTimerMinutes,
+            onNavigateBack = onNavigateBack
+        )
+    }
+}
+
+@Composable
+private fun SettingsContent(
+    isDarkModeEnabled: Boolean,
+    isAiGuardEnabled: Boolean,
+    currentLanguageCode: String,
+    timerMinutes: Int,
+    onDarkModeChange: (Boolean) -> Unit,
+    onAiGuardChange: (Boolean) -> Unit,
+    onLanguageSelected: (String) -> Unit,
+    onTimerSelected: (Int) -> Unit,
+    onNavigateBack: () -> Unit
+) {
+    val colors = zentixColors
+    val context = LocalContext.current
+
+    // التقاط زر الرجوع الخاص بنظام أندرويد
+    BackHandler { onNavigateBack() }
+
     var showLanguageDialog by remember { mutableStateOf(false) }
-    var showResetDialog by remember { mutableStateOf(false) }
+    var showTimerDialog by remember { mutableStateOf(false) }
+    var showInfoDialog by remember { mutableStateOf(false) }
+
+    val currentLangObject = SupportedLanguages.find { it.code == currentLanguageCode }
+        ?: SupportedLanguages.first()
+    val selectedTimer = TimerOptions.find { it.minutes == timerMinutes } ?: TimerOptions.first()
+
+    // رقم النسخة الحقيقي من الـ APK بدل نص ثابت
+    val versionName = remember {
+        runCatching {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        }.getOrNull() ?: "1.0.0"
+    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundDark)
+            .background(colors.background)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -60,330 +140,371 @@ fun SettingsScreen(
             contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // 1. الهيدر العلوي
+            // 1. الهيدر العلوي (زر الرجوع + عنوان الشاشة)
             item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    IconButton(
+                        onClick = onNavigateBack,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(colors.card, RoundedCornerShape(12.dp))
+                            .border(1.dp, colors.border, RoundedCornerShape(12.dp))
                     ) {
-                        IconButton(
-                            onClick = onNavigateBack,
-                            modifier = Modifier
-                                .size(40.dp)
-                                .background(CardBackground, RoundedCornerShape(12.dp))
-                                .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
-                                tint = Color.White
-                            )
-                        }
-
-                        Column {
-                            Text(
-                                text = stringResource(id = R.string.settings_title),
-                                color = Color.White,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Black,
-                                letterSpacing = 1.2.sp
-                            )
-                            Text(
-                                text = "ZENTIX System Configuration",
-                                color = Color.Gray,
-                                fontSize = 10.sp
-                            )
-                        }
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = colors.text
+                        )
                     }
+                    Text(
+                        text = stringResource(id = R.string.settings_title),
+                        color = colors.text,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 1.5.sp
+                    )
                 }
             }
 
-            // 2. إعدادات المظهر والواجهة
+            // 2. Dark Mode Switch
             item {
-                Text(
-                    text = "Appearance & Theme",
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 4.dp)
+                SettingsSwitchCard(
+                    title = stringResource(id = R.string.setting_dark_mode),
+                    description = stringResource(id = R.string.setting_dark_mode_desc),
+                    icon = Icons.Default.DarkMode,
+                    accentColor = NeonCyan,
+                    checked = isDarkModeEnabled,
+                    onCheckedChange = onDarkModeChange
                 )
             }
 
+            // 3. AI Thermal & Lag Guard Switch
             item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        SettingSwitchRow(
-                            title = "AMOLED Dark Theme",
-                            subtitle = "Pure black background for high contrast & battery saving",
-                            icon = Icons.Default.DarkMode,
-                            iconColor = NeonPurple,
-                            checked = isDarkTheme,
-                            onCheckedChange = { isDarkTheme = it }
-                        )
-                    }
-                }
-            }
-
-            // 3. إعدادات الأداء والنظام
-            item {
-                Text(
-                    text = "System Performance",
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 4.dp)
+                SettingsSwitchCard(
+                    title = stringResource(id = R.string.setting_ai_mode),
+                    description = stringResource(id = R.string.setting_ai_mode_desc),
+                    icon = Icons.Default.Psychology,
+                    accentColor = NeonPurple,
+                    checked = isAiGuardEnabled,
+                    onCheckedChange = onAiGuardChange
                 )
             }
 
+            // 4. Language Selection (كارت فتح قائمة اللغات)
             item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        SettingSwitchRow(
-                            title = "High Performance Mode",
-                            subtitle = "Bypass thermal throttling restrictions for peak FPS",
-                            icon = Icons.Default.Speed,
-                            iconColor = NeonRed,
-                            checked = performanceMode,
-                            onCheckedChange = { performanceMode = it }
-                        )
-
-                        HorizontalDivider(color = CardBorder, thickness = 1.dp)
-
-                        SettingSwitchRow(
-                            title = "Telemetry Notifications",
-                            subtitle = "Show persistent foreground alerts for temperature drops",
-                            icon = Icons.Default.Notifications,
-                            iconColor = NeonCyan,
-                            checked = notificationsEnabled,
-                            onCheckedChange = { notificationsEnabled = it }
-                        )
-                    }
-                }
-            }
-
-            // 4. خيارات إضافية (اللغة وإعادة التعيين)
-            item {
-                Text(
-                    text = "Preferences & Management",
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 4.dp)
+                SettingsActionCard(
+                    title = stringResource(id = R.string.setting_language),
+                    description = "${currentLangObject.displayName} (${currentLangObject.nativeName})",
+                    icon = Icons.Default.Language,
+                    accentColor = NeonGreen,
+                    onClick = { showLanguageDialog = true }
                 )
             }
 
+            // 5. Game Session Timer (كارت اختيار مؤقت اللعب)
             item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        // اختيار اللغة
-                        SettingClickRow(
-                            title = "Application Language",
-                            subtitle = selectedLanguage,
-                            icon = Icons.Default.Language,
-                            iconColor = NeonGreen,
-                            onClick = { showLanguageDialog = true }
-                        )
+                SettingsActionCard(
+                    title = stringResource(id = R.string.setting_game_timer),
+                    description = "Current: ${selectedTimer.label}",
+                    icon = Icons.Default.Timer,
+                    accentColor = NeonAmber,
+                    onClick = { showTimerDialog = true }
+                )
+            }
 
-                        HorizontalDivider(color = CardBorder, thickness = 1.dp)
-
-                        // إعادة ضبط المصنع
-                        SettingClickRow(
-                            title = "Reset Configuration",
-                            subtitle = "Restore default kernel states and cache profiles",
-                            icon = Icons.Default.RestartAlt,
-                            iconColor = NeonAmber,
-                            onClick = { showResetDialog = true }
-                        )
-                    }
-                }
+            // 6. About ZENTIX
+            item {
+                SettingsActionCard(
+                    title = stringResource(id = R.string.setting_info),
+                    description = stringResource(id = R.string.setting_info_desc),
+                    icon = Icons.Default.Info,
+                    accentColor = NeonRed,
+                    onClick = { showInfoDialog = true }
+                )
             }
         }
     }
 
-    // حوار اختيار اللغة
+    // ---------------- 1. قائمة اختيار اللغة (Language Dialog) ---------------- //
     if (showLanguageDialog) {
         AlertDialog(
             onDismissRequest = { showLanguageDialog = false },
-            containerColor = CardBackground,
-            title = { Text(text = "Select Language", color = Color.White, fontWeight = FontWeight.Bold) },
+            containerColor = colors.card,
+            title = {
+                Text(
+                    text = "Select App Language",
+                    color = colors.text,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            },
             text = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf("English (US)", "العربية (Arabic)", "Français (French)").forEach { lang ->
-                        Box(
+                LazyColumn(
+                    modifier = Modifier.heightIn(max = 350.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    items(SupportedLanguages) { lang ->
+                        val isSelected = lang.code == currentLanguageCode
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(if (selectedLanguage == lang) NeonCyan.copy(alpha = 0.2f) else BackgroundDark, RoundedCornerShape(10.dp))
-                                .border(1.dp, if (selectedLanguage == lang) NeonCyan else CardBorder, RoundedCornerShape(10.dp))
+                                .background(
+                                    if (isSelected) NeonGreen.copy(alpha = 0.15f) else Color.Transparent,
+                                    RoundedCornerShape(10.dp)
+                                )
                                 .clickable {
-                                    selectedLanguage = lang
                                     showLanguageDialog = false
+                                    // لو نفس اللغة مفيش داعي نعمل recreate
+                                    if (!isSelected) onLanguageSelected(lang.code)
                                 }
-                                .padding(12.dp)
+                                .padding(horizontal = 12.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(text = lang, color = if (selectedLanguage == lang) NeonCyan else Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            Column {
+                                Text(
+                                    text = lang.nativeName,
+                                    color = if (isSelected) NeonGreen else colors.text,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = lang.displayName,
+                                    color = colors.subText,
+                                    fontSize = 11.sp
+                                )
+                            }
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = NeonGreen,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
                         }
                     }
                 }
             },
             confirmButton = {
                 TextButton(onClick = { showLanguageDialog = false }) {
-                    Text(text = "Close", color = Color.Gray)
+                    Text(text = stringResource(id = R.string.dialog_cancel), color = colors.subText)
                 }
             }
         )
     }
 
-    // حوار إعادة التعيين
-    if (showResetDialog) {
+    // ---------------- 2. قائمة اختيار مؤقت اللعب (Game Timer Dialog) ---------------- //
+    if (showTimerDialog) {
         AlertDialog(
-            onDismissRequest = { showResetDialog = false },
-            containerColor = CardBackground,
-            title = { Text(text = "Reset All Settings?", color = Color.White, fontWeight = FontWeight.Bold) },
-            text = { Text(text = "This will clear user preferences and revert to default ZENTIX profiles.", color = Color.Gray, fontSize = 12.sp) },
-            confirmButton = {
-                TextButton(onClick = { showResetDialog = false }) {
-                    Text(text = "Reset", color = NeonRed, fontWeight = FontWeight.Bold)
+            onDismissRequest = { showTimerDialog = false },
+            containerColor = colors.card,
+            title = {
+                Text(
+                    text = "Game Session Timer",
+                    color = colors.text,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    TimerOptions.forEach { option ->
+                        val isSelected = option.minutes == timerMinutes
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    if (isSelected) NeonAmber.copy(alpha = 0.15f) else Color.Transparent,
+                                    RoundedCornerShape(10.dp)
+                                )
+                                .clickable {
+                                    onTimerSelected(option.minutes)
+                                    showTimerDialog = false
+                                }
+                                .padding(horizontal = 12.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = option.label,
+                                color = if (isSelected) NeonAmber else colors.text,
+                                fontSize = 14.sp,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            )
+                            RadioButton(
+                                selected = isSelected,
+                                onClick = {
+                                    onTimerSelected(option.minutes)
+                                    showTimerDialog = false
+                                },
+                                colors = RadioButtonDefaults.colors(
+                                    selectedColor = NeonAmber,
+                                    unselectedColor = colors.subText
+                                )
+                            )
+                        }
+                    }
                 }
             },
-            dismissButton = {
-                TextButton(onClick = { showResetDialog = false }) {
-                    Text(text = "Cancel", color = Color.Gray)
+            confirmButton = {
+                TextButton(onClick = { showTimerDialog = false }) {
+                    Text(text = stringResource(id = R.string.dialog_cancel), color = colors.subText)
+                }
+            }
+        )
+    }
+
+    // ---------------- 3. نافذة معلومات التطبيق (Info Dialog) ---------------- //
+    if (showInfoDialog) {
+        AlertDialog(
+            onDismissRequest = { showInfoDialog = false },
+            containerColor = colors.card,
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Bolt,
+                        contentDescription = null,
+                        tint = NeonRed,
+                        modifier = Modifier.size(22.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "ZENTIX Command Center", color = colors.text, fontSize = 16.sp)
+                }
+            },
+            text = {
+                Text(
+                    text = "Version: $versionName\nHigh-performance Gaming Optimization Tool for Android.\nBuilt with Kotlin & Jetpack Compose.",
+                    color = colors.subText,
+                    fontSize = 12.sp,
+                    lineHeight = 18.sp
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showInfoDialog = false }) {
+                    Text("OK", color = NeonRed)
                 }
             }
         )
     }
 }
 
-// ---------------- مكونات فرعية ---------------- //
+// ---------------- مكونات الكروت الإضافية ---------------- //
 
 @Composable
-private fun SettingSwitchRow(
+private fun SettingsSwitchCard(
     title: String,
-    subtitle: String,
+    description: String,
     icon: ImageVector,
-    iconColor: Color,
+    accentColor: Color,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    val colors = zentixColors
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, colors.border, RoundedCornerShape(16.dp)),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = colors.card)
     ) {
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.weight(1f)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
-                modifier = Modifier
-                    .size(34.dp)
-                    .background(iconColor.copy(alpha = 0.15f), CircleShape),
-                contentAlignment = Alignment.Center
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                modifier = Modifier.weight(1f)
             ) {
-                Icon(imageVector = icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(18.dp))
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(accentColor.copy(alpha = 0.15f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(imageVector = icon, contentDescription = null, tint = accentColor, modifier = Modifier.size(20.dp))
+                }
+                Column {
+                    Text(text = title, color = colors.text, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(text = description, color = colors.subText, fontSize = 11.sp, lineHeight = 14.sp)
+                }
             }
-            Column {
-                Text(text = title, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(text = subtitle, color = Color.Gray, fontSize = 10.sp, lineHeight = 13.sp)
-            }
-        }
 
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = BackgroundDark,
-                checkedTrackColor = iconColor,
-                uncheckedThumbColor = Color.Gray,
-                uncheckedTrackColor = CardBorder
+            Switch(
+                checked = checked,
+                onCheckedChange = onCheckedChange,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = Color.White,
+                    checkedTrackColor = accentColor,
+                    uncheckedThumbColor = Color.Gray,
+                    uncheckedTrackColor = colors.border
+                )
             )
-        )
+        }
     }
 }
 
 @Composable
-private fun SettingClickRow(
+private fun SettingsActionCard(
     title: String,
-    subtitle: String,
+    description: String,
     icon: ImageVector,
-    iconColor: Color,
+    accentColor: Color,
     onClick: () -> Unit
 ) {
-    Row(
+    val colors = zentixColors
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .border(1.dp, colors.border, RoundedCornerShape(16.dp))
+            .clickable { onClick() },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = colors.card)
     ) {
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.weight(1f)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
-                modifier = Modifier
-                    .size(34.dp)
-                    .background(iconColor.copy(alpha = 0.15f), CircleShape),
-                contentAlignment = Alignment.Center
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                modifier = Modifier.weight(1f)
             ) {
-                Icon(imageVector = icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(18.dp))
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(accentColor.copy(alpha = 0.15f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(imageVector = icon, contentDescription = null, tint = accentColor, modifier = Modifier.size(20.dp))
+                }
+                Column {
+                    Text(text = title, color = colors.text, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(text = description, color = colors.subText, fontSize = 11.sp, lineHeight = 14.sp)
+                }
             }
-            Column {
-                Text(text = title, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(text = subtitle, color = Color.Gray, fontSize = 10.sp)
-            }
-        }
 
-        Icon(
-            imageVector = Icons.Default.ChevronRight,
-            contentDescription = null,
-            tint = Color.Gray,
-            modifier = Modifier.size(18.dp)
-        )
+            Icon(
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = null,
+                tint = colors.subText,
+                modifier = Modifier.size(20.dp)
+            )
+        }
     }
 }

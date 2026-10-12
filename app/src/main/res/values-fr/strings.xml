@@ -1,2 +1,173 @@
 <resources>
+    <!-- App Branding & Top Bar -->
+    <string name="app_name">ZENTIX</string>
+    <string name="app_subtitle">CENTRE DE PERFORMANCE</string>
+    <string name="settings_cd">Paramètres &amp; Localisation</string>
+
+    <!-- Quick Stats Bar -->
+    <string name="stat_cpu_temp">Temp. CPU</string>[cite: 7]
+    <string name="stat_ram_usage">Usage RAM</string>[cite: 7]
+    <string name="stat_battery_temp">Temp. Batterie</string>[cite: 7]
+
+    <!-- System Action Button -->
+    <string name="btn_boost_now">BOOST</string>[cite: 7]
+    <string name="btn_boosting">BOOST EN COURS...</string>[cite: 7]
+
+    <!-- 1. FPS & Other Suite -->
+    <string name="sec_msi_title">FPS &amp; Outils</string>[cite: 7]
+    <string name="sec_msi_desc">Superposition HUD en direct, compteur FPS en temps réel, enregistreur d\'écran et surveillance du matériel.</string>[cite: 7]
+
+    <!-- 2. Benchmark Logger -->
+    <string name="sec_benchmark_title">Game Logger</string>[cite: 7]
+    <string name="sec_benchmark_desc">Enregistrez les sessions de jeu, suivez les courbes thermiques et exportez des rapports PDF.</string>[cite: 7]
+
+    <!-- 3. Dynamic Profiles -->
+    <string name="sec_profiles_title">Profil Auto</string>[cite: 7]
+    <string name="sec_profiles_desc">Détection automatique des jeux avec nettoyage instantané du cache et allocation matérielle.</string>[cite: 7]
+
+    <!-- 4. Kernel Overclock -->
+    <string name="sec_overclock_title">Kernel Engine</string>[cite: 7]
+    <string name="sec_overclock_desc">Contrôle direct des fréquences CPU/GPU et des gouverneurs pour appareils rootés.</string>[cite: 7]
+
+    <!-- Settings Screen -->
+    <string name="settings_title">PARAMÈTRES</string>[cite: 7]
+    <string name="setting_dark_mode">Mode Sombre</string>[cite: 7]
+    <string name="setting_dark_mode_desc">Activer le thème visuel sombre pour le jeu</string>[cite: 7]
+
+    <string name="setting_ai_mode">Protection Thermique &amp; Anti-Lag IA</string>[cite: 7]
+    <string name="setting_ai_mode_desc">Surveillance prédictive locale par IA contre le throttling</string>[cite: 7]
+
+    <string name="setting_language">Langue / Language</string>[cite: 7]
+    <string name="setting_game_timer">Minuteur de Session de Jeu</string>[cite: 7]
+    <string name="setting_info">À propos de ZENTIX</string>[cite: 7]
+    <string name="setting_info_desc">Version 1.0.0 - Centre de Commande de Performance</string>[cite: 7]
+
+    <!-- Dialog Actions -->
+    <string name="dialog_cancel">Annuler</string>[cite: 7]
+    <string name="dialog_apply">Appliquer</string>[cite: 7]
+
+    <!-- Game Launcher Section -->
+    <string name="launcher_title">Lanceur de Jeux &amp; Boost</string>[cite: 7]
+    <string name="add_game_cd">Ajouter un jeu</string>[cite: 7]
+    <string name="dialog_add_game_title">Ajouter un raccourci de jeu</string>[cite: 7]
+    <string name="dialog_add_game_desc">Sélectionnez les jeux installés à ajouter au lanceur de boost direct.</string>[cite: 7]
+    <string name="btn_add_sample">Ajouter un exemple</string>[cite: 7]
+
+    <!-- Game Logger Advanced Gaming Strings -->
+    <string name="game_logger_title">TÉLÉMÉTRIE DE JEU &amp; MATÉRIEL</string>[cite: 7]
+    <string name="tab_analytics">Matériel &amp; Performance</string>[cite: 7]
+    <string name="tab_history">Journaux de Session</string>[cite: 7]
+
+    <string name="metric_stability">Score de Stabilité</string>[cite: 7]
+    <string name="metric_power">Consommation Électrique</string>[cite: 7]
+    <string name="metric_driver">Pilote Actif</string>[cite: 7]
+    <string name="metric_vram">Utilisation VRAM</string>[cite: 7]
+
+    <string name="section_thermal_health">Statut Thermique &amp; Throttling</string>[cite: 7]
+    <string name="section_fps_breakdown">Distribution de Stabilité des FPS</string>[cite: 7]
+    <string name="section_active_engines">Profils d\'Émulation &amp; Moteurs</string>[cite: 7]
+    <string name="section_all_sessions">Sessions de Jeu Enregistrées</string>[cite: 7]
+
+    <string name="filter_all">Tous les Jeux</string>[cite: 7]
+    <string name="filter_heavy">Titres PC Gourmands</string>[cite: 7]
+
+    <!-- Advanced Hardware Features -->
+    <string name="section_bypass_charging">Bypass de Charge &amp; Contrôle d\'Énergie</string>[cite: 7]
+    <string name="desc_bypass_charging">Alimente directement le SoC sans passer par la batterie pour réduire la chaleur jusqu\'à 12°C.</string>[cite: 7]
+    <string name="status_bypass_active">Bypass Actif (Alimentation Directe SoC)</string>[cite: 7]
+    <string name="status_bypass_disabled">Mode de Charge Normal</string>[cite: 7]
+
+    <!-- Auto Profiles Screen Strings -->
+    <string name="auto_profiles_title">PROFILS AUTO &amp; AUTOMATISATION</string>[cite: 7]
+    <string name="master_auto_switch">Auto-Détection Principale</string>[cite: 7]
+    <string name="master_auto_desc">Détecter automatiquement les jeux lancés et appliquer les préréglages matériels adaptés.</string>[cite: 7]
+    <string name="section_profiles">Profils de Performance Matérielle</string>[cite: 7]
+    <string name="section_app_mapping">Association Jeux &amp; Profils</string>[cite: 7]
+    <string name="btn_create_profile">Nouveau Profil</string>[cite: 7]
+
+    <!-- Profile Names & Details -->
+    <string name="profile_extreme">Gaming Extreme Turbo</string>[cite: 7]
+    <string name="profile_balanced">Performance Équilibrée</string>[cite: 7]
+    <string name="profile_saver">Économie Thermique &amp; Batterie</string>[cite: 7]
+
+    <!-- Auto Profiles & Automation Strings -->
+    <string name="auto_profiles_subtitle">Détection Intelligente &amp; Moteur Matériel</string>[cite: 7]
+
+    <string name="section_auto_engine">Service d\'Automatisation &amp; Règles</string>[cite: 7]
+    <string name="rule_auto_detect">Détection Auto Intelligente des Jeux</string>[cite: 7]
+    <string name="rule_auto_detect_desc">Bascule automatiquement de profil matériel lorsqu\'un jeu est exécuté au premier plan.</string>[cite: 7]
+    <string name="rule_ram_clean">Nettoyage Auto de la RAM au Lancement</string>[cite: 7]
+    <string name="rule_ram_clean_desc">Vidé la mémoire en arrière-plan avant de démarrer des sessions d\'émulation lourdes.</string>[cite: 7]
+    <string name="rule_thermal_guard">Protection Thermique Automatique</string>[cite: 7]
+    <string name="rule_thermal_guard_desc">Passe au profil Économie Thermique si la température du CPU dépasse 50°C.</string>[cite: 7]
+
+    <string name="section_hardware_presets">Préréglages Matériels</string>[cite: 7]
+    <string name="section_game_rules">Règles Jeu vers Profil</string>[cite: 7]
+
+    <string name="dialog_create_profile">Créer un Profil Matériel</string>[cite: 7]
+    <string name="dialog_profile_name">Nom du profil (ex: Winlator Turbo)</string>[cite: 7]
+    <string name="dialog_gov_select">Sélectionner le Gouverneur CPU</string>[cite: 7]
+    <string name="btn_save_profile">Enregistrer &amp; Appliquer</string>[cite: 7]
+    <string name="btn_cancel">Annuler</string>[cite: 7]
+
+    <!-- Profile Detail & Game Selection Strings -->
+    <string name="profile_detail_title">CIBLES DU PROFIL &amp; RÉGLAGES</string>[cite: 7]
+    <string name="section_assigned_games">Jeux Assignés à ce Profil</string>[cite: 7]
+    <string name="desc_assigned_games">Sélectionnez les jeux qui activeront automatiquement ce profil au lancement.</string>[cite: 7]
+    <string name="section_preset_tuning">Paramètres Matériels</string>[cite: 7]
+    <string name="btn_save_changes">Enregistrer les Règles du Profil</string>[cite: 7]
+
+    <!-- Kernel Engine & Overclocking Strings -->
+    <string name="kernel_title">KERNEL ENGINE &amp; OC</string>[cite: 7]
+    <string name="kernel_subtitle">Overclocking Matériel &amp; Réglage des Gouverneurs</string>[cite: 7]
+
+    <string name="status_root_detected">Accès Root: ACCORDÉ (Contrôle Kernel Actif)</string>[cite: 7]
+    <string name="status_no_root">Mode Non-Root: Optimisation Espace Utilisateur Active</string>[cite: 7]
+
+    <string name="section_cpu_oc">Contrôle de Fréquence des Cœurs CPU</string>[cite: 7]
+    <string name="section_gpu_oc">Fréquence du Cœur GPU</string>[cite: 7]
+    <string name="section_extra_oc">Fonctionnalités Avancées du Kernel</string>[cite: 7]
+
+    <string name="label_stock_freq">Fréquence de Base d\'Origine</string>[cite: 7]
+    <string name="label_target_freq">Fréquence Maximale Cible</string>[cite: 7]
+
+    <string name="warn_safe">Statut: Sûr (Limites d\'origine)</string>[cite: 7]
+    <string name="warn_moderate">Statut: Overclock Modéré (Chaleur surveillée)</string>[cite: 7]
+    <string name="warn_extreme">DANGER: Overclock Extrême (Risque de coupure thermique)</string>[cite: 7]
+
+    <string name="feature_undervolt">Undervolt Kernel (-50mV)</string>[cite: 7]
+    <string name="feature_undervolt_desc">Réduit la consommation et la chaleur du SoC sous forte charge.</string>[cite: 7]
+
+    <string name="feature_high_priority">Haute Priorité du Processus de Jeu</string>[cite: 7]
+    <string name="feature_high_priority_desc">Force l\'ordonnanceur Android à allouer 90% des cycles CPU au jeu en cours.</string>[cite: 7]
+
+    <string name="btn_apply_kernel">Appliquer les Changements de Fréquence</string>[cite: 7]
+
+    <!-- Kernel Root Check Strings -->
+    <string name="btn_check_root">Vérifier l\'Accès Root</string>[cite: 7]
+    <string name="root_status_locked">Kernel Engine Verrouillé - Vérification Root Requise</string>[cite: 7]
+    <string name="root_required_msg">Les permissions Root sont requises pour débloquer les curseurs de fréquence et de tension.</string>[cite: 7]
+    <string name="root_success_msg">Accès Root Accordé! Interface du Kernel débloquée.</string>[cite: 7]
+    <string name="root_failed_msg">Aucun Root Détecté! Exécution en mode restreint non-root.</string>[cite: 7]
+
+    <!-- FPS & MSI OSD Suite Strings -->
+    <string name="fps_screen_title">HUD, OSD &amp; CAPTURE VIDÉO</string>[cite: 7]
+    <string name="fps_screen_subtitle">Suite Avancée OSD MSI Afterburner &amp; Enregistreur</string>[cite: 7]
+
+    <string name="tab_osd_monitoring">Surveillance OSD</string>[cite: 7]
+    <string name="tab_recorder">Capture Vidéo</string>[cite: 7]
+
+    <string name="section_polling_rate">Période de Rafraîchissement Matériel</string>[cite: 7]
+    <string name="section_monitoring_graphs">Graphiques de Surveillance Actifs (Style MSI)</string>[cite: 7]
+    <string name="section_video_properties">Propriétés de Capture Vidéo</string>[cite: 7]
+
+    <string name="btn_open_recorder_config">Configurer le Moteur d\'Enregistrement</string>[cite: 7]
+    <string name="label_poll_ms">Intervalle de rafraîchissement: 1000 ms</string>[cite: 7]
+
+    <!-- Enhanced OSD & Video Recorder Strings -->
+    <string name="master_osd_switch">Service Principal de Superposition OSD</string>[cite: 7]
+    <string name="master_osd_desc">Activer la télémétrie flottante en temps réel sur les jeux actifs.</string>[cite: 7]
+    <string name="section_all_graphs">Surveillance Complète Style MSI Afterburner</string>[cite: 7]
+    <string name="btn_open_folder">Ouvrir le Dossier des Vidéos Capturées</string>[cite: 7]
+    <string name="recorder_status_active">Moteur d\'Enregistrement: PRÊT / ACTIF</string>[cite: 7]
 </resources>

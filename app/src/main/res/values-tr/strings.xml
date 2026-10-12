@@ -1,2 +1,173 @@
 <resources>
+    <!-- App Branding & Top Bar -->
+    <string name="app_name">ZENTIX</string>
+    <string name="app_subtitle">PERFORMANS MERKEZİ</string>
+    <string name="settings_cd">Ayarlar ve Dil</string>
+
+    <!-- Quick Stats Bar -->
+    <string name="stat_cpu_temp">CPU Sıcaklığı</string>
+    <string name="stat_ram_usage">RAM Kullanımı</string>
+    <string name="stat_battery_temp">Pil Sıcaklığı</string>
+
+    <!-- System Action Button -->
+    <string name="btn_boost_now">HIZLANDIR</string>
+    <string name="btn_boosting">HIZLANDIRILIYOR...</string>
+
+    <!-- 1. FPS & Other Suite -->
+    <string name="sec_msi_title">FPS ve Araçlar</string>
+    <string name="sec_msi_desc">Canlı HUD katmanı, gerçek zamanlı FPS sayacı, ekran kaydedici ve donanım izleme.</string>
+
+    <!-- 2. Benchmark Logger -->
+    <string name="sec_benchmark_title">Game Logger</string>
+    <string name="sec_benchmark_desc">Oyun oturumlarını kaydedin, sıcaklık eğrilerini izleyin ve PDF raporları dışa aktarın.</string>
+
+    <!-- 3. Dynamic Profiles -->
+    <string name="sec_profiles_title">Otomatik Profil</string>
+    <string name="sec_profiles_desc">Anında önbellek temizleme ve donanım tahsisi ile otomatik oyun algılama.</string>
+
+    <!-- 4. Kernel Overclock -->
+    <string name="sec_overclock_title">Kernel Engine</string>
+    <string name="sec_overclock_desc">Rootlu cihazlar için doğrudan CPU/GPU frekans kontrolü ve governor yönetimi.</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">AYARLAR</string>
+    <string name="setting_dark_mode">Karanlık Mod</string>
+    <string name="setting_dark_mode_desc">Karanlık oyun temasını etkinleştir</string>
+
+    <string name="setting_ai_mode">Yapay Zeka Isı ve Kasma Koruması</string>
+    <string name="setting_ai_mode_desc">Darboğazı önlemek için yerel yapay zeka tahmini</string>
+
+    <string name="setting_language">Dil / Language</string>
+    <string name="setting_game_timer">Oyun Oturumu Zamanlayıcı</string>
+    <string name="setting_info">ZENTIX Hakkında</string>
+    <string name="setting_info_desc">Sürüm 1.0.0 - Performans Komut Merkezi</string>
+
+    <!-- Dialog Actions -->
+    <string name="dialog_cancel">İptal</string>
+    <string name="dialog_apply">Uygula</string>
+
+    <!-- Game Launcher Section -->
+    <string name="launcher_title">Oyun Başlatıcı ve Hızlandırıcı</string>
+    <string name="add_game_cd">Oyun Ekle</string>
+    <string name="dialog_add_game_title">Oyun Kısayolu Ekle</string>
+    <string name="dialog_add_game_desc">Doğrudan hızlandırma başlatıcısına eklemek için yüklü oyunları seçin.</string>
+    <string name="btn_add_sample">Örnek Ekle</string>
+
+    <!-- Game Logger Advanced Gaming Strings -->
+    <string name="game_logger_title">OYUN TELEMETRİSİ VE DONANIM</string>
+    <string name="tab_analytics">Donanım ve Performans</string>
+    <string name="tab_history">Oturum Kayıtları</string>
+
+    <string name="metric_stability">Kararlılık Puani</string>
+    <string name="metric_power">Güç Tüketimi</string>
+    <string name="metric_driver">Aktif Sürücü</string>
+    <string name="metric_vram">VRAM Kullanımı</string>
+
+    <string name="section_thermal_health">Sıcaklık ve Darboğaz Durumu</string>
+    <string name="section_fps_breakdown">FPS Kararlılık Dağılımı</string>
+    <string name="section_active_engines">Emülatör ve Motor Profilleri</string>
+    <string name="section_all_sessions">Kaydedilen Oyun Oturumları</string>
+
+    <string name="filter_all">Tüm Oyunlar</string>
+    <string name="filter_heavy">Ağır PC Oyunları</string>
+
+    <!-- Advanced Hardware Features -->
+    <string name="section_bypass_charging">Bypass Şarj ve Güç Kontrolü</string>
+    <string name="desc_bypass_charging">Isınmayı 12°C\'ye kadar azaltmak için pili kullanmadan doğrudan SoC\'ye güç sağlar.</string>
+    <string name="status_bypass_active">Bypass Aktif (Doğrudan Güç)</string>
+    <string name="status_bypass_disabled">Normal Şarj Modu</string>
+
+    <!-- Auto Profiles Screen Strings -->
+    <string name="auto_profiles_title">OTOMATİK PROFİLLER VE OTOMASYON</string>
+    <string name="master_auto_switch">Ana Otomatik Algılama</string>
+    <string name="master_auto_desc">Başlatılan oyunları otomatik algıla ve uygun donanım ayarlarını uygula.</string>
+    <string name="section_profiles">Donanım Performans Profilleri</string>
+    <string name="section_app_mapping">Oyun ve Profil Eşleme</string>
+    <string name="btn_create_profile">Yeni Profil</string>
+
+    <!-- Profile Names & Details -->
+    <string name="profile_extreme">Aşırı Oyun Turbo</string>
+    <string name="profile_balanced">Dengeli Performans</string>
+    <string name="profile_saver">Sıcaklık ve Pil Tasarrufu</string>
+
+    <!-- Auto Profiles & Automation Strings -->
+    <string name="auto_profiles_subtitle">Akıllı Oyun Algılama ve Donanım Motoru</string>
+
+    <string name="section_auto_engine">Otomasyon Servisi ve Kurallar</string>
+    <string name="rule_auto_detect">Akıllı Oyun Otomatik Algılama</string>
+    <string name="rule_auto_detect_desc">Ön planda bir oyun başlatıldığında donanım profilini otomatik değiştirir.</string>
+    <string name="rule_ram_clean">Açılışta Otomatik RAM Temizliği</string>
+    <string name="rule_ram_clean_desc">Ağır emülasyon oturumlarını başlatmadan önce arka plan belleğini temizler.</string>
+    <string name="rule_thermal_guard">Otomatik Isı Koruması</string>
+    <string name="rule_thermal_guard_desc">CPU sıcaklığı 50°C\'yi aşarsa otomatik olarak Tasarruf profiline geçer.</string>
+
+    <string name="section_hardware_presets">Donanım Hazır Ayarları</string>
+    <string name="section_game_rules">Oyun Profil Kuralları</string>
+
+    <string name="dialog_create_profile">Donanım Profili Oluştur</string>
+    <string name="dialog_profile_name">Profil Adı (Örn: Winlator Turbo)</string>
+    <string name="dialog_gov_select">CPU Governor Seçin</string>
+    <string name="btn_save_profile">Kaydet ve Uygula</string>
+    <string name="btn_cancel">İptal</string>
+
+    <!-- Profile Detail & Game Selection Strings -->
+    <string name="profile_detail_title">PROFİL HEDEFLERİ VE AYARLAR</string>
+    <string name="section_assigned_games">Atanan Oyunlar</string>
+    <string name="desc_assigned_games">Açıldığında bu profili otomatik etkinleştirecek oyunları seçin.</string>
+    <string name="section_preset_tuning">Donanım Parametreleri</string>
+    <string name="btn_save_changes">Profil Kurallarını Kaydet</string>
+
+    <!-- Kernel Engine & Overclocking Strings -->
+    <string name="kernel_title">KERNEL ENGINE VE OVERCLOCK</string>
+    <string name="kernel_subtitle">Donanım Hız Aşırtma ve Governor Ayarları</string>
+
+    <string name="status_root_detected">Root Erişimi: VERİLDİ (Kernel Kontrolü Aktif)</string>
+    <string name="status_no_root">Rootsuz Mod: Kullanıcı Alanı Optimizasyonu Aktif</string>
+
+    <string name="section_cpu_oc">CPU Çekirdek Frekans Kontrolü</string>
+    <string name="section_gpu_oc">GPU Çekirdek Frekansı</string>
+    <string name="section_extra_oc">Gelişmiş Kernel Özellikleri</string>
+
+    <string name="label_stock_freq">Orijinal Taban Frekans</string>
+    <string name="label_target_freq">Hedef Maksimum Frekans</string>
+
+    <string name="warn_safe">Durum: Güvenli (Orijinal Sınırlar)</string>
+    <string name="warn_moderate">Durum: Orta Hız Aşırtma (Sıcaklık İzleniyor)</string>
+    <string name="warn_extreme">TEHLİKE: Aşırı Hız Aşırtma (Kapanma Riski)</string>
+
+    <string name="feature_undervolt">Kernel Undervolt (-50mV)</string>
+    <string name="feature_undervolt_desc">Yüksek yük altında güç tüketimini ve ısınmayı azaltır.</string>
+
+    <string name="feature_high_priority">Oyun İşlemine Yüksek Öncelik</string>
+    <string name="feature_high_priority_desc">Android zamanlayıcısını CPU döngülerinin %90\'ını oyuna ayırmaya zorlar.</string>
+
+    <string name="btn_apply_kernel">Frekans Değişikliklerini Uygula</string>
+
+    <!-- Kernel Root Check Strings -->
+    <string name="btn_check_root">Root Erişimini Kontrol Et</string>
+    <string name="root_status_locked">Kernel Engine Kilitli - Root Doğrulaması Gerekli</string>
+    <string name="root_required_msg">Frekans ve voltaj ayarlarını açmak için Root izinleri gereklidir.</string>
+    <string name="root_success_msg">Root Erişimi Verildi! Kernel arayüzü açıldı.</string>
+    <string name="root_failed_msg">Root Bulunamadı! Sınırlı modda çalışıyor.</string>
+
+    <!-- FPS & MSI OSD Suite Strings -->
+    <string name="fps_screen_title">HUD, OSD VE VİDEO KAYIT</string>
+    <string name="fps_screen_subtitle">Gelişmiş MSI Afterburner OSD ve Kayıt Seti</string>
+
+    <string name="tab_osd_monitoring">OSD İzleme</string>
+    <string name="tab_recorder">Video Kaydı</string>
+
+    <string name="section_polling_rate">Donanım Yenileme Hızı</string>
+    <string name="section_monitoring_graphs">Aktif İzleme Grafikleri (MSI Stili)</string>
+    <string name="section_video_properties">Video Kayıt Özellikleri</string>
+
+    <string name="btn_open_recorder_config">Kayıt Motorunu Yapılandır</string>
+    <string name="label_poll_ms">Yenileme Aralığı: 1000 ms</string>
+
+    <!-- Enhanced OSD & Video Recorder Strings -->
+    <string name="master_osd_switch">Ana OSD Katman Servisi</string>
+    <string name="master_osd_desc">Aktif oyunların üzerinde canlı bilgi penceresini etkinleştirin.</string>
+    <string name="section_all_graphs">Tam MSI Afterburner Stili İzleme</string>
+    <string name="btn_open_folder">Kaydedilen Videolar Klasörünü Aç</string>
+    <string name="recorder_status_active">Kayıt Motoru: HAZIR / AKTİF</string>
 </resources>

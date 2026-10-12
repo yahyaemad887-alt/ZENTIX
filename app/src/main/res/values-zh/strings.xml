@@ -1,2 +1,173 @@
 <resources>
+    <!-- App Branding & Top Bar -->
+    <string name="app_name">ZENTIX</string>
+    <string name="app_subtitle">性能控制中心</string>
+    <string name="settings_cd">设置与语言</string>
+
+    <!-- Quick Stats Bar -->
+    <string name="stat_cpu_temp">CPU 温度</string>
+    <string name="stat_ram_usage">RAM 占用</string>
+    <string name="stat_battery_temp">电池温度</string>
+
+    <!-- System Action Button -->
+    <string name="btn_boost_now">一键加速</string>
+    <string name="btn_boosting">加速中...</string>
+
+    <!-- 1. FPS & Other Suite -->
+    <string name="sec_msi_title">FPS 帧率与工具</string>
+    <string name="sec_msi_desc">实时悬浮窗 HUD、帧率显示、屏幕录制及硬件监控。</string>
+
+    <!-- 2. Benchmark Logger -->
+    <string name="sec_benchmark_title">游戏日志</string>
+    <string name="sec_benchmark_desc">记录游戏过程、追踪温度曲线并导出 PDF 报告。</string>
+
+    <!-- 3. Dynamic Profiles -->
+    <string name="sec_profiles_title">自动配置文件</string>
+    <string name="sec_profiles_desc">自动识别游戏，实时清理缓存并优化硬件资源分配。</string>
+
+    <!-- 4. Kernel Overclock -->
+    <string name="sec_overclock_title">内核引擎</string>
+    <string name="sec_overclock_desc">适用于 ROOT 设备的 CPU/GPU 频率调节及 Governor 控制。</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">设置</string>
+    <string name="setting_dark_mode">深色模式</string>
+    <string name="setting_dark_mode_desc">启用暗黑游戏视觉主题</string>
+
+    <string name="setting_ai_mode">AI 温控防掉帧保护</string>
+    <string name="setting_ai_mode_desc">本地 AI 预测性监控，防止降频卡顿</string>
+
+    <string name="setting_language">语言 / Language</string>
+    <string name="setting_game_timer">游戏时长定时器</string>
+    <string name="setting_info">关于 ZENTIX</string>
+    <string name="setting_info_desc">版本 1.0.0 - 性能指挥中心</string>
+
+    <!-- Dialog Actions -->
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_apply">应用</string>
+
+    <!-- Game Launcher Section -->
+    <string name="launcher_title">游戏启动器与加速</string>
+    <string name="add_game_cd">添加游戏</string>
+    <string name="dialog_add_game_title">添加游戏快捷方式</string>
+    <string name="dialog_add_game_desc">选择已安装的游戏添加到直接加速启动器中。</string>
+    <string name="btn_add_sample">添加示例</string>
+
+    <!-- Game Logger Advanced Gaming Strings -->
+    <string name="game_logger_title">游戏遥测与硬件数据</string>
+    <string name="tab_analytics">硬件与性能</string>
+    <string name="tab_history">会话日志</string>
+
+    <string name="metric_stability">稳定性评分</string>
+    <string name="metric_power">功耗</string>
+    <string name="metric_driver">当前驱动</string>
+    <string name="metric_vram">VRAM 显存占用</string>
+
+    <string name="section_thermal_health">发热与降频状态</string>
+    <string name="section_fps_breakdown">帧率稳定性分布</string>
+    <string name="section_active_engines">模拟器与引擎配置</string>
+    <string name="section_all_sessions">已记录的游戏会话</string>
+
+    <string name="filter_all">所有游戏</string>
+    <string name="filter_heavy">大型 PC 游戏</string>
+
+    <!-- Advanced Hardware Features -->
+    <string name="section_bypass_charging">旁路充电与供电控制</string>
+    <string name="desc_bypass_charging">绕过电池直接向 SoC 供电，模拟器运行期间发热最多可降低 12°C。</string>
+    <string name="status_bypass_active">旁路供电已激活 (SoC 直接供电)</string>
+    <string name="status_bypass_disabled">普通充电模式</string>
+
+    <!-- Auto Profiles Screen Strings -->
+    <string name="auto_profiles_title">自动配置与自动化</string>
+    <string name="master_auto_switch">主自动检测</string>
+    <string name="master_auto_desc">自动识别启动的游戏并应用专属硬件预设。</string>
+    <string name="section_profiles">硬件性能配置文件</string>
+    <string name="section_app_mapping">游戏与配置文件映射</string>
+    <string name="btn_create_profile">新建配置文件</string>
+
+    <!-- Profile Names & Details -->
+    <string name="profile_extreme">极限游戏 Turbo</string>
+    <string name="profile_balanced">均衡性能</string>
+    <string name="profile_saver">温控省电</string>
+
+    <!-- Auto Profiles & Automation Strings -->
+    <string name="auto_profiles_subtitle">智能游戏识别与硬件引擎</string>
+
+    <string name="section_auto_engine">自动化服务与规则</string>
+    <string name="rule_auto_detect">智能游戏自动检测</string>
+    <string name="rule_auto_detect_desc">前台启动游戏时自动切换对应的硬件配置文件。</string>
+    <string name="rule_ram_clean">启动时自动清理内存</string>
+    <string name="rule_ram_clean_desc">在运行重度模拟器前清理后台内存。</string>
+    <string name="rule_thermal_guard">自动温控过热保护</string>
+    <string name="rule_thermal_guard_desc">当 CPU 温度超过 50°C 时自动切换至省电温控模式。</string>
+
+    <string name="section_hardware_presets">硬件预设</string>
+    <string name="section_game_rules">游戏配置文件规则</string>
+
+    <string name="dialog_create_profile">创建硬件配置文件</string>
+    <string name="dialog_profile_name">配置名称 (例如 Winlator Turbo)</string>
+    <string name="dialog_gov_select">选择 CPU Governor</string>
+    <string name="btn_save_profile">保存并应用</string>
+    <string name="btn_cancel">取消</string>
+
+    <!-- Profile Detail & Game Selection Strings -->
+    <string name="profile_detail_title">配置目标与微调</string>
+    <string name="section_assigned_games">已关联的游戏</string>
+    <string name="desc_assigned_games">选择启动时会自动激活此配置文件游戏。</string>
+    <string name="section_preset_tuning">硬件参数</string>
+    <string name="btn_save_changes">保存配置规则</string>
+
+    <!-- Kernel Engine & Overclocking Strings -->
+    <string name="kernel_title">内核引擎与超频</string>
+    <string name="kernel_subtitle">硬件超频与 Governor 微调</string>
+
+    <string name="status_root_detected">ROOT 权限：已授予 (内核控制已激活)</string>
+    <string name="status_no_root">非 ROOT 模式：用户空间优化已激活</string>
+
+    <string name="section_cpu_oc">CPU 核心频率控制</string>
+    <string name="section_gpu_oc">GPU 核心频率</string>
+    <string name="section_extra_oc">高级内核功能</string>
+
+    <string name="label_stock_freq">默认基础频率</string>
+    <string name="label_target_freq">目标最大频率</string>
+
+    <string name="warn_safe">状态：安全 (默认限制)</string>
+    <string name="warn_moderate">状态：温和超频 (发热受控)</string>
+    <string name="warn_extreme">危险：极限超频 (存在过热关机风险)</string>
+
+    <string name="feature_undervolt">内核降压 (-50mV Undervolt)</string>
+    <string name="feature_undervolt_desc">高负载下降低 SoC 功耗与发热。</string>
+
+    <string name="feature_high_priority">游戏进程高优先级</string>
+    <string name="feature_high_priority_desc">强制 Android 调度器将 90% 的 CPU 周期分配给前台游戏。</string>
+
+    <string name="btn_apply_kernel">应用频率修改</string>
+
+    <!-- Kernel Root Check Strings -->
+    <string name="btn_check_root">检查 ROOT 权限</string>
+    <string name="root_status_locked">内核引擎已锁定 - 需要 ROOT 验证</string>
+    <string name="root_required_msg">需要 ROOT 权限才能解锁频率滑块和电压控制。</string>
+    <string name="root_success_msg">已获得 ROOT 权限！内核控制界面已解锁。</string>
+    <string name="root_failed_msg">未检测到 ROOT！当前以受限模式运行。</string>
+
+    <!-- FPS & MSI OSD Suite Strings -->
+    <string name="fps_screen_title">HUD、OSD 与视频录制</string>
+    <string name="fps_screen_subtitle">高级 MSI Afterburner 风格 OSD 与录屏工具</string>
+
+    <string name="tab_osd_monitoring">OSD 监控</string>
+    <string name="tab_recorder">视频录制</string>
+
+    <string name="section_polling_rate">硬件刷新间隔</string>
+    <string name="section_monitoring_graphs">实时监控图表 (MSI 风格)</string>
+    <string name="section_video_properties">视频录制属性</string>
+
+    <string name="btn_open_recorder_config">配置录制引擎</string>
+    <string name="label_poll_ms">刷新间隔：1000 ms</string>
+
+    <!-- Enhanced OSD & Video Recorder Strings -->
+    <string name="master_osd_switch">主 OSD 悬浮窗服务</string>
+    <string name="master_osd_desc">在运行的游戏上方开启实时数据悬浮窗。</string>
+    <string name="section_all_graphs">完整 MSI Afterburner 风格监控</string>
+    <string name="btn_open_folder">打开录制视频文件夹</string>
+    <string name="recorder_status_active">就绪 / 运行中</string>
 </resources>
