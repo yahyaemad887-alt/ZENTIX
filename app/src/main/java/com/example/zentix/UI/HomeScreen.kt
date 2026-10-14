@@ -1,14 +1,10 @@
 package com.example.zentix.UI
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,14 +37,9 @@ fun HomeScreen(
     onNavigateToMSISuite: () -> Unit = {},
     onNavigateToBenchmark: () -> Unit = {},
     onNavigateToProfiles: () -> Unit = {},
-    onNavigateToOverclock: () -> Unit = {}
+    onNavigateToOverclock: () -> Unit = {},
+    onNavigateToGameMode: () -> Unit = {}
 ) {
-    var boostState by remember { mutableStateOf(0) } // 0: Normal, 1: Boosting
-
-    // قائمة الألعاب الافتراضية للاختصارات السريعة
-    var savedGames by remember { mutableStateOf(listOf("Mafia II", "GTA IV", "Blur")) }
-    var showAddGameDialog by remember { mutableStateOf(false) }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -61,21 +52,14 @@ fun HomeScreen(
             contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // 1. الهيدر العلوي: الشعار + اسم التطبيق + زر البوست الصغير + زر الإعدادات
+            // 1. الهيدر العلوي: الشعار + اسم التطبيق + زر الإعدادات فقط
             item {
                 TopAppBarSection(
-                    boostState = boostState,
-                    onBoostClick = { boostState = if (boostState == 0) 1 else 0 },
                     onSettingsClick = onNavigateToSettings
                 )
             }
 
-            // 2. شريط الإحصائيات الفورية الرفيع
-            item {
-                SlimQuickStatsBar()
-            }
-
-            // 3. كروت المميزات الرئيسية (2 Columns Grid) - الصف الأول
+            // 2. كروت المميزات الرئيسية - الصف الأول (MSI Suite & Benchmark)
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -100,78 +84,23 @@ fun HomeScreen(
                 }
             }
 
-            // كروت المميزات الرئيسية - الصف الثاني
+            // 3. كرت محرك الكيرنيل (Overclock) بعرض الشاشة بالكامل
             item {
-                Row(
+                ZabetStyleCard(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    ZabetStyleCard(
-                        modifier = Modifier.weight(1f),
-                        title = stringResource(id = R.string.sec_profiles_title),
-                        description = stringResource(id = R.string.sec_profiles_desc),
-                        accentColor = NeonGreen,
-                        icon = Icons.Default.Speed,
-                        onClick = onNavigateToProfiles
-                    )
-                    ZabetStyleCard(
-                        modifier = Modifier.weight(1f),
-                        title = stringResource(id = R.string.sec_overclock_title),
-                        description = stringResource(id = R.string.sec_overclock_desc),
-                        accentColor = NeonAmber,
-                        icon = Icons.Default.DeveloperBoard,
-                        onClick = onNavigateToOverclock
-                    )
-                }
+                    title = stringResource(id = R.string.sec_overclock_title),
+                    description = stringResource(id = R.string.sec_overclock_desc),
+                    accentColor = NeonAmber,
+                    icon = Icons.Default.DeveloperBoard,
+                    onClick = onNavigateToOverclock
+                )
             }
 
-            // 4. قسم مشغل واختصارات الألعاب السفلي (Game Launcher & Boost)
+            // 4. زر Game Mode الأحمر بالمنتصف
             item {
-                GameLauncherSection(
-                    games = savedGames,
-                    onAddClick = { showAddGameDialog = true },
-                    onGameClick = { gameName ->
-                        // تفعيل وضع التسريع تلقائياً عند تشغيل اللعبة
-                        boostState = 1
-                    }
-                )
+                GameModeButton(onClick = onNavigateToGameMode)
             }
         }
-    }
-
-    // نافذة منبثقة لإضافة لعبة جديدة للاختصارات
-    if (showAddGameDialog) {
-        AlertDialog(
-            onDismissRequest = { showAddGameDialog = false },
-            containerColor = CardBackground,
-            title = {
-                Text(
-                    text = stringResource(id = R.string.dialog_add_game_title),
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            text = {
-                Text(
-                    text = stringResource(id = R.string.dialog_add_game_desc),
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    savedGames = savedGames + "New Game"
-                    showAddGameDialog = false
-                }) {
-                    Text(text = stringResource(id = R.string.btn_add_sample), color = NeonCyan)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showAddGameDialog = false }) {
-                    Text(text = stringResource(id = R.string.dialog_cancel), color = Color.Gray)
-                }
-            }
-        )
     }
 }
 
@@ -179,8 +108,6 @@ fun HomeScreen(
 
 @Composable
 private fun TopAppBarSection(
-    boostState: Int,
-    onBoostClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
     Row(
@@ -226,93 +153,20 @@ private fun TopAppBarSection(
             }
         }
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val buttonColor by animateColorAsState(
-                targetValue = if (boostState == 1) NeonAmber else NeonRed,
-                animationSpec = tween(300),
-                label = "BoostBtnColor"
-            )
-
-            Button(
-                onClick = onBoostClick,
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                modifier = Modifier.height(38.dp),
-                shape = RoundedCornerShape(20.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.Bolt,
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = if (boostState == 1) stringResource(id = R.string.btn_boosting) else stringResource(id = R.string.btn_boost_now),
-                        color = Color.White,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-
-            IconButton(
-                onClick = onSettingsClick,
-                modifier = Modifier
-                    .size(38.dp)
-                    .background(CardBackground, RoundedCornerShape(12.dp))
-                    .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = stringResource(id = R.string.settings_cd),
-                    tint = Color.White,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
-    }
-}
-
-// ---------------- 2. شريط الأداء الحقيقي الرفيع ---------------- //
-
-@Composable
-private fun SlimQuickStatsBar() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(1.dp, CardBorder, RoundedCornerShape(14.dp)),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackground)
-    ) {
-        Row(
+        IconButton(
+            onClick = onSettingsClick,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp, horizontal = 12.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
+                .size(38.dp)
+                .background(CardBackground, RoundedCornerShape(12.dp))
+                .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
         ) {
-            SlimStatBox(label = stringResource(id = R.string.stat_battery_temp), value = "34°C", color = NeonCyan)
-            VerticalDivider(modifier = Modifier.height(20.dp), color = CardBorder)
-            SlimStatBox(label = stringResource(id = R.string.stat_ram_usage), value = "62%", color = NeonAmber)
-            VerticalDivider(modifier = Modifier.height(20.dp), color = CardBorder)
-            SlimStatBox(label = stringResource(id = R.string.stat_cpu_temp), value = "41°C", color = NeonGreen)
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = stringResource(id = R.string.settings_cd),
+                tint = Color.White,
+                modifier = Modifier.size(20.dp)
+            )
         }
-    }
-}
-
-@Composable
-private fun SlimStatBox(label: String, value: String, color: Color) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        Text(text = label, color = Color.Gray, fontSize = 11.sp)
-        Text(text = value, color = color, fontSize = 13.sp, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -329,7 +183,6 @@ private fun ZabetStyleCard(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth()
             .height(175.dp)
             .border(1.dp, CardBorder, RoundedCornerShape(20.dp))
             .clickable { onClick() },
@@ -394,117 +247,28 @@ private fun ZabetStyleCard(
     }
 }
 
-// ---------------- 4. قسم مشغل واختصارات الألعاب السفلي ---------------- //
+// ---------------- 4. زر Game Mode الأحمر ---------------- //
 
 @Composable
-private fun GameLauncherSection(
-    games: List<String>,
-    onAddClick: () -> Unit,
-    onGameClick: (String) -> Unit
-) {
+private fun GameModeButton(onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(1.dp, CardBorder, RoundedCornerShape(20.dp)),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackground)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(32.dp)
-                            .background(NeonCyan.copy(alpha = 0.15f), CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.SportsEsports,
-                            contentDescription = null,
-                            tint = NeonCyan,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    }
-                    Text(
-                        text = stringResource(id = R.string.launcher_title),
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                IconButton(
-                    onClick = onAddClick,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .background(NeonCyan, CircleShape)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.add_game_cd),
-                        tint = BackgroundDark,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                games.forEach { game ->
-                    GameShortcutCard(gameName = game, onClick = { onGameClick(game) })
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun GameShortcutCard(gameName: String, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .width(110.dp)
             .height(75.dp)
-            .border(1.dp, CardBorder, RoundedCornerShape(14.dp))
             .clickable { onClick() },
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF191D28))
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = NeonRed)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.PlayArrow,
-                contentDescription = null,
-                tint = NeonGreen,
-                modifier = Modifier.size(22.dp)
-            )
             Text(
-                text = gameName,
+                text = "GAME MODE",
                 color = Color.White,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 1.5.sp
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.example.zentix.UI
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,11 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zentix.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.DataOutputStream
 import java.util.Locale
 
 // ألوان ثيم ZENTIX الداكن
@@ -32,6 +38,35 @@ private val NeonCyan = Color(0xFF00E5FF)
 private val NeonGreen = Color(0xFF00E676)
 private val NeonAmber = Color(0xFFFFD600)
 
+// أداة مساعدة لتنفيذ أوامر الروت وفحص الصلاحيات
+object KernelRootUtils {
+    fun checkRoot(): Boolean {
+        return try {
+            val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "id"))
+            val output = process.inputStream.bufferedReader().readText()
+            process.waitFor()
+            output.contains("uid=0(root)")
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun applyKernelCommand(command: String): Boolean {
+        return try {
+            val process = Runtime.getRuntime().exec("su")
+            val outputStream = DataOutputStream(process.outputStream)
+            outputStream.writeBytes("$command\n")
+            outputStream.writeBytes("exit\n")
+            outputStream.flush()
+            outputStream.close()
+            process.waitFor()
+            process.exitValue() == 0
+        } catch (e: Exception) {
+            false
+        }
+    }
+}
+
 @Composable
 fun KernelEngineScreen(
     onNavigateBack: () -> Unit = {}
@@ -39,6 +74,9 @@ fun KernelEngineScreen(
     BackHandler {
         onNavigateBack()
     }
+
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     // حالات فحص الروت
     var hasCheckedRoot by remember { mutableStateOf(false) }
@@ -50,12 +88,12 @@ fun KernelEngineScreen(
     var gpuFreqMhz by remember { mutableFloatStateOf(650f) }
 
     // خيارات متقدمة
-    var isUndervoltEnabled by remember { mutableStateOf(true) }
+    var isUndervoltEnabled by remember { mutableStateOf(false) }
     var isHighPriorityEnabled by remember { mutableStateOf(true) }
 
     var showExtremeWarningDialog by remember { mutableStateOf(false) }
 
-    // تحديد الشفافية والعطل (لو لسه متمش الفحص أو مفيش روت، العناصر تكون باهتة وغير مفعلة)
+    // تحديد الشفافية (لو مفيش روت، العناصر تكون باهتة وغير مفعلة)
     val isEngineUnlocked = hasCheckedRoot && isRootGranted
     val uiAlpha = if (isEngineUnlocked) 1.0f else 0.35f
 
@@ -116,7 +154,7 @@ fun KernelEngineScreen(
                 }
             }
 
-            // 2. كارت التحقق من الروت الرئيسي (Check Root Card)
+            // 2. كارت التحقق من الروت الحقيقي
             item {
                 Card(
                     modifier = Modifier
@@ -178,7 +216,7 @@ fun KernelEngineScreen(
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = if (!hasCheckedRoot) stringResource(id = R.string.root_required_msg)
-                                    else if (isRootGranted) "Superuser binary responsive at /system/bin/su"
+                                    else if (isRootGranted) "Superuser binary responsive & active"
                                     else "Device is running standard non-root user space.",
                                     color = Color.Gray,
                                     fontSize = 10.sp,
@@ -187,19 +225,28 @@ fun KernelEngineScreen(
                             }
                         }
 
-                        // زر كبير مدور لفحص الروت (Check Root Button)
+                        // زر فحص الروت الحقيقي
                         Button(
                             onClick = {
                                 isCheckingRoot = true
-                                // محاكاة عملية فحص الروت (يمكن استبدالها بـ su check حقيقي لاحقاً)
-                                hasCheckedRoot = true
-                                isRootGranted = true // اجعلها true للتجربة أو افتراض وجود روت عند الفحص
-                                isCheckingRoot = false
+                                coroutineScope.launch {
+                                    val granted = withContext(Dispatchers.IO) {
+                                        KernelRootUtils.checkRoot()
+                                    }
+                                    hasCheckedRoot = true
+                                    isRootGranted = granted
+                                    isCheckingRoot = false
+                                    Toast.makeText(
+                                        context,
+                                        if (granted) "تم منح صلاحيات الروت بنجاح!" else "فشل الحصول على صلاحيات الروت",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(46.dp),
-                            shape = RoundedCornerShape(23.dp), // شكل مدور مميز
+                            shape = RoundedCornerShape(23.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = if (!hasCheckedRoot) NeonCyan else CardBorder
                             )
@@ -226,7 +273,7 @@ fun KernelEngineScreen(
                 }
             }
 
-            // 3. قسم كسر سرعة المعالج (باهت وغير متاح لو مفيش روت)
+            // 3. قسم كسر سرعة المعالج (CPU OC)
             item {
                 Card(
                     modifier = Modifier
@@ -273,7 +320,7 @@ fun KernelEngineScreen(
                             onValueChange = { cpuFreqGhz = it },
                             valueRange = 1.8f..3.8f,
                             steps = 19,
-                            enabled = isEngineUnlocked, // معطل لو مفيش روت
+                            enabled = isEngineUnlocked,
                             colors = SliderDefaults.colors(
                                 thumbColor = NeonCyan,
                                 activeTrackColor = NeonCyan,
@@ -292,7 +339,7 @@ fun KernelEngineScreen(
                 }
             }
 
-            // 4. قسم كسر سرعة الجرافيك GPU (باهت وغير متاح لو مفيش روت)
+            // 4. قسم كسر سرعة الجرافيك GPU
             item {
                 Card(
                     modifier = Modifier
@@ -339,7 +386,7 @@ fun KernelEngineScreen(
                             onValueChange = { gpuFreqMhz = it },
                             valueRange = 400f..950f,
                             steps = 11,
-                            enabled = isEngineUnlocked, // معطل لو مفيش روت
+                            enabled = isEngineUnlocked,
                             colors = SliderDefaults.colors(
                                 thumbColor = NeonAmber,
                                 activeTrackColor = NeonAmber,
@@ -350,7 +397,7 @@ fun KernelEngineScreen(
                 }
             }
 
-            // 5. ميزات إضافية (Undervolt & High Priority)
+            // 5. ميزات إضافية
             item {
                 Text(
                     text = stringResource(id = R.string.section_extra_oc),
@@ -417,7 +464,7 @@ fun KernelEngineScreen(
                 }
             }
 
-            // 6. زر التطبيق
+            // 6. زر التطبيق وإرسال أوامر الكيرنيل الحقيقية
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
@@ -425,6 +472,20 @@ fun KernelEngineScreen(
                         if (isEngineUnlocked) {
                             if (cpuFreqGhz > 3.2f || gpuFreqMhz > 800f) {
                                 showExtremeWarningDialog = true
+                            } else {
+                                // تطبيق الترددات عبر أوامر الروت الحقيقية في الكيرنيل (Sysfs)
+                                coroutineScope.launch {
+                                    val cpuKhz = (cpuFreqGhz * 1000000).toInt() // تحويل GHz إلى kHz لملفات النواة
+                                    val success = withContext(Dispatchers.IO) {
+                                        // أمر كتابة التردد لأغلب أنوية المعالج القياسية
+                                        KernelRootUtils.applyKernelCommand("echo $cpuKhz > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq")
+                                    }
+                                    Toast.makeText(
+                                        context,
+                                        if (success) "تم تطبيق ترددات المعالج بنجاح!" else "تعذر تطبيق التردد (مسار غير مدعوم)",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                         }
                     },
@@ -436,7 +497,7 @@ fun KernelEngineScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = NeonCyan)
                 ) {
                     Text(
-                        text = stringResource(id = R.string.btn_apply_kernel),
+                        text = stringResource(id =R.string.btn_apply_kernel),
                         color = BackgroundDark,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Black
@@ -453,7 +514,16 @@ fun KernelEngineScreen(
             title = { Text(text = "High Thermal Risk Warning", color = Color.White, fontWeight = FontWeight.Bold) },
             text = { Text(text = "Extreme frequency curve applied via kernel superuser access.", color = Color.Gray, fontSize = 12.sp) },
             confirmButton = {
-                TextButton(onClick = { showExtremeWarningDialog = false }) {
+                TextButton(onClick = {
+                    showExtremeWarningDialog = false
+                    coroutineScope.launch {
+                        val cpuKhz = (cpuFreqGhz * 1000000).toInt()
+                        withContext(Dispatchers.IO) {
+                            KernelRootUtils.applyKernelCommand("echo $cpuKhz > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq")
+                        }
+                        Toast.makeText(context, "تم تطبيق ترددات الأداء العالي القصوى!", Toast.LENGTH_SHORT).show()
+                    }
+                }) {
                     Text(text = "Apply", color = NeonRed)
                 }
             }

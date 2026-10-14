@@ -16,6 +16,7 @@ import android.widget.TextView
 import com.example.zentix.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 
 class ZentixOverlayService : Service() {
     private lateinit var windowManager: WindowManager
@@ -101,6 +102,11 @@ class ZentixOverlayService : Service() {
     }
 
     private fun observeStats(view: View) {
+        val layoutCpu = view.findViewById<View>(R.id.layoutCpu)
+        val layoutGpu = view.findViewById<View>(R.id.layoutGpu)
+        val layoutFps = view.findViewById<View>(R.id.layoutFps)
+        val layoutFrametime = view.findViewById<View>(R.id.layoutFrametime)
+
         val cpuTempTv = view.findViewById<TextView>(R.id.txtCpuTemp)
         val gpuTempTv = view.findViewById<TextView>(R.id.txtGpuTemp)
         val fpsTv = view.findViewById<TextView>(R.id.overlayFpsValue)
@@ -108,10 +114,45 @@ class ZentixOverlayService : Service() {
 
         serviceScope.launch {
             try {
-                launch { ZentixMonitorEngine.cpuTempFlow.collectLatest { cpuTempTv?.text = "$it °C" } }
-                launch { ZentixMonitorEngine.gpuTempFlow.collectLatest { gpuTempTv?.text = "$it °C" } }
-                launch { ZentixMonitorEngine.fpsFlow.collectLatest { fpsTv?.text = "$it" } }
-                launch { ZentixMonitorEngine.frametimeFlow.collectLatest { frametimeTv?.text = it } }
+                // 1. حرارة المعالج
+                launch {
+                    combine(ZentixMonitorEngine.showCpuTemp, ZentixMonitorEngine.cpuTempFlow) { isShow, temp ->
+                        isShow to temp
+                    }.collectLatest { (isShow, temp) ->
+                        layoutCpu?.visibility = if (isShow) View.VISIBLE else View.GONE
+                        cpuTempTv?.text = "$temp °C"
+                    }
+                }
+
+                // 2. حرارة كارت الشاشة
+                launch {
+                    combine(ZentixMonitorEngine.showGpuTemp, ZentixMonitorEngine.gpuTempFlow) { isShow, temp ->
+                        isShow to temp
+                    }.collectLatest { (isShow, temp) ->
+                        layoutGpu?.visibility = if (isShow) View.VISIBLE else View.GONE
+                        gpuTempTv?.text = "$temp °C"
+                    }
+                }
+
+                // 3. الـ FPS
+                launch {
+                    combine(ZentixMonitorEngine.showFps, ZentixMonitorEngine.fpsFlow) { isShow, fps ->
+                        isShow to fps
+                    }.collectLatest { (isShow, fps) ->
+                        layoutFps?.visibility = if (isShow) View.VISIBLE else View.GONE
+                        fpsTv?.text = "$fps"
+                    }
+                }
+
+                // 4. وقت الإطار Frametime
+                launch {
+                    combine(ZentixMonitorEngine.showFrametime, ZentixMonitorEngine.frametimeFlow) { isShow, ft ->
+                        isShow to ft
+                    }.collectLatest { (isShow, ft) ->
+                        layoutFrametime?.visibility = if (isShow) View.VISIBLE else View.GONE
+                        frametimeTv?.text = ft
+                    }
+                }
             } catch (_: Exception) {}
         }
     }
