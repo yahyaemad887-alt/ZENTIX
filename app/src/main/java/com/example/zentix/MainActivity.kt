@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
                                 )
                                 "settings" -> SettingsScreen(onNavigateBack = { currentScreen = "home" })
                                 "logger" -> GameLoggerScreen(onNavigateBack = { currentScreen = "home" })
-                                "profiles" -> AutoProfilesScreen(onNavigateBack = { currentScreen = "home" })
                                 "overclock" -> KernelEngineScreen(onNavigateBack = { currentScreen = "home" })
                                 "msi_suite" -> FpsAndOtherScreen(onNavigateBack = { currentScreen = "home" })
                             }

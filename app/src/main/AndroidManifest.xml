@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:tools2="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://tools.com/tools">
-    <queries>
-        <package android:name="moe.shizuku.privileged.api" />
-    </queries>
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions"
-        tools2:ignore="ProtectedPermissions" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- إذن إظهار النافذة العائمة فوق الألعاب والتطبيقات الأخرى -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- الصلاحيات المطلوبة -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
@@ -19,16 +12,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.HARDWARE_PROPERTIES" />
-    <!-- إذن تشغيل خدمة الـ Foreground Service لإصدارات أندرويد الحديثة -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
@@ -41,8 +26,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZENTIX">
 
-
-
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -54,7 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <!-- خدمة النافذة العائمة الخاصة بمراقبة الأداء والـ OSD -->
         <service
