@@ -1,7 +1,8 @@
 # ⚡ ZENTIX - High-Performance Gaming & Hardware Command Center
 
 <p align="center">
-  <img src="screenshots/ico.png" alt="ZENTIX Logo" width="120" height="120">
+  <img src="app/src/main/
+screenshots/ico.png" alt="ZENTIX Logo" width="120" height="120">
 </p>
 
 <p align="center">
@@ -73,30 +74,30 @@ Here is a visual walkthrough of ZENTIX in action:
 
 ### 1. Onboarding & Language Selection
 <p align="center">
-  <img src="screenshots/3.jpg" width="30%" alt="Language Selection">
-  <img src="screenshots/4.jpg" width="30%" alt="App Engine Overview">
-  <img src="screenshots/5.jpg" width="30%" alt="Welcome & Start">
+  <img src="app/src/main/screenshots/3.jpg" width="30%" alt="Language Selection">
+  <img src="app/src/main/screenshots/4.jpg" width="30%" alt="App Engine Overview">
+  <img src="app/src/main/screenshots/5.jpg" width="30%" alt="Welcome & Start">
 </p>
 
 ### 2. Cinematic Splash & Main Dashboard
 <p align="center">
-  <img src="screenshots/6.jpg" width="30%" alt="Cinematic Intro Z">
-  <img src="screenshots/7.jpg" width="30%" alt="Main Dashboard">
-  <img src="screenshots/8.jpg" width="30%" alt="FPS & Audio Suite">
+  <img src="app/src/main/screenshots/6.jpg" width="30%" alt="Cinematic Intro Z">
+  <img src="app/src/main/screenshots/7.jpg" width="30%" alt="Main Dashboard">
+  <img src="app/src/main/screenshots/8.jpg" width="30%" alt="FPS & Audio Suite">
 </p>
 
 ### 3. Hardware Logger & Settings
 <p align="center">
-  <img src="screenshots/9.jpg" width="30%" alt="Game Logger">
-  <img src="screenshots/10.jpg" width="30%" alt="Settings Light/Dark">
-  <img src="screenshots/11.jpg" width="30%" alt="Game Session Timer">
+  <img src="app/src/main/screenshots/9.jpg" width="30%" alt="Game Logger">
+  <img src="app/src/main/screenshots/10.jpg" width="30%" alt="Settings Light/Dark">
+  <img src="app/src/main/screenshots/11.jpg" width="30%" alt="Game Session Timer">
 </p>
 
 ### 4. Customization & XMB Gaming Console
 <p align="center">
-  <img src="screenshots/17.jpg" width="30%" alt="XMB Console Empty">
-  <img src="screenshots/18.jpg" width="30%" alt="XMB Console with Games">
-  <img src="screenshots/19.jpg" width="30%" alt="Game Config Menu">
+  <img src="app/src/main/screenshots/17.jpg" width="30%" alt="XMB Console Empty">
+  <img src="app/src/main/screenshots/18.jpg" width="30%" alt="XMB Console with Games">
+  <img src="app/src/main/screenshots/19.jpg" width="30%" alt="Game Config Menu">
 </p>
 
 ---
