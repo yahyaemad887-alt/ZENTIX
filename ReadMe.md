@@ -120,7 +120,7 @@ Here is a visual walkthrough of ZENTIX in action:
 ## 🎥 Cinematic Intro Preview
 
 Check out the startup video branding experience:
-👉 [Watch Intro Video (vid.mp4)](vid.mp4)
+👉 [Watch Intro Video (vid.mp4)](app/src/main/screenshots/vid.mp4)
 
 ---
 
