@@ -74,6 +74,11 @@ Here is a visual walkthrough of ZENTIX in action:
 
 ### 1. Onboarding & Language Selection
 <p align="center">
+  <img src="app/src/main/screenshots/1.jpg" width="30%" alt="XMB Console Empty">
+  <img src="app/src/main/screenshots/2.jpg" width="30%" alt="XMB Console with Games">
+  <img src="app/src/main/screenshots/15.jpg" width="30%" alt="Game Config Menu">
+</p>
+<p align="center">
   <img src="app/src/main/screenshots/3.jpg" width="30%" alt="Language Selection">
   <img src="app/src/main/screenshots/4.jpg" width="30%" alt="App Engine Overview">
   <img src="app/src/main/screenshots/5.jpg" width="30%" alt="Welcome & Start">
@@ -85,6 +90,10 @@ Here is a visual walkthrough of ZENTIX in action:
   <img src="app/src/main/screenshots/7.jpg" width="30%" alt="Main Dashboard">
   <img src="app/src/main/screenshots/8.jpg" width="30%" alt="FPS & Audio Suite">
 </p>
+<p align="center">
+  <img src="app/src/main/screenshots/16.jpg" width="30%" alt="Cinematic Intro Z">
+
+</p>
 
 ### 3. Hardware Logger & Settings
 <p align="center">
@@ -93,11 +102,18 @@ Here is a visual walkthrough of ZENTIX in action:
   <img src="app/src/main/screenshots/11.jpg" width="30%" alt="Game Session Timer">
 </p>
 
+
 ### 4. Customization & XMB Gaming Console
 <p align="center">
   <img src="app/src/main/screenshots/17.jpg" width="30%" alt="XMB Console Empty">
   <img src="app/src/main/screenshots/18.jpg" width="30%" alt="XMB Console with Games">
   <img src="app/src/main/screenshots/19.jpg" width="30%" alt="Game Config Menu">
+</p>
+
+<p align="center">
+  <img src="app/src/main/screenshots/12.jpg" width="30%" alt="XMB Console Empty">
+  <img src="app/src/main/screenshots/13.jpg" width="30%" alt="XMB Console with Games">
+  <img src="app/src/main/screenshots/14.jpg" width="30%" alt="Game Config Menu">
 </p>
 
 ---
