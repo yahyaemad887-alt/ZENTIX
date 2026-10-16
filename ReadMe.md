@@ -1,8 +1,7 @@
 # ⚡ ZENTIX - High-Performance Gaming & Hardware Command Center
 
 <p align="center">
-  <img src="app/src/main/
-screenshots/ico.png" alt="ZENTIX Logo" width="120" height="120">
+  <img src="app/src/main/screenshots/ico.png" alt="ZENTIX Logo" width="120" height="120">
 </p>
 
 <p align="center">
