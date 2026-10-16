@@ -1,173 +1,126 @@
 <resources>
-    <!-- App Branding & Top Bar -->
+    <string name="osd_monitor_subtitle">OSDパフォーマンスモニター</string>
+    <string name="master_osd_control">マスターOSDコントロール</string>
+    <string name="master_osd_desc">フローティングパフォーマンス指標の表示または非表示</string>
+    <string name="frametime_live_graph">フレームタイムライブグラフ</string>
+    <string name="cpu_temperature">CPU温度</string>
+    <string name="gpu_temperature">GPU温度</string>
+    <string name="framerate_counter">フレームレート (FPSカウンター)</string>
+    <string name="frametime_graph">フレームタイムグラフ</string>
+    <string name="game_logger_subtitle">リアルタイムハードウェア＆パフォーマンススイート</string>
+    <string name="device_identification">デバイス識別</string>
+    <string name="device_model">デバイスモデル</string>
+    <string name="cpu_processor">CPUプロセッサ</string>
+    <string name="system_version">システムバージョン</string>
+    <string name="memory_storage_status">メモリとストレージの状態</string>
+    <string name="total_ram_available">総RAM / 空き</string>
+    <string name="internal_storage">内部ストレージ (アプリディレクトリ)</string>
+    <string name="storage_format">合計: %1$s | 空き: %2$s</string>
+    <string name="bypass_charging">バイパス充電</string>
+    <string name="direct_board_active">ダイレクトボード給電アクティブ</string>
+    <string name="standard_charging_mode">標準充電モード</string>
+    <string name="battery_level_format">バッテリー残量: %1$d%%</string>
+    <string name="status_charging">ステータス: 充電中</string>
+    <string name="status_discharging">ステータス: 放電中</string>
+    <string name="cpu_cores">CPUコア</string>
+    <string name="active_cores_format">%1$d アクティブ</string>
+    <string name="power_state">電源状態</string>
+    <string name="connected">接続済み</string>
+    <string name="battery_mode">バッテリーモード</string>
+    <string name="power_source">電源ソース</string>
+    <string name="previous">前へ</string>
+    <string name="next">次へ</string>
+    <string name="add_games">ゲームを追加</string>
+    <string name="options">オプション</string>
+    <string name="done_count">完了 (%1$d)</string>
+    <string name="app_subtitle">ハイパフォーマンスセンター</string>
+    <string name="settings_cd">設定</string>
+    <string name="sec_msi_title">FPS &amp; オーディオスイート</string>
+    <string name="sec_msi_desc">ライブフローティング画面、FPS画面レコーダー、ハードウェアモニタリング。</string>
+    <string name="sec_benchmark_title">ゲームロガー</string>
+    <string name="sec_benchmark_desc">ゲームセッションの記録、温度追跡、PDFレポートのエクスポート。</string>
+    <string name="sec_overclock_title">カーネルエンジン</string>
+    <string name="sec_overclock_desc">root化されたデバイスのCPU/GPU周波数を直接制御。</string>
+    <string name="superuser_active">Superuserバイナリが応答してアクティブです</string>
+    <string name="non_root_space">デバイスは標準の非rootユーザー空間で実行されています。</string>
+    <string name="reverify_root">Rootアクセスの再検証</string>
+    <string name="base_freq">ベース: 1.8 GHz</string>
+    <string name="extreme_freq">極限OC: 3.8 GHz</string>
+    <string name="thermal_warning_title">高熱リスク警告</string>
+    <string name="thermal_warning_desc">カーネル特権を介して適用された極限の周波数カーブ。</string>
+    <string name="apply">適用</string>
+    <string name="toast_root_granted">Root権限が正常に付与されました！</string>
+    <string name="toast_root_failed">Root権限の取得に失敗しました</string>
+    <string name="toast_cpu_applied">CPU周波数が正常に適用されました！</string>
+    <string name="toast_cpu_failed">周波数を適用できませんでした (非対応パス)</string>
+    <string name="toast_extreme_applied">極限のハイパフォーマンス周波数を適用しました！</string>
+    <string name="timer_active_format">アクティブ: %1$02d:%2$02d</string>
+    <string name="time_up_title">ゲームセッション終了！</string>
+    <string name="time_up_desc">バッテリーの健康と熱制限を保護するため、指定されたゲームセッション時間が経過しました。</string>
+    <string name="about_zentix_center">ZENTIXコマンドセンター</string>
+    <string name="about_version">バージョン: 1.0</string>
+    <string name="about_description">Android向け高性能ゲーム最適化ツール</string>
+    <string name="about_built_with">Kotlin &amp; Jetpack Composeで構築</string>
+    <string name="ok">OK</string>
+    <string name="config_title">ZENTIX ゲーム設定</string>
+    <string name="color_enhance_title">画質・色彩強化</string>
+    <string name="color_enhance_desc">視覚的な彩度フィルターと色の鮮明さを有効化 (Vivid HDR)</string>
+    <string name="game_accel_title">ゲーム加速</string>
+    <string name="game_accel_desc">キャッシュのクリアとプロセッサパスのクリーンアップ</string>
+    <string name="dnd_mode_title">サイレントモード (DND)</string>
+    <string name="dnd_mode_desc">通話と通知をブロックし、音声をサイレントにする</string>
+    <string name="mute_audio_title">音声をミュート</string>
+    <string name="mute_audio_desc">メディアおよびシステム音量を瞬時にゼロに下げる</string>
+    <string name="airplane_mode_title">機内モード</string>
+    <string name="airplane_mode_desc">クイックネットワーク設定を開く</string>
+    <string name="net_booster_title">ネットワークブースター</string>
+    <string name="net_booster_desc">データパケットを安定させ、接続を優先する</string>
+    <string name="perf_mode_title">パフォーマンスモード</string>
+    <string name="perf_mode_desc">プロセッサの優先度を最大周波数と利用可能なフレームにブースト</string>
+    <string name="overlay_channel_name">Zentix OSD オーバーレイサービス</string>
+    <string name="overlay_channel_desc">フローティングパフォーマンス監視サービスがアクティブです</string>
+    <string name="overlay_notification_title">ゲーム上でZentix OSDがアクティブ</string>
+    <string name="overlay_notification_text">コアパフォーマンス指標を正確に表示中</string>
+    <string name="overlay_notification_title_simple">Zentix OSD アクティブ</string>
+    <string name="back">戻る</string>
+    <string name="fps_monitor_title">FPS &amp; オーディオスイート</string>
+    <string name="game_logger_title">ゲームロガー</string>
+    <string name="console_title">ZENTIX XMB CONSOLE</string>
+    <string name="search_games">ゲームを検索...</string>
+    <string name="search">検索</string>
+    <string name="settings">設定</string>
+    <string name="play_game">ゲームをプレイ</string>
+    <string name="remove_from_hub">ハブから削除</string>
+    <string name="no_games_added">ゲームが追加されていません</string>
+    <string name="add_games_hint">リボン内の + を押して、アプリやゲームを追加します。</string>
+    <string name="select_apps_title">アプリとゲームを選択</string>
+    <string name="cancel">キャンセル</string>
+    <string name="search_all_apps">インストール済みのすべてのアプリを検索...</string>
     <string name="app_name">ZENTIX</string>
-    <string name="app_subtitle">성능 제어 센터</string>
-    <string name="settings_cd">설정 및 언어</string>
-
-    <!-- Quick Stats Bar -->
-    <string name="stat_cpu_temp">CPU 온도</string>
-    <string name="stat_ram_usage">RAM 사용량</string>
-    <string name="stat_battery_temp">배터리 온도</string>
-
-    <!-- System Action Button -->
-    <string name="btn_boost_now">부스트</string>
-    <string name="btn_boosting">부스팅 중...</string>
-
-    <!-- 1. FPS & Other Suite -->
-    <string name="sec_msi_title">FPS 및 도구</string>
-    <string name="sec_msi_desc">실시간 HUD 오버레이, FPS 카운터, 화면 녹화 및 하드웨어 모니터링.</string>
-
-    <!-- 2. Benchmark Logger -->
-    <string name="sec_benchmark_title">게임 로거</string>
-    <string name="sec_benchmark_desc">게임 세션 기록, 온도 변화 추적 및 PDF 보고서 내보내기.</string>
-
-    <!-- 3. Dynamic Profiles -->
-    <string name="sec_profiles_title">자동 프로필</string>
-    <string name="sec_profiles_desc">즉각적인 캐시 정리 및 하드웨어 할당을 통한 게임 자동 감지.</string>
-
-    <!-- 4. Kernel Overclock -->
-    <string name="sec_overclock_title">커널 엔진</string>
-    <string name="sec_overclock_desc">루팅된 기기를 위한 직접적인 CPU/GPU 클럭 제어 및 거버너 관리.</string>
-
-    <!-- Settings Screen -->
-    <string name="settings_title">설정</string>
-    <string name="setting_dark_mode">다크 모드</string>
-    <string name="setting_dark_mode_desc">게이밍 다크 비주얼 테마 활성화</string>
-
-    <string name="setting_ai_mode">AI 발열 및 렉 가드</string>
-    <string name="setting_ai_mode_desc">쓰로틀링 방지를 위한 로컬 AI 예측 모니터링</string>
-
-    <string name="setting_language">언어 / Language</string>
-    <string name="setting_game_timer">게임 세션 타이머</string>
-    <string name="setting_info">ZENTIX 정보</string>
-    <string name="setting_info_desc">버전 1.0.0 - 성능 커맨드 센터</string>
-
-    <!-- Dialog Actions -->
-    <string name="dialog_cancel">취소</string>
-    <string name="dialog_apply">적용</string>
-
-    <!-- Game Launcher Section -->
-    <string name="launcher_title">게임 런처 및 부스트</string>
-    <string name="add_game_cd">게임 추가</string>
-    <string name="dialog_add_game_title">게임 바로가기 추가</string>
-    <string name="dialog_add_game_desc">다이렉트 부스트 런처에 추가할 설치된 게임을 선택하세요.</string>
-    <string name="btn_add_sample">샘플 추가</string>
-
-    <!-- Game Logger Advanced Gaming Strings -->
-    <string name="game_logger_title">게이밍 텔레메트리 및 하드웨어</string>
-    <string name="tab_analytics">하드웨어 및 성능</string>
-    <string name="tab_history">세션 기록</string>
-
-    <string name="metric_stability">안정성 점수</string>
-    <string name="metric_power">전력 소비량</string>
-    <string name="metric_driver">활성 드라이버</string>
-    <string name="metric_vram">VRAM 사용량</string>
-
-    <string name="section_thermal_health">발열 및 쓰로틀링 상태</string>
-    <string name="section_fps_breakdown">FPS 안정성 분포</string>
-    <string name="section_active_engines">에뮬레이션 및 엔진 프로필</string>
-    <string name="section_all_sessions">기록된 게임 세션</string>
-
-    <string name="filter_all">모든 게임</string>
-    <string name="filter_heavy">고사양 PC 게임</string>
-
-    <!-- Advanced Hardware Features -->
-    <string name="section_bypass_charging">바이패스 충전 및 전력 제어</string>
-    <string name="desc_bypass_charging">배터리를 거치지 않고 SoC에 직접 전력을 공급하여 발열을 최대 12°C 감소시킵니다.</string>
-    <string name="status_bypass_active">바이패스 활성화 (SoC 직접 전력 공급)</string>
-    <string name="status_bypass_disabled">일반 충전 모드</string>
-
-    <!-- Auto Profiles Screen Strings -->
-    <string name="auto_profiles_title">자동 프로필 및 자동화</string>
-    <string name="master_auto_switch">마스터 자동 감지</string>
-    <string name="master_auto_desc">실행된 게임을 자동으로 감지하여 최적화된 프리셋을 적용합니다.</string>
-    <string name="section_profiles">하드웨어 성능 프로필</string>
-    <string name="section_app_mapping">게임 및 앱 프로필 매핑</string>
-    <string name="btn_create_profile">새 프로필</string>
-
-    <!-- Profile Names & Details -->
-    <string name="profile_extreme">익스트림 게이밍 터보</string>
-    <string name="profile_balanced">균형 잡힌 성능</string>
-    <string name="profile_saver">발열 및 배터리 절약</string>
-
-    <!-- Auto Profiles & Automation Strings -->
-    <string name="auto_profiles_subtitle">스마트 게임 감지 및 하드웨어 엔진</string>
-
-    <string name="section_auto_engine">자동화 서비스 및 규칙</string>
-    <string name="rule_auto_detect">스마트 게임 자동 감지</string>
-    <string name="rule_auto_detect_desc">게임이 포그라운드에서 실행될 때 하드웨어 프로필을 자동으로 전환합니다.</string>
-    <string name="rule_ram_clean">실행 시 RAM 자동 정리</string>
-    <string name="rule_ram_clean_desc">고사양 에뮬레이션을 시작하기 전에 백그라운드 메모리를 정돈합니다.</string>
-    <string name="rule_thermal_guard">자동 발열 가드</string>
-    <string name="rule_thermal_guard_desc">CPU 온도가 50°C를 초과하면 발열 절약 프로필로 전환합니다.</string>
-
-    <string name="section_hardware_presets">하드웨어 프리셋</string>
-    <string name="section_game_rules">게임별 프로필 규칙</string>
-
-    <string name="dialog_create_profile">하드웨어 프로필 생성</string>
-    <string name="dialog_profile_name">프로필 이름 (예: Winlator Turbo)</string>
-    <string name="dialog_gov_select">CPU 거버너 선택</string>
-    <string name="btn_save_profile">저장 및 적용</string>
-    <string name="btn_cancel">취소</string>
-
-    <!-- Profile Detail & Game Selection Strings -->
-    <string name="profile_detail_title">프로필 타겟 및 튜닝</string>
-    <string name="section_assigned_games">할당된 게임 목록</string>
-    <string name="desc_assigned_games">실행 시 이 프로필을 자동으로 활성화할 게임을 선택하세요.</string>
-    <string name="section_preset_tuning">하드웨어 파라미터</string>
-    <string name="btn_save_changes">프로필 규칙 저장</string>
-
-    <!-- Kernel Engine & Overclocking Strings -->
-    <string name="kernel_title">커널 엔진 및 오버클럭</string>
-    <string name="kernel_subtitle">하드웨어 오버클럭 및 거버너 튜닝</string>
-
-    <string name="status_root_detected">루트 권한: 허용됨 (커널 제어 활성화)</string>
-    <string name="status_no_root">비루팅 모드: 사용자 공간 최적화 활성화</string>
-
-    <string name="section_cpu_oc">CPU 코어 클럭 제어</string>
-    <string name="section_gpu_oc">GPU 코어 클럭</string>
-    <string name="section_extra_oc">고급 커널 기능</string>
-
-    <string name="label_stock_freq">기본 순정 주파수</string>
-    <string name="label_target_freq">목표 최대 클럭</string>
-
-    <string name="warn_safe">상태: 안전 (순정 범위)</string>
-    <string name="warn_moderate">상태: 적당한 오버클럭 (발열 감시 중)</string>
-    <string name="warn_extreme">위험: 익스트림 오버클럭 (열 셧다운 위험)</string>
-
-    <string name="feature_undervolt">커널 언더볼팅 (-50mV)</string>
-    <string name="feature_undervolt_desc">고부하 시 소비 전력 및 SoC 발열을 줄입니다.</string>
-
-    <string name="feature_high_priority">게임 프로세스 높은 우선순위</string>
-    <string name="feature_high_priority_desc">Android 스케줄러가 CPU 사이클의 90%를 게임에 우선 할당하도록 강제합니다.</string>
-
-    <string name="btn_apply_kernel">클럭 변경 사항 적용</string>
-
-    <!-- Kernel Root Check Strings -->
-    <string name="btn_check_root">루트 권한 확인</string>
-    <string name="root_status_locked">커널 엔진 잠김 - 루트 확인 필요</string>
-    <string name="root_required_msg">클럭 조절 및 전압 제어를 해제하려면 루트 권한이 필요합니다.</string>
-    <string name="root_success_msg">루트 권한 허용됨! 커널 제어 인터페이스가 해제되었습니다.</string>
-    <string name="root_failed_msg">루트 미감지! 제한된 모드로 실행됩니다.</string>
-
-    <!-- FPS & MSI OSD Suite Strings -->
-    <string name="fps_screen_title">HUD, OSD 및 비디오 캡처</string>
-    <string name="fps_screen_subtitle">고급 MSI Afterburner OSD 및 녹화 스위트</string>
-
-    <string name="tab_osd_monitoring">OSD 모니터링</string>
-    <string name="tab_recorder">비디오 캡처</string>
-
-    <string name="section_polling_rate">하드웨어 갱신 주기</string>
-    <string name="section_monitoring_graphs">활성 모니터링 그래프 (MSI 스타일)</string>
-    <string name="section_video_properties">비디오 캡처 속성</string>
-
-    <string name="btn_open_recorder_config">녹화 엔진 설정</string>
-    <string name="label_poll_ms">갱신 주기: 1000 ms</string>
-
-    <!-- Enhanced OSD & Video Recorder Strings -->
-    <string name="master_osd_switch">마스터 OSD 오버레이 서비스</string>
-    <string name="master_osd_desc">실행 중인 게임 위에 실시간 정보 오버레이를 활성화합니다.</string>
-    <string name="section_all_graphs">MSI Afterburner 풀 모니터링</string>
-    <string name="btn_open_folder">녹화된 비디오 폴더 열기</string>
-    <string name="recorder_status_active">녹화 엔진: 준비됨 / 활성</string>
+    <string name="game_mode_btn">ゲームモード</string>
+    <string name="kernel_title">カーネルエンジン</string>
+    <string name="kernel_subtitle">ハードウェアおよびCPU周波数の直接制御</string>
+    <string name="root_status_locked">Rootアクセスがロックされています</string>
+    <string name="status_root_detected">Rootアクセスが検出されました</string>
+    <string name="root_failed_msg">Superuser権限の取得に失敗しました。</string>
+    <string name="root_required_msg">カーネル制御には、システムファイルを変更するためのRootアクセスが必要です。</string>
+    <string name="btn_check_root">Rootステータスを確認</string>
+    <string name="section_cpu_oc">CPU周波数ガバナー</string>
+    <string name="section_gpu_oc">GPUパフォーマンスレベル</string>
+    <string name="section_extra_oc">高度なカーネル調整</string>
+    <string name="feature_undervolt">CPUアンダーボルト</string>
+    <string name="feature_undervolt_desc">パフォーマンスを落とさずに電圧を下げて温度を低下させる</string>
+    <string name="feature_high_priority">プロセス優先度ブースト</string>
+    <string name="feature_high_priority_desc">アクティブなゲームスレッドに緊急の表示優先度を割り当てる</string>
+    <string name="btn_apply_kernel">カーネル設定を適用</string>
+    <string name="settings_title">設定</string>
+    <string name="dark_mode_title">ダークモード</string>
+    <string name="dark_mode_desc">ゲーミング用のカスタムダークテーマを有効にする</string>
+    <string name="ai_guardian_title">AIサーマル &amp; ラグガード</string>
+    <string name="ai_guardian_desc">CPUサーマルスロットリングを防ぐローカル機械学習モニタリング</string>
+    <string name="language_title">言語 / Language</string>
+    <string name="game_timer_title">ゲームセッションタイマー</string>
+    <string name="about_zentix_title">ZENTIXについて</string>
+    <string name="about_zentix_desc">バージョン 1.0.0 - パフォーマンスコントロールセンター</string>
+    <string name="select_app_language">アプリの言語を選択</string>
 </resources>

@@ -1,20 +1,44 @@
 package com.example.zentix.UI
 
+import android.media.MediaPlayer
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Assessment
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.DeveloperBoard
+import androidx.compose.material.icons.filled.Monitor
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,10 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zentix.R
 
-// ألوان ثيم ZENTIX الداكن الاحترافي
-private val BackgroundDark = Color(0xFF090A0F)
-private val CardBackground = Color(0xFF12141D)
-private val CardBorder = Color(0xFF1E2230)
 private val NeonRed = Color(0xFFFF2A4B)
 private val NeonCyan = Color(0xFF00E5FF)
 private val NeonGreen = Color(0xFF00E676)
@@ -40,10 +60,20 @@ fun HomeScreen(
     onNavigateToOverclock: () -> Unit = {},
     onNavigateToGameMode: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+
+    // ألوان تفاعلية بناءً على الوضع الداكن العام للتطبيق
+    val isDark = ZentixGlobalSettings.isDarkMode
+    val backgroundColor by animateColorAsState(if (isDark) Color(0xFF090A0F) else Color(0xFFF4F6FA), animationSpec = tween(300), label = "bg")
+    val cardBackground by animateColorAsState(if (isDark) Color(0xFF12141D) else Color(0xFFFFFFFF), animationSpec = tween(300), label = "card")
+    val cardBorder by animateColorAsState(if (isDark) Color(0xFF1E2230) else Color(0xFFE0E5F0), animationSpec = tween(300), label = "border")
+    val primaryTextColor by animateColorAsState(if (isDark) Color.White else Color(0xFF1A1D26), animationSpec = tween(300), label = "text1")
+    val secondaryTextColor by animateColorAsState(if (isDark) Color.Gray else Color(0xFF6B7280), animationSpec = tween(300), label = "text2")
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundDark)
+            .background(backgroundColor)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -52,14 +82,16 @@ fun HomeScreen(
             contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // 1. الهيدر العلوي: الشعار + اسم التطبيق + زر الإعدادات فقط
             item {
                 TopAppBarSection(
-                    onSettingsClick = onNavigateToSettings
+                    onSettingsClick = onNavigateToSettings,
+                    cardBackground = cardBackground,
+                    cardBorder = cardBorder,
+                    primaryTextColor = primaryTextColor,
+                    secondaryTextColor = secondaryTextColor
                 )
             }
 
-            // 2. كروت المميزات الرئيسية - الصف الأول (MSI Suite & Benchmark)
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -71,7 +103,11 @@ fun HomeScreen(
                         description = stringResource(id = R.string.sec_msi_desc),
                         accentColor = NeonRed,
                         icon = Icons.Default.Monitor,
-                        onClick = onNavigateToMSISuite
+                        onClick = onNavigateToMSISuite,
+                        cardBackground = cardBackground,
+                        cardBorder = cardBorder,
+                        primaryTextColor = primaryTextColor,
+                        secondaryTextColor = secondaryTextColor
                     )
                     ZabetStyleCard(
                         modifier = Modifier.weight(1f),
@@ -79,12 +115,15 @@ fun HomeScreen(
                         description = stringResource(id = R.string.sec_benchmark_desc),
                         accentColor = NeonCyan,
                         icon = Icons.Default.Assessment,
-                        onClick = onNavigateToBenchmark
+                        onClick = onNavigateToBenchmark,
+                        cardBackground = cardBackground,
+                        cardBorder = cardBorder,
+                        primaryTextColor = primaryTextColor,
+                        secondaryTextColor = secondaryTextColor
                     )
                 }
             }
 
-            // 3. كرت محرك الكيرنيل (Overclock) بعرض الشاشة بالكامل
             item {
                 ZabetStyleCard(
                     modifier = Modifier.fillMaxWidth(),
@@ -92,23 +131,39 @@ fun HomeScreen(
                     description = stringResource(id = R.string.sec_overclock_desc),
                     accentColor = NeonAmber,
                     icon = Icons.Default.DeveloperBoard,
-                    onClick = onNavigateToOverclock
+                    onClick = onNavigateToOverclock,
+                    cardBackground = cardBackground,
+                    cardBorder = cardBorder,
+                    primaryTextColor = primaryTextColor,
+                    secondaryTextColor = secondaryTextColor
                 )
             }
 
-            // 4. زر Game Mode الأحمر بالمنتصف
             item {
-                GameModeButton(onClick = onNavigateToGameMode)
+                GameModeButton(
+                    onClick = {
+                        try {
+                            val powerClickPlayer = MediaPlayer.create(context, R.raw.ps3_power_click)
+                            powerClickPlayer?.start()
+                            powerClickPlayer?.setOnCompletionListener { it.release() }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        onNavigateToGameMode()
+                    }
+                )
             }
         }
     }
 }
 
-// ---------------- 1. الهيدر العلوي ---------------- //
-
 @Composable
 private fun TopAppBarSection(
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    cardBackground: Color,
+    cardBorder: Color,
+    primaryTextColor: Color,
+    secondaryTextColor: Color
 ) {
     Row(
         modifier = Modifier
@@ -139,14 +194,14 @@ private fun TopAppBarSection(
             Column {
                 Text(
                     text = stringResource(id = R.string.app_name),
-                    color = Color.White,
+                    color = primaryTextColor,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Black,
                     letterSpacing = 1.5.sp
                 )
                 Text(
                     text = stringResource(id = R.string.app_subtitle),
-                    color = Color.Gray,
+                    color = secondaryTextColor,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -157,20 +212,18 @@ private fun TopAppBarSection(
             onClick = onSettingsClick,
             modifier = Modifier
                 .size(38.dp)
-                .background(CardBackground, RoundedCornerShape(12.dp))
-                .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+                .background(cardBackground, RoundedCornerShape(12.dp))
+                .border(1.dp, cardBorder, RoundedCornerShape(12.dp))
         ) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = stringResource(id = R.string.settings_cd),
-                tint = Color.White,
+                tint = primaryTextColor,
                 modifier = Modifier.size(20.dp)
             )
         }
     }
 }
-
-// ---------------- 3. كارت الميزات الشبكي الأساسي ---------------- //
 
 @Composable
 private fun ZabetStyleCard(
@@ -179,15 +232,19 @@ private fun ZabetStyleCard(
     description: String,
     accentColor: Color,
     icon: ImageVector,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    cardBackground: Color,
+    cardBorder: Color,
+    primaryTextColor: Color,
+    secondaryTextColor: Color
 ) {
     Card(
         modifier = modifier
             .height(175.dp)
-            .border(1.dp, CardBorder, RoundedCornerShape(20.dp))
+            .border(1.dp, cardBorder, RoundedCornerShape(20.dp))
             .clickable { onClick() },
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackground)
+        colors = CardDefaults.cardColors(containerColor = cardBackground)
     ) {
         Column(
             modifier = Modifier
@@ -217,7 +274,7 @@ private fun ZabetStyleCard(
                 ) {
                     Text(
                         text = title,
-                        color = Color.White,
+                        color = primaryTextColor,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
@@ -236,7 +293,7 @@ private fun ZabetStyleCard(
 
                 Text(
                     text = description,
-                    color = Color.Gray,
+                    color = secondaryTextColor,
                     fontSize = 11.sp,
                     lineHeight = 15.sp,
                     maxLines = 3,
@@ -246,8 +303,6 @@ private fun ZabetStyleCard(
         }
     }
 }
-
-// ---------------- 4. زر Game Mode الأحمر ---------------- //
 
 @Composable
 private fun GameModeButton(onClick: () -> Unit) {
@@ -264,7 +319,7 @@ private fun GameModeButton(onClick: () -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "GAME MODE",
+                text = stringResource(id = R.string.game_mode_btn),
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Black,

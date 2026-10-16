@@ -5,12 +5,15 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.view.Choreographer
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 object ZentixMonitorEngine {
-    // واجهات التحكم في ظهور العناصر
     val showGpuUsage = MutableStateFlow(true)
     val showRam = MutableStateFlow(true)
     val showCpuTemp = MutableStateFlow(true)
@@ -23,10 +26,8 @@ object ZentixMonitorEngine {
 
     val frametimeList = MutableStateFlow(listOf(16.0f, 16.5f, 15.8f, 17.0f, 16.2f))
 
-    // القيم الحية المعروضة على الشاشة
     private val _fpsFlow = MutableStateFlow(60)
     val fpsFlow: StateFlow<Int> = _fpsFlow
-    // متغير القائمة الجانبية
     val isMiniPopupEnabled = MutableStateFlow(false)
     private val _cpuUsageFlow = MutableStateFlow(25)
     val cpuUsageFlow: StateFlow<Int> = _cpuUsageFlow
@@ -60,7 +61,6 @@ object ZentixMonitorEngine {
     private var choreographer: Choreographer? = null
     private var lastFrameNanos: Long = 0L
 
-    // مراقب الفريمات الحقيقي والناعم عبر Choreographer (مثل أشهر التطبيقات)
     private val frameCallback = object : Choreographer.FrameCallback {
         override fun doFrame(frameTimeNanos: Long) {
             if (!isRunning) return
@@ -69,7 +69,6 @@ object ZentixMonitorEngine {
                 val diffMs = diffNs / 1_000_000f
                 if (diffMs > 0f) {
                     val rawFps = (1000f / diffMs).toInt()
-                    // تنعيم الـ FPS ليتناسب مع معدلات الشاشة الطبيعية (30, 45, 60, 90, 120)
                     val smoothFps = when {
                         rawFps > 100 -> 120
                         rawFps > 75 -> 90
@@ -99,17 +98,14 @@ object ZentixMonitorEngine {
 
         monitorJob = CoroutineScope(Dispatchers.Default).launch {
             while (isRunning) {
-                // 1. قراءة درجة الحرارة الحقيقية للجهاز بشكل آمن وسليم عبر نظام أندرويد (BatteryManager)
                 val currentTemp = getDeviceTemperature(context)
                 if (currentTemp > 0) {
                     _cpuTempFlow.value = currentTemp
-                    _gpuTempFlow.value = currentTemp + 2 // تقدير تقريبي منطقي لمعالج الرسوميات
+                    _gpuTempFlow.value = currentTemp + 2
                 }
 
-                // 2. تحديث استهلاك رام خفيف وواقعي
                 updateMemoryUsage(context)
 
-                // 3. تحديث استهلاك المعالج والكارت بصورة متجاوبة مع الأداء العام
                 _cpuUsageFlow.value = (20..55).random()
                 _gpuUsageFlow.value = (30..75).random()
 
@@ -118,18 +114,16 @@ object ZentixMonitorEngine {
         }
     }
 
-    // قراءة درجة الحرارة الرسمية للبطارية/الجهاز بدون أي صلاحيات خاصة
     private fun getDeviceTemperature(context: Context): Int {
         return try {
             val intent = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
             val temp = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) ?: 0
-            if (temp > 0) temp / 10 else 38 // التحويل للدرجة المئوية الصحيحة
+            if (temp > 0) temp / 10 else 38
         } catch (_: Exception) {
             38
         }
     }
 
-    // حساب الـ RAM المتاحة بطريقة قياسية
     private fun updateMemoryUsage(context: Context) {
         try {
             val actManager = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager

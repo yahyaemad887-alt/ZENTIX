@@ -1,173 +1,126 @@
 <resources>
-    <!-- App Branding & Top Bar -->
+    <string name="osd_monitor_subtitle">OSD-Leistungsmonitor</string>
+    <string name="master_osd_control">Master-OSD-Steuerung</string>
+    <string name="master_osd_desc">Schwebende Leistungsindikatoren ein- oder ausblenden</string>
+    <string name="frametime_live_graph">Frametime-Live-Diagramm</string>
+    <string name="cpu_temperature">CPU-Temperatur</string>
+    <string name="gpu_temperature">GPU-Temperatur</string>
+    <string name="framerate_counter">Bildrate (FPS-Zähler)</string>
+    <string name="frametime_graph">Frametime-Diagramm</string>
+    <string name="game_logger_subtitle">Echtzeit-Hardware- und Leistungssuite</string>
+    <string name="device_identification">Geräteidentifikation</string>
+    <string name="device_model">Gerätemodell</string>
+    <string name="cpu_processor">CPU-Prozessor</string>
+    <string name="system_version">Systemversion</string>
+    <string name="memory_storage_status">Speicherstatus</string>
+    <string name="total_ram_available">Gesamt-RAM / Verfügbar</string>
+    <string name="internal_storage">Interner Speicher (App-Verzeichnis)</string>
+    <string name="storage_format">Gesamt: %1$s | Frei: %2$s</string>
+    <string name="bypass_charging">Bypass-Laden</string>
+    <string name="direct_board_active">Direkte Board-Stromversorgung aktiv</string>
+    <string name="standard_charging_mode">Standard-Lademodus</string>
+    <string name="battery_level_format">Akkustand: %1$d%%</string>
+    <string name="status_charging">Status: Lädt</string>
+    <string name="status_discharging">Status: Entlädt</string>
+    <string name="cpu_cores">CPU-Kerne</string>
+    <string name="active_cores_format">%1$d Aktiv</string>
+    <string name="power_state">Stromstatus</string>
+    <string name="connected">Verbunden</string>
+    <string name="battery_mode">Akkumodus</string>
+    <string name="power_source">Stromquelle</string>
+    <string name="previous">Zurück</string>
+    <string name="next">Weiter</string>
+    <string name="add_games">Spiele hinzufügen</string>
+    <string name="options">Optionen</string>
+    <string name="done_count">Fertig (%1$d)</string>
+    <string name="app_subtitle">Hochleistungszentrum</string>
+    <string name="settings_cd">Einstellungen</string>
+    <string name="sec_msi_title">FPS- und Audio-Suite</string>
+    <string name="sec_msi_desc">Schwebender Bildschirm, FPS-Rekorder und Hardware-Überwachung.</string>
+    <string name="sec_benchmark_title">Spiele-Protokoll</string>
+    <string name="sec_benchmark_desc">Spielesitzungen aufzeichnen, Temperatur verfolgen und PDF-Berichte exportieren.</string>
+    <string name="sec_overclock_title">Kernel-Engine</string>
+    <string name="sec_overclock_desc">Direkte Kontrolle über CPU/GPU-Frequenzen für Root-Geräte.</string>
+    <string name="superuser_active">Superuser-Binärdatei aktiv und reaktiv</string>
+    <string name="non_root_space">Gerät läuft im Standard-Nicht-Root-Modus.</string>
+    <string name="reverify_root">Root-Zugriff erneut verifizieren</string>
+    <string name="base_freq">Basis: 1,8 GHz</string>
+    <string name="extreme_freq">Extreme OC: 3,8 GHz</string>
+    <string name="thermal_warning_title">Warnung vor hoher thermischer Last</string>
+    <string name="thermal_warning_desc">Extreme Frequenzkurve über Kernel-Superuser angewendet.</string>
+    <string name="apply">Anwenden</string>
+    <string name="toast_root_granted">Root-Zugriff erfolgreich gewährt!</string>
+    <string name="toast_root_failed">Fehler beim Abrufen des Root-Zugriffs</string>
+    <string name="toast_cpu_applied">CPU-Frequenzen erfolgreich angewendet!</string>
+    <string name="toast_cpu_failed">Frequenz konnte nicht angewendet werden (nicht unterstützt)</string>
+    <string name="toast_extreme_applied">Extreme Hochleistungsfrequenzen angewendet!</string>
+    <string name="timer_active_format">Aktiv: %1$02d:%2$02d</string>
+    <string name="time_up_title">Spielesitzung beendet!</string>
+    <string name="time_up_desc">Ihre zugewiesene Spielzeit ist abgelaufen, um den Akku und thermische Limits zu schützen.</string>
+    <string name="about_zentix_center">ZENTIX Befehlszentrum</string>
+    <string name="about_version">Version: 1.0</string>
+    <string name="about_description">High-Performance Gaming-Optimierungstool\nfür Android</string>
+    <string name="about_built_with">Erstellt mit Kotlin &amp; Jetpack Compose</string>
+    <string name="ok">OK</string>
+    <string name="config_title">ZENTIX SPIELKONFIGURATION</string>
+    <string name="color_enhance_title">Farbenverbesserung</string>
+    <string name="color_enhance_desc">Visuellen Sättigungsfilter und Farbklarkeit aktivieren (Vivid HDR)</string>
+    <string name="game_accel_title">Spielbeschleunigung</string>
+    <string name="game_accel_desc">Cache leeren und Prozessorpfad bereinigen</string>
+    <string name="dnd_mode_title">Nicht stören</string>
+    <string name="dnd_mode_desc">Anrufe und Benachrichtigungen blockieren und stumm schalten</string>
+    <string name="mute_audio_title">Ton stummschalten</string>
+    <string name="mute_audio_desc">Medien- und Systemlautstärke sofort auf null senken</string>
+    <string name="airplane_mode_title">Flugmodus</string>
+    <string name="airplane_mode_desc">Schnelle Netzwerkeinstellungen öffnen</string>
+    <string name="net_booster_title">Netzwerk-Booster</string>
+    <string name="net_booster_desc">Datenpakete stabilisieren und Verbindung priorisieren</string>
+    <string name="perf_mode_title">Leistungsmodus</string>
+    <string name="perf_mode_desc">Prozessorpriorität auf maximale Frequenz und verfügbare Frames erhöhen</string>
+    <string name="overlay_channel_name">Zentix OSD Overlay-Dienst</string>
+    <string name="overlay_channel_desc">Schwebender Leistungsüberwachungsdienst ist aktiv</string>
+    <string name="overlay_notification_title">Zentix OSD über Spielen aktiv</string>
+    <string name="overlay_notification_text">Kernleistungsindikatoren werden genau angezeigt</string>
+    <string name="overlay_notification_title_simple">Zentix OSD aktiv</string>
+    <string name="back">Zurück</string>
+    <string name="fps_monitor_title">FPS- und Audio-Suite</string>
+    <string name="game_logger_title">Spiele-Protokoll</string>
+    <string name="console_title">ZENTIX XMB KONSOLE</string>
+    <string name="search_games">Spiele suchen...</string>
+    <string name="search">Suchen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="play_game">Spiel starten</string>
+    <string name="remove_from_hub">Aus Hub entfernen</string>
+    <string name="no_games_added">Keine Spiele hinzugefügt</string>
+    <string name="add_games_hint">Drücken Sie + im Menüband, um Apps und Spiele hinzuzufügen.</string>
+    <string name="select_apps_title">Apps &amp; Spiele auswählen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="search_all_apps">Alle installierten Apps durchsuchen...</string>
     <string name="app_name">ZENTIX</string>
-    <string name="app_subtitle">LEISTUNGSZENTRUM</string>
-    <string name="settings_cd">Einstellungen &amp; Lokalisierung</string>
-
-    <!-- Quick Stats Bar -->
-    <string name="stat_cpu_temp">CPU-Temp.</string>
-    <string name="stat_ram_usage">RAM-Nutzung</string>
-    <string name="stat_battery_temp">Akku-Temp.</string>
-
-    <!-- System Action Button -->
-    <string name="btn_boost_now">BOOST</string>
-    <string name="btn_boosting">BOOSTING...</string>
-
-    <!-- 1. FPS & Other Suite -->
-    <string name="sec_msi_title">FPS &amp; Werkzeuge</string>
-    <string name="sec_msi_desc">Live-HUD-Overlay, Echtzeit-FPS-Zähler, Bildschirmrekorder und Hardware-Überwachung.</string>
-
-    <!-- 2. Benchmark Logger -->
-    <string name="sec_benchmark_title">Game Logger</string>
-    <string name="sec_benchmark_desc">Spielsitzungen aufzeichnen, Temperaturkurven verfolgen und PDF-Berichte exportieren.</string>
-
-    <!-- 3. Dynamic Profiles -->
-    <string name="sec_profiles_title">Auto-Profil</string>
-    <string name="sec_profiles_desc">Automatische Spielerkennung mit sofortiger Cache-Reinigung und Hardwarezuweisung.</string>
-
-    <!-- 4. Kernel Overclock -->
-    <string name="sec_overclock_title">Kernel Engine</string>
-    <string name="sec_overclock_desc">Direkte CPU/GPU-Frequenzskalierung und Governor-Steuerung für Root-Geräte.</string>
-
-    <!-- Settings Screen -->
-    <string name="settings_title">EINSTELLUNGEN</string>
-    <string name="setting_dark_mode">Dunkler Modus</string>
-    <string name="setting_dark_mode_desc">Dunkles Gaming-Design aktivieren</string>
-
-    <string name="setting_ai_mode">KI-Thermo- &amp; Lag-Schutz</string>
-    <string name="setting_ai_mode_desc">Lokale KI-Überwachung zur Vermeidung von Drosselung</string>
-
-    <string name="setting_language">Sprache / Language</string>
-    <string name="setting_game_timer">Spiel-Session-Timer</string>
-    <string name="setting_info">Über ZENTIX</string>
-    <string name="setting_info_desc">Version 1.0.0 - Performance Command Center</string>
-
-    <!-- Dialog Actions -->
-    <string name="dialog_cancel">Abbrechen</string>
-    <string name="dialog_apply">Anwenden</string>
-
-    <!-- Game Launcher Section -->
-    <string name="launcher_title">Game Launcher &amp; Boost</string>
-    <string name="add_game_cd">Spiel hinzufügen</string>
-    <string name="dialog_add_game_title">Spiel-Verknüpfung hinzufügen</string>
-    <string name="dialog_add_game_desc">Wählen Sie installierte Spiele aus, um sie zum Direkt-Boost-Launcher hinzuzufügen.</string>
-    <string name="btn_add_sample">Beispiel hinzufügen</string>
-
-    <!-- Game Logger Advanced Gaming Strings -->
-    <string name="game_logger_title">GAMING-TELEMETRIE &amp; HARDWARE</string>
-    <string name="tab_analytics">Hardware &amp; Leistung</string>
-    <string name="tab_history">Sitzungsprotokolle</string>
-
-    <string name="metric_stability">Stabilitätswert</string>
-    <string name="metric_power">Stromverbrauch</string>
-    <string name="metric_driver">Aktiver Treiber</string>
-    <string name="metric_vram">VRAM-Nutzung</string>
-
-    <string name="section_thermal_health">Thermo- &amp; Drosselungsstatus</string>
-    <string name="section_fps_breakdown">FPS-Stabilitätsverteilung</string>
-    <string name="section_active_engines">Emulations- &amp; Engine-Profile</string>
-    <string name="section_all_sessions">Aufgezeichnete Spielsitzungen</string>
-
-    <string name="filter_all">Alle Spiele</string>
-    <string name="filter_heavy">Schwere PC-Titel</string>
-
-    <!-- Advanced Hardware Features -->
-    <string name="section_bypass_charging">Bypass-Laden &amp; Stromsteuerung</string>
-    <string name="desc_bypass_charging">Versorgt den SoC direkt mit Strom, ohne über den Akku zu leiten, um die Hitze um bis zu 12 °C zu reduzieren.</string>
-    <string name="status_bypass_active">Bypass aktiv (Direkter SoC-Strom)</string>
-    <string name="status_bypass_disabled">Normaler Lademodus</string>
-
-    <!-- Auto Profiles Screen Strings -->
-    <string name="auto_profiles_title">AUTO-PROFILE &amp; AUTOMATION</string>
-    <string name="master_auto_switch">Haupt-Auto-Erkennung</string>
-    <string name="master_auto_desc">Gestartete Spiele automatisch erkennen und angepasste Hardware-Presets anwenden.</string>
-    <string name="section_profiles">Hardware-Leistungsprofile</string>
-    <string name="section_app_mapping">Spiel- &amp; App-Profilzuordnung</string>
-    <string name="btn_create_profile">Neues Profil</string>
-
-    <!-- Profile Names & Details -->
-    <string name="profile_extreme">Extreme Gaming Turbo</string>
-    <string name="profile_balanced">Ausgewogene Leistung</string>
-    <string name="profile_saver">Thermo- &amp; Energiesparer</string>
-
-    <!-- Auto Profiles & Automation Strings -->
-    <string name="auto_profiles_subtitle">Intelligente Spielerkennung &amp; Hardware-Engine</string>
-
-    <string name="section_auto_engine">Automatisierungsdienst &amp; Regeln</string>
-    <string name="rule_auto_detect">Smarte Spiel-Auto-Erkennung</string>
-    <string name="rule_auto_detect_desc">Wechselt automatisch das Hardwareprofil, wenn ein Spiel gestartet wird.</string>
-    <string name="rule_ram_clean">Auto-RAM-Bereinigung beim Start</string>
-    <string name="rule_ram_clean_desc">Bereinigt den Hintergrundspeicher vor dem Start von Emulationen.</string>
-    <string name="rule_thermal_guard">Automatischer Thermoschutz</string>
-    <string name="rule_thermal_guard_desc">Wechselt zum Energiesparprofil, wenn die CPU-Temperatur 50 °C übersteigt.</string>
-
-    <string name="section_hardware_presets">Hardware-Voreinstellungen</string>
-    <string name="section_game_rules">Spiel-zu-Profil-Regeln</string>
-
-    <string name="dialog_create_profile">Hardwareprofil erstellen</string>
-    <string name="dialog_profile_name">Profilname (z. B. Winlator Turbo)</string>
-    <string name="dialog_gov_select">CPU-Governor auswählen</string>
-    <string name="btn_save_profile">Speichern &amp; Anwenden</string>
-    <string name="btn_cancel">Abbrechen</string>
-
-    <!-- Profile Detail & Game Selection Strings -->
-    <string name="profile_detail_title">PROFILZIELE &amp; TUNING</string>
-    <string name="section_assigned_games">Zugewiesene Spiele für das Profil</string>
-    <string name="desc_assigned_games">Wählen Sie Spiele aus, die dieses Profil beim Start automatisch aktivieren.</string>
-    <string name="section_preset_tuning">Hardware-Parameter</string>
-    <string name="btn_save_changes">Profilregeln speichern</string>
-
-    <!-- Kernel Engine & Overclocking Strings -->
-    <string name="kernel_title">KERNEL ENGINE &amp; OC</string>
-    <string name="kernel_subtitle">Hardware-Übertaktung &amp; Governor-Tuning</string>
-
-    <string name="status_root_detected">Root-Zugriff: GEWÄHRT (Kernel-Steuerung aktiv)</string>
-    <string name="status_no_root">Kein Root-Modus: Benutzerbereichs-Optimierung aktiv</string>
-
-    <string name="section_cpu_oc">CPU-Taktsteuerung</string>
-    <string name="section_gpu_oc">GPU-Kernfrequenz</string>
-    <string name="section_extra_oc">Erweiterte Kernel-Funktionen</string>
-
-    <string name="label_stock_freq">Standard-Basisfrequenz</string>
-    <string name="label_target_freq">Ziel-Maximaltakt</string>
-
-    <string name="warn_safe">Status: Sicher (Standardgrenzen)</string>
-    <string name="warn_moderate">Status: Moderate Übertaktung (Überwachte Hitze)</string>
-    <string name="warn_extreme">GEFAHR: Extreme Übertaktung (Risiko thermischer Abschaltung)</string>
-
-    <string name="feature_undervolt">Kernel Undervolt (-50mV)</string>
-    <string name="feature_undervolt_desc">Reduziert Stromverbrauch und Wärmeentwicklung unter hoher Last.</string>
-
-    <string name="feature_high_priority">Hohe Priorität für Spielprozesse</string>
-    <string name="feature_high_priority_desc">Zwingt den Android-Scheduler, 90 % der CPU-Zyklen dem vordergründigen Spiel zuweisen.</string>
-
-    <string name="btn_apply_kernel">Taktänderungen anwenden</string>
-
-    <!-- Kernel Root Check Strings -->
-    <string name="btn_check_root">Root-Zugriff prüfen</string>
-    <string name="root_status_locked">Kernel Engine gesperrt - Root-Überprüfung erforderlich</string>
-    <string name="root_required_msg">Root-Rechte sind erforderlich, um Frequenzregler und Spannungssteuerungen freizuschalten.</string>
-    <string name="root_success_msg">Root-Zugriff gewährt! Kernel-Steuerungsschnittstelle freigeschaltet.</string>
-    <string name="root_failed_msg">Kein Root erkannt! Ausführung im eingeschränkten Modus.</string>
-
-    <!-- FPS & MSI OSD Suite Strings -->
-    <string name="fps_screen_title">HUD, OSD &amp; VIDEOAUFNAHME</string>
-    <string name="fps_screen_subtitle">Erweiterte MSI Afterburner OSD &amp; Rekorder-Suite</string>
-
-    <string name="tab_osd_monitoring">OSD-Überwachung</string>
-    <string name="tab_recorder">Videoaufnahme</string>
-
-    <string name="section_polling_rate">Hardware-Abtastrate</string>
-    <string name="section_monitoring_graphs">Aktive Überwachungsgrafiken (MSI-Stil)</string>
-    <string name="section_video_properties">Eigenschaften der Videoaufnahme</string>
-
-    <string name="btn_open_recorder_config">Aufnahme-Engine konfigurieren</string>
-    <string name="label_poll_ms">Abtastrate: 1000 ms</string>
-
-    <!-- Enhanced OSD & Video Recorder Strings -->
-    <string name="master_osd_switch">Haupt-OSD-Overlay-Dienst</string>
-    <string name="master_osd_desc">Schwebende Echtzeit-Telemetrie über aktiven Spielen aktivieren.</string>
-    <string name="section_all_graphs">Vollständige Überwachung im MSI Afterburner-Stil</string>
-    <string name="btn_open_folder">Ordner für aufgenommene Videos öffnen</string>
-    <string name="recorder_status_active">Aufnahme-Engine: BEREIT / AKTIV</string>
+    <string name="game_mode_btn">SPIELMODUS</string>
+    <string name="kernel_title">Kernel-Engine</string>
+    <string name="kernel_subtitle">Direkte Hardware- &amp; CPU-Frequenzsteuerung</string>
+    <string name="root_status_locked">Root-Zugriff gesperrt</string>
+    <string name="status_root_detected">Root-Zugriff erkannt</string>
+    <string name="root_failed_msg">Fehler beim Abrufen der Superuser-Berechtigungen.</string>
+    <string name="root_required_msg">Kernel-Steuerelemente erfordern Root-Zugriff zum Ändern von Systemdateien.</string>
+    <string name="btn_check_root">Root-Status prüfen</string>
+    <string name="section_cpu_oc">CPU-Frequenz-Governor</string>
+    <string name="section_gpu_oc">GPU-Leistungsstufe</string>
+    <string name="section_extra_oc">Erweiterte Kernel-Tweaks</string>
+    <string name="feature_undervolt">CPU Undervolt</string>
+    <string name="feature_undervolt_desc">Spannung reduzieren, um Temperaturen ohne Leistungsverlust zu senken</string>
+    <string name="feature_high_priority">Prozessprioritäts-Boost</string>
+    <string name="feature_high_priority_desc">Aktiven Spiel-Threads dringende Display-Priorität zuweisen</string>
+    <string name="btn_apply_kernel">Kernel-Einstellungen anwenden</string>
+    <string name="settings_title">Einstellungen</string>
+    <string name="dark_mode_title">Dunkelmodus</string>
+    <string name="dark_mode_desc">Benutzerdefiniertes dunkles Gaming-Design aktivieren</string>
+    <string name="ai_guardian_title">KI-Thermal- &amp; Lag-Wächter</string>
+    <string name="ai_guardian_desc">Lokale Machine-Learning-Überwachung zur Vermeidung von CPU-Drosselung</string>
+    <string name="language_title">Sprache / Language</string>
+    <string name="game_timer_title">Spiel-Sitzungstimer</string>
+    <string name="about_zentix_title">Über ZENTIX</string>
+    <string name="about_zentix_desc">Version 1.0.0 - Leistungssteuerungszentrum</string>
+    <string name="select_app_language">App-Sprache auswählen</string>
 </resources>

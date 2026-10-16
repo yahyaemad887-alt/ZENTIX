@@ -2,17 +2,56 @@ package com.example.zentix.UI
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.DeveloperBoard
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -29,16 +68,11 @@ import kotlinx.coroutines.withContext
 import java.io.DataOutputStream
 import java.util.Locale
 
-// ألوان ثيم ZENTIX الداكن
-private val BackgroundDark = Color(0xFF090A0F)
-private val CardBackground = Color(0xFF12141D)
-private val CardBorder = Color(0xFF1E2230)
 private val NeonRed = Color(0xFFFF2A4B)
 private val NeonCyan = Color(0xFF00E5FF)
 private val NeonGreen = Color(0xFF00E676)
 private val NeonAmber = Color(0xFFFFD600)
 
-// أداة مساعدة لتنفيذ أوامر الروت وفحص الصلاحيات
 object KernelRootUtils {
     fun checkRoot(): Boolean {
         return try {
@@ -46,7 +80,7 @@ object KernelRootUtils {
             val output = process.inputStream.bufferedReader().readText()
             process.waitFor()
             output.contains("uid=0(root)")
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }
@@ -61,7 +95,7 @@ object KernelRootUtils {
             outputStream.close()
             process.waitFor()
             process.exitValue() == 0
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }
@@ -76,31 +110,36 @@ fun KernelEngineScreen(
     }
 
     val context = LocalContext.current
+    val appContext = context.applicationContext
     val coroutineScope = rememberCoroutineScope()
 
-    // حالات فحص الروت
     var hasCheckedRoot by remember { mutableStateOf(false) }
     var isRootGranted by remember { mutableStateOf(false) }
     var isCheckingRoot by remember { mutableStateOf(false) }
 
-    // القيم للترددات
     var cpuFreqGhz by remember { mutableFloatStateOf(2.4f) }
     var gpuFreqMhz by remember { mutableFloatStateOf(650f) }
 
-    // خيارات متقدمة
     var isUndervoltEnabled by remember { mutableStateOf(false) }
     var isHighPriorityEnabled by remember { mutableStateOf(true) }
 
     var showExtremeWarningDialog by remember { mutableStateOf(false) }
 
-    // تحديد الشفافية (لو مفيش روت، العناصر تكون باهتة وغير مفعلة)
     val isEngineUnlocked = hasCheckedRoot && isRootGranted
     val uiAlpha = if (isEngineUnlocked) 1.0f else 0.35f
+
+    // ألوان تفاعلية بناءً على الوضع الداكن العام للتطبيق
+    val isDark = ZentixGlobalSettings.isDarkMode
+    val backgroundColor by animateColorAsState(if (isDark) Color(0xFF090A0F) else Color(0xFFF4F6FA), animationSpec = tween(300), label = "bg")
+    val cardBackground by animateColorAsState(if (isDark) Color(0xFF12141D) else Color(0xFFFFFFFF), animationSpec = tween(300), label = "card")
+    val cardBorder by animateColorAsState(if (isDark) Color(0xFF1E2230) else Color(0xFFE0E5F0), animationSpec = tween(300), label = "border")
+    val primaryTextColor by animateColorAsState(if (isDark) Color.White else Color(0xFF1A1D26), animationSpec = tween(300), label = "text1")
+    val secondaryTextColor by animateColorAsState(if (isDark) Color.Gray else Color(0xFF6B7280), animationSpec = tween(300), label = "text2")
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundDark)
+            .background(backgroundColor)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -109,7 +148,6 @@ fun KernelEngineScreen(
             contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // 1. الهيدر العلوي
             item {
                 Row(
                     modifier = Modifier
@@ -126,27 +164,27 @@ fun KernelEngineScreen(
                             onClick = onNavigateBack,
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(CardBackground, RoundedCornerShape(12.dp))
-                                .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+                                .background(cardBackground, RoundedCornerShape(12.dp))
+                                .border(1.dp, cardBorder, RoundedCornerShape(12.dp))
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
-                                tint = Color.White
+                                contentDescription = stringResource(id = R.string.back),
+                                tint = primaryTextColor
                             )
                         }
 
                         Column {
                             Text(
                                 text = stringResource(id = R.string.kernel_title),
-                                color = Color.White,
+                                color = primaryTextColor,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Black,
                                 letterSpacing = 1.2.sp
                             )
                             Text(
                                 text = stringResource(id = R.string.kernel_subtitle),
-                                color = Color.Gray,
+                                color = secondaryTextColor,
                                 fontSize = 10.sp
                             )
                         }
@@ -154,14 +192,13 @@ fun KernelEngineScreen(
                 }
             }
 
-            // 2. كارت التحقق من الروت الحقيقي
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(1.dp, if (isEngineUnlocked) NeonGreen else NeonAmber, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
@@ -209,23 +246,25 @@ fun KernelEngineScreen(
                                     text = if (!hasCheckedRoot) stringResource(id = R.string.root_status_locked)
                                     else if (isRootGranted) stringResource(id = R.string.status_root_detected)
                                     else stringResource(id = R.string.root_failed_msg),
-                                    color = Color.White,
+                                    color = primaryTextColor,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = if (!hasCheckedRoot) stringResource(id = R.string.root_required_msg)
-                                    else if (isRootGranted) "Superuser binary responsive & active"
-                                    else "Device is running standard non-root user space.",
-                                    color = Color.Gray,
+                                    else if (isRootGranted) stringResource(id = R.string.superuser_active)
+                                    else stringResource(id = R.string.non_root_space),
+                                    color = secondaryTextColor,
                                     fontSize = 10.sp,
                                     lineHeight = 14.sp
                                 )
                             }
                         }
 
-                        // زر فحص الروت الحقيقي
+                        val rootGrantedMsg = stringResource(id = R.string.toast_root_granted)
+                        val rootFailedMsg = stringResource(id = R.string.toast_root_failed)
+
                         Button(
                             onClick = {
                                 isCheckingRoot = true
@@ -237,8 +276,8 @@ fun KernelEngineScreen(
                                     isRootGranted = granted
                                     isCheckingRoot = false
                                     Toast.makeText(
-                                        context,
-                                        if (granted) "تم منح صلاحيات الروت بنجاح!" else "فشل الحصول على صلاحيات الروت",
+                                        appContext,
+                                        if (granted) rootGrantedMsg else rootFailedMsg,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -248,22 +287,22 @@ fun KernelEngineScreen(
                                 .height(46.dp),
                             shape = RoundedCornerShape(23.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = if (!hasCheckedRoot) NeonCyan else CardBorder
+                                containerColor = if (!hasCheckedRoot) NeonCyan else cardBorder
                             )
                         ) {
                             if (isCheckingRoot) {
-                                CircularProgressIndicator(modifier = Modifier.size(20.dp), color = BackgroundDark, strokeWidth = 2.dp)
+                                CircularProgressIndicator(modifier = Modifier.size(20.dp), color = backgroundColor, strokeWidth = 2.dp)
                             } else {
                                 Icon(
                                     imageVector = if (!hasCheckedRoot) Icons.Default.VerifiedUser else Icons.Default.Refresh,
                                     contentDescription = null,
-                                    tint = if (!hasCheckedRoot) BackgroundDark else NeonCyan,
+                                    tint = if (!hasCheckedRoot) backgroundColor else NeonCyan,
                                     modifier = Modifier.size(18.dp)
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = if (!hasCheckedRoot) stringResource(id = R.string.btn_check_root) else "Re-verify Root Access",
-                                    color = if (!hasCheckedRoot) BackgroundDark else NeonCyan,
+                                    text = if (!hasCheckedRoot) stringResource(id = R.string.btn_check_root) else stringResource(id = R.string.reverify_root),
+                                    color = if (!hasCheckedRoot) backgroundColor else NeonCyan,
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Black
                                 )
@@ -273,15 +312,14 @@ fun KernelEngineScreen(
                 }
             }
 
-            // 3. قسم كسر سرعة المعالج (CPU OC)
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(uiAlpha)
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
@@ -301,7 +339,7 @@ fun KernelEngineScreen(
                                 Icon(imageVector = Icons.Default.Speed, contentDescription = null, tint = NeonCyan, modifier = Modifier.size(20.dp))
                                 Text(
                                     text = stringResource(id = R.string.section_cpu_oc),
-                                    color = Color.White,
+                                    color = primaryTextColor,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -309,7 +347,7 @@ fun KernelEngineScreen(
 
                             Text(
                                 text = String.format(Locale.US, "%.1f GHz", cpuFreqGhz),
-                                color = if (cpuFreqGhz > 3.0f) NeonRed else NeonGreen,
+                                color = if (cpuFreqGhz > 3.2f) NeonRed else NeonGreen,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Black
                             )
@@ -324,7 +362,7 @@ fun KernelEngineScreen(
                             colors = SliderDefaults.colors(
                                 thumbColor = NeonCyan,
                                 activeTrackColor = NeonCyan,
-                                inactiveTrackColor = CardBorder
+                                inactiveTrackColor = cardBorder
                             )
                         )
 
@@ -332,22 +370,21 @@ fun KernelEngineScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(text = "Base: 1.8 GHz", color = Color.Gray, fontSize = 10.sp)
-                            Text(text = "Extreme OC: 3.8 GHz", color = Color.Gray, fontSize = 10.sp)
+                            Text(text = stringResource(id = R.string.base_freq), color = secondaryTextColor, fontSize = 10.sp)
+                            Text(text = stringResource(id = R.string.extreme_freq), color = secondaryTextColor, fontSize = 10.sp)
                         }
                     }
                 }
             }
 
-            // 4. قسم كسر سرعة الجرافيك GPU
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(uiAlpha)
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
@@ -367,7 +404,7 @@ fun KernelEngineScreen(
                                 Icon(imageVector = Icons.Default.DeveloperBoard, contentDescription = null, tint = NeonAmber, modifier = Modifier.size(20.dp))
                                 Text(
                                     text = stringResource(id = R.string.section_gpu_oc),
-                                    color = Color.White,
+                                    color = primaryTextColor,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -390,18 +427,17 @@ fun KernelEngineScreen(
                             colors = SliderDefaults.colors(
                                 thumbColor = NeonAmber,
                                 activeTrackColor = NeonAmber,
-                                inactiveTrackColor = CardBorder
+                                inactiveTrackColor = cardBorder
                             )
                         )
                     }
                 }
             }
 
-            // 5. ميزات إضافية
             item {
                 Text(
                     text = stringResource(id = R.string.section_extra_oc),
-                    color = Color.Gray,
+                    color = secondaryTextColor,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 4.dp)
@@ -413,9 +449,9 @@ fun KernelEngineScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(uiAlpha)
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
@@ -429,9 +465,9 @@ fun KernelEngineScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(text = stringResource(id = R.string.feature_undervolt), color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(text = stringResource(id = R.string.feature_undervolt), color = primaryTextColor, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                                 Spacer(modifier = Modifier.height(2.dp))
-                                Text(text = stringResource(id = R.string.feature_undervolt_desc), color = Color.Gray, fontSize = 10.sp)
+                                Text(text = stringResource(id = R.string.feature_undervolt_desc), color = secondaryTextColor, fontSize = 10.sp)
                             }
                             Switch(
                                 checked = isUndervoltEnabled,
@@ -441,7 +477,7 @@ fun KernelEngineScreen(
                             )
                         }
 
-                        HorizontalDivider(color = CardBorder, thickness = 1.dp)
+                        HorizontalDivider(color = cardBorder, thickness = 1.dp)
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -449,9 +485,9 @@ fun KernelEngineScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(text = stringResource(id = R.string.feature_high_priority), color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(text = stringResource(id = R.string.feature_high_priority), color = primaryTextColor, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                                 Spacer(modifier = Modifier.height(2.dp))
-                                Text(text = stringResource(id = R.string.feature_high_priority_desc), color = Color.Gray, fontSize = 10.sp)
+                                Text(text = stringResource(id = R.string.feature_high_priority_desc), color = secondaryTextColor, fontSize = 10.sp)
                             }
                             Switch(
                                 checked = isHighPriorityEnabled,
@@ -464,25 +500,25 @@ fun KernelEngineScreen(
                 }
             }
 
-            // 6. زر التطبيق وإرسال أوامر الكيرنيل الحقيقية
             item {
                 Spacer(modifier = Modifier.height(8.dp))
+                val cpuAppliedMsg = stringResource(id = R.string.toast_cpu_applied)
+                val cpuFailedMsg = stringResource(id = R.string.toast_cpu_failed)
+
                 Button(
                     onClick = {
                         if (isEngineUnlocked) {
                             if (cpuFreqGhz > 3.2f || gpuFreqMhz > 800f) {
                                 showExtremeWarningDialog = true
                             } else {
-                                // تطبيق الترددات عبر أوامر الروت الحقيقية في الكيرنيل (Sysfs)
                                 coroutineScope.launch {
-                                    val cpuKhz = (cpuFreqGhz * 1000000).toInt() // تحويل GHz إلى kHz لملفات النواة
+                                    val cpuKhz = (cpuFreqGhz * 1000000).toInt()
                                     val success = withContext(Dispatchers.IO) {
-                                        // أمر كتابة التردد لأغلب أنوية المعالج القياسية
                                         KernelRootUtils.applyKernelCommand("echo $cpuKhz > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq")
                                     }
                                     Toast.makeText(
-                                        context,
-                                        if (success) "تم تطبيق ترددات المعالج بنجاح!" else "تعذر تطبيق التردد (مسار غير مدعوم)",
+                                        appContext,
+                                        if (success) cpuAppliedMsg else cpuFailedMsg,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -497,8 +533,8 @@ fun KernelEngineScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = NeonCyan)
                 ) {
                     Text(
-                        text = stringResource(id =R.string.btn_apply_kernel),
-                        color = BackgroundDark,
+                        text = stringResource(id = R.string.btn_apply_kernel),
+                        color = backgroundColor,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Black
                     )
@@ -508,11 +544,12 @@ fun KernelEngineScreen(
     }
 
     if (showExtremeWarningDialog) {
+        val extremeAppliedMsg = stringResource(id = R.string.toast_extreme_applied)
         AlertDialog(
             onDismissRequest = { showExtremeWarningDialog = false },
-            containerColor = CardBackground,
-            title = { Text(text = "High Thermal Risk Warning", color = Color.White, fontWeight = FontWeight.Bold) },
-            text = { Text(text = "Extreme frequency curve applied via kernel superuser access.", color = Color.Gray, fontSize = 12.sp) },
+            containerColor = cardBackground,
+            title = { Text(text = stringResource(id = R.string.thermal_warning_title), color = primaryTextColor, fontWeight = FontWeight.Bold) },
+            text = { Text(text = stringResource(id = R.string.thermal_warning_desc), color = secondaryTextColor, fontSize = 12.sp) },
             confirmButton = {
                 TextButton(onClick = {
                     showExtremeWarningDialog = false
@@ -521,10 +558,10 @@ fun KernelEngineScreen(
                         withContext(Dispatchers.IO) {
                             KernelRootUtils.applyKernelCommand("echo $cpuKhz > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq")
                         }
-                        Toast.makeText(context, "تم تطبيق ترددات الأداء العالي القصوى!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(appContext, extremeAppliedMsg, Toast.LENGTH_SHORT).show()
                     }
                 }) {
-                    Text(text = "Apply", color = NeonRed)
+                    Text(text = stringResource(id = R.string.apply), color = NeonRed)
                 }
             }
         )

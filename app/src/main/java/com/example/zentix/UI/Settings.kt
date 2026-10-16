@@ -1,5 +1,7 @@
 package com.example.zentix.UI
 
+import android.app.Activity
+import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateColorAsState
@@ -7,55 +9,98 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import android.app.Activity
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.zentix.R
 import kotlinx.coroutines.delay
 
-// ==================================================================================
-// ZENTIX GLOBAL SETTINGS ENGINE (المحرك المركزي الدائم لعدم تصفير الحالة)
-// ==================================================================================
+// إعدادات التطبيق العامة للتحكم في الثيم واللغة مع الحفظ الدائم
 object ZentixGlobalSettings {
     var isDarkMode by mutableStateOf(true)
     var selectedLanguageCode by mutableStateOf("ar")
-    var isAiGuardActive by mutableStateOf(true)
+
+    fun init(context: Context) {
+        val prefs = context.getSharedPreferences("zentix_prefs", Context.MODE_PRIVATE)
+        selectedLanguageCode = prefs.getString("selected_lang", "ar") ?: "ar"
+        isDarkMode = prefs.getBoolean("dark_mode", true)
+    }
+
+    fun updateLanguage(context: Context, langCode: String) {
+        selectedLanguageCode = langCode
+        val prefs = context.getSharedPreferences("zentix_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putString("selected_lang", langCode).apply()
+    }
 }
 
-// جسر مشاركة المؤقت مع شاشة الـ FPS والـ OSD
 object ZentixFpsOsdBridge {
     var activeTimerLabel by mutableStateOf("Disabled")
     var isTimerRunning by mutableStateOf(false)
-    var remainingTimeMs by mutableStateOf(0L)
+    var remainingTimeMs by mutableLongStateOf(0L)
     var showTimeUpAlert by mutableStateOf(false)
 }
 
-// الثوابت والألوان
 private val CyanSwitch = Color(0xFF00E5FF)
-private val PurpleSwitch = Color(0xFFAB47BC)
 private val GreenIcon = Color(0xFF00E676)
 private val YellowIcon = Color(0xFFFFD600)
 private val RedIcon = Color(0xFFFF1744)
 
-// نموذج اللغات المدعومة المتوافقة مع مجلدات values-[lang][cite: 9]
 data class AppLanguageModel(
     val code: String,
     val nativeName: String,
@@ -74,7 +119,6 @@ val ZentixLanguages = listOf(
     AppLanguageModel("zh", "中文", "Chinese")
 )
 
-// خيارات المؤقت بالمللي ثانية
 val TimerDurationMap = mapOf(
     "Disabled" to 0L,
     "Minutes 30" to 30L * 60L * 1000L,
@@ -97,7 +141,6 @@ fun SettingsScreen(
     var showAboutModal by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    // حاسبة الألوان الديناميكية (Dark / Light)
     val isDark = ZentixGlobalSettings.isDarkMode
     val backgroundColor by animateColorAsState(if (isDark) Color(0xFF090A0F) else Color(0xFFF4F6FA), animationSpec = tween(300), label = "bg")
     val cardBgColor by animateColorAsState(if (isDark) Color(0xFF11141E) else Color(0xFFFFFFFF), animationSpec = tween(300), label = "card")
@@ -106,7 +149,6 @@ fun SettingsScreen(
     val secondaryTextColor by animateColorAsState(if (isDark) Color.Gray else Color(0xFF6B7280), animationSpec = tween(300), label = "text2")
     val dialogBgColor by animateColorAsState(if (isDark) Color(0xFF121520) else Color(0xFFFFFFFF), animationSpec = tween(300), label = "dialog")
 
-    // لوجيك العد التنازلي وإظهار دايالوج التنبيه فور انتهاء الوقت[cite: 9]
     LaunchedEffect(ZentixFpsOsdBridge.isTimerRunning, ZentixFpsOsdBridge.remainingTimeMs) {
         if (ZentixFpsOsdBridge.isTimerRunning && ZentixFpsOsdBridge.remainingTimeMs > 0L) {
             delay(1000L)
@@ -138,7 +180,6 @@ fun SettingsScreen(
                 contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                // 1. الهيدر العلوي
                 item {
                     Row(
                         modifier = Modifier
@@ -156,13 +197,13 @@ fun SettingsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(id = R.string.back),
                                 tint = primaryTextColor
                             )
                         }
 
                         Text(
-                            text = if (isAr) "الإعدادات" else "Settings",
+                            text = stringResource(id = R.string.settings_title),
                             color = primaryTextColor,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold
@@ -172,11 +213,10 @@ fun SettingsScreen(
                     }
                 }
 
-                // 2. كارت الوضع الداكن
                 item {
                     SettingsToggleCard(
-                        title = if (isAr) "الوضع الداكن" else "Dark Mode",
-                        description = if (isAr) "تفعيل الثيم الداكن المخصص للجيمنج" else "Enable dark theme tailored for gaming",
+                        title = stringResource(id = R.string.dark_mode_title),
+                        description = stringResource(id = R.string.dark_mode_desc),
                         icon = Icons.Default.DarkMode,
                         iconColor = Color(0xFF00B0FF),
                         switchColor = CyanSwitch,
@@ -187,39 +227,20 @@ fun SettingsScreen(
                         secondaryTextColor = secondaryTextColor,
                         onCheckedChange = { newValue ->
                             ZentixGlobalSettings.isDarkMode = newValue
+                            val prefs = context.getSharedPreferences("zentix_prefs", Context.MODE_PRIVATE)
+                            prefs.edit().putBoolean("dark_mode", newValue).apply()
 
-                            // تطبيق الثيم رسمياً على مستوى النظام والتطبيق[cite: 9]
                             AppCompatDelegate.setDefaultNightMode(
                                 if (newValue) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
                             )
-
-                            // إعادة تحميل الأكتيفيتي لتغيير الثيم في التطبيق كله فوراً[cite: 9]
                             (context as? Activity)?.recreate()
                         }
                     )
                 }
 
-                // 3. كارت حارس الحرارة واللاج
-                item {
-                    SettingsToggleCard(
-                        title = if (isAr) "حارس الحرارة واللاجو بالذكاء الاصطناعي" else "AI Thermal & Lag Guard",
-                        description = if (isAr) "مراقبة تنبؤية محلية بالتعلم الآلي لمنع اختناق المعالج" else "Local ML predictive monitoring to prevent throttling",
-                        icon = Icons.Default.Psychology,
-                        iconColor = PurpleSwitch,
-                        switchColor = PurpleSwitch,
-                        isChecked = ZentixGlobalSettings.isAiGuardActive,
-                        cardBgColor = cardBgColor,
-                        cardBorderColor = cardBorderColor,
-                        primaryTextColor = primaryTextColor,
-                        secondaryTextColor = secondaryTextColor,
-                        onCheckedChange = { ZentixGlobalSettings.isAiGuardActive = it }
-                    )
-                }
-
-                // 4. كارت اختيار اللغة (تم حذف الدايالوج المتكرر بالخطأ من هنا)
                 item {
                     SettingsInteractiveCard(
-                        title = "اللغة / Language",
+                        title = stringResource(id = R.string.language_title),
                         description = "${currentLangObject.nativeName} (${currentLangObject.englishName})",
                         icon = Icons.Default.Language,
                         iconBgColor = if (isDark) Color(0xFF003820) else Color(0xFFE8F5E9),
@@ -232,7 +253,6 @@ fun SettingsScreen(
                     )
                 }
 
-                // 5. كارت مؤقت جلسة اللعب
                 item {
                     val timerSubtitleText = if (ZentixFpsOsdBridge.isTimerRunning) {
                         val minutes = (ZentixFpsOsdBridge.remainingTimeMs / 1000L) / 60L
@@ -243,7 +263,7 @@ fun SettingsScreen(
                     }
 
                     SettingsInteractiveCard(
-                        title = if (isAr) "مؤقت جلسة اللعب" else "Game Session Timer",
+                        title = stringResource(id = R.string.game_timer_title),
                         description = timerSubtitleText,
                         icon = Icons.Default.Timer,
                         iconBgColor = if (isDark) Color(0xFF383000) else Color(0xFFFFFDE7),
@@ -256,11 +276,10 @@ fun SettingsScreen(
                     )
                 }
 
-                // 6. كارت عن ZENTIX
                 item {
                     SettingsInteractiveCard(
-                        title = "عن ZENTIX",
-                        description = if (isAr) "الإصدار 1.0.0 - مركز التحكم في الأداء" else "Version 1.0.0 - Performance Control Center",
+                        title = stringResource(id = R.string.about_zentix_title),
+                        description = stringResource(id = R.string.about_zentix_desc),
                         icon = Icons.Default.Info,
                         iconBgColor = if (isDark) Color(0xFF38000B) else Color(0xFFFFEBEE),
                         iconTintColor = RedIcon,
@@ -274,11 +293,6 @@ fun SettingsScreen(
             }
         }
 
-        // ==================================================================================
-        // DIALOGS & POPUPS (المكان الصحيح والآمن للـ Modals)
-        // ==================================================================================
-
-        // دايالوج اللغة (مع تفعيل AppCompatDelegate لقراءة مجلدات values وإعادة التحميل الفوري)[cite: 9]
         if (showLanguageModal) {
             AlertDialog(
                 onDismissRequest = { showLanguageModal = false },
@@ -307,14 +321,11 @@ fun SettingsScreen(
                                         RoundedCornerShape(12.dp)
                                     )
                                     .clickable {
-                                        ZentixGlobalSettings.selectedLanguageCode = langItem.code
+                                        ZentixGlobalSettings.updateLanguage(context, langItem.code)
                                         showLanguageModal = false
 
-                                        // تفعيل اللغة على مستوى التطبيق وقراءة ملفات الـ values المخصصة[cite: 9]
                                         val appLocales = androidx.core.os.LocaleListCompat.forLanguageTags(langItem.code)
                                         AppCompatDelegate.setApplicationLocales(appLocales)
-
-                                        // إعادة تحميل الأكتيفيتي لتطبيق اللغة واتجاه الواجهة في التطبيق كله[cite: 9]
                                         (context as? Activity)?.recreate()
                                     }
                                     .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -350,13 +361,12 @@ fun SettingsScreen(
                 confirmButton = {},
                 dismissButton = {
                     TextButton(onClick = { showLanguageModal = false }) {
-                        Text(text = if (isAr) "إلغاء" else "Cancel", color = secondaryTextColor, fontSize = 14.sp)
+                        Text(text = stringResource(id = R.string.cancel), color = secondaryTextColor, fontSize = 14.sp)
                     }
                 }
             )
         }
 
-        // دايالوج المؤقت
         if (showTimerModal) {
             AlertDialog(
                 onDismissRequest = { showTimerModal = false },
@@ -428,13 +438,12 @@ fun SettingsScreen(
                 confirmButton = {},
                 dismissButton = {
                     TextButton(onClick = { showTimerModal = false }) {
-                        Text(text = if (isAr) "إلغاء" else "Cancel", color = secondaryTextColor, fontSize = 14.sp)
+                        Text(text = stringResource(id = R.string.cancel), color = secondaryTextColor, fontSize = 14.sp)
                     }
                 }
             )
         }
 
-        // دايالوج تنبيه انتهاء الوقت
         if (ZentixFpsOsdBridge.showTimeUpAlert) {
             AlertDialog(
                 onDismissRequest = { ZentixFpsOsdBridge.showTimeUpAlert = false },
@@ -459,7 +468,7 @@ fun SettingsScreen(
                 text = {
                     Text(
                         text = if (isAr)
-                            "لقد انتهى وقت الجلسة المحدد للحفاظ على درجة حرارة الموبايل والبطارية. يرجى أخذ قسط من الراحة!"
+                            "لقد انتهى وقت الجلسة المحدد للحفاظ على درجة حرارة الهاتف والبطارية. يرجى أخذ قسط من الراحة!"
                         else "Your allocated game session time has elapsed to protect battery health and thermal limits.",
                         color = primaryTextColor,
                         fontSize = 14.sp
@@ -476,7 +485,6 @@ fun SettingsScreen(
             )
         }
 
-        // دايالوج عن التطبيق
         if (showAboutModal) {
             AlertDialog(
                 onDismissRequest = { showAboutModal = false },

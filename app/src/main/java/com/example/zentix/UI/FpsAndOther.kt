@@ -3,32 +3,54 @@ package com.example.zentix.UI
 import android.content.Intent
 import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zentix.R
 
-private val BackgroundDark = Color(0xFF090A0F)
-private val CardBackground = Color(0xFF12141D)
-private val CardBorder = Color(0xFF1E2230)
 private val NeonRed = Color(0xFFFF2A4B)
 private val NeonCyan = Color(0xFF00E5FF)
 private val NeonGreen = Color(0xFF00E676)
@@ -40,7 +62,6 @@ fun FpsAndOtherScreen(
     BackHandler { onNavigateBack() }
     val context = LocalContext.current
 
-    // السويتش يبدأ مطفأ افتراضياً عند الدخول للصفحة
     var isMasterOsdEnabled by remember { mutableStateOf(false) }
 
     val showCpuTemp by ZentixMonitorEngine.showCpuTemp.collectAsState()
@@ -51,10 +72,18 @@ fun FpsAndOtherScreen(
     val frametimeValues by ZentixMonitorEngine.frametimeList.collectAsState()
     val uiAlpha = if (isMasterOsdEnabled) 1.0f else 0.4f
 
+    // ألوان تفاعلية بناءً على الوضع الداكن العام للتطبيق
+    val isDark = ZentixGlobalSettings.isDarkMode
+    val backgroundColor by animateColorAsState(if (isDark) Color(0xFF090A0F) else Color(0xFFF4F6FA), animationSpec = tween(300), label = "bg")
+    val cardBackground by animateColorAsState(if (isDark) Color(0xFF12141D) else Color(0xFFFFFFFF), animationSpec = tween(300), label = "card")
+    val cardBorder by animateColorAsState(if (isDark) Color(0xFF1E2230) else Color(0xFFE0E5F0), animationSpec = tween(300), label = "border")
+    val primaryTextColor by animateColorAsState(if (isDark) Color.White else Color(0xFF1A1D26), animationSpec = tween(300), label = "text1")
+    val secondaryTextColor by animateColorAsState(if (isDark) Color.Gray else Color(0xFF6B7280), animationSpec = tween(300), label = "text2")
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundDark)
+            .background(backgroundColor)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -79,27 +108,27 @@ fun FpsAndOtherScreen(
                             onClick = onNavigateBack,
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(CardBackground, RoundedCornerShape(12.dp))
-                                .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+                                .background(cardBackground, RoundedCornerShape(12.dp))
+                                .border(1.dp, cardBorder, RoundedCornerShape(12.dp))
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
-                                tint = Color.White
+                                contentDescription = stringResource(R.string.back),
+                                tint = primaryTextColor
                             )
                         }
 
                         Column {
                             Text(
-                                text = "FPS and Other",
-                                color = Color.White,
+                                text = stringResource(R.string.fps_monitor_title),
+                                color = primaryTextColor,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Black,
                                 letterSpacing = 1.2.sp
                             )
                             Text(
-                                text = "OSD Performance Monitor",
-                                color = Color.Gray,
+                                text = stringResource(R.string.osd_monitor_subtitle),
+                                color = secondaryTextColor,
                                 fontSize = 10.sp
                             )
                         }
@@ -111,9 +140,9 @@ fun FpsAndOtherScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, if (isMasterOsdEnabled) NeonGreen else CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, if (isMasterOsdEnabled) NeonGreen else cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Row(
                         modifier = Modifier
@@ -130,19 +159,19 @@ fun FpsAndOtherScreen(
                             Box(
                                 modifier = Modifier
                                     .size(36.dp)
-                                    .background(if (isMasterOsdEnabled) NeonGreen.copy(alpha = 0.15f) else CardBorder, CircleShape),
+                                    .background(if (isMasterOsdEnabled) NeonGreen.copy(alpha = 0.15f) else cardBorder, CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Visibility,
                                     contentDescription = null,
-                                    tint = if (isMasterOsdEnabled) NeonGreen else Color.Gray,
+                                    tint = if (isMasterOsdEnabled) NeonGreen else secondaryTextColor,
                                     modifier = Modifier.size(18.dp)
                                 )
                             }
                             Column {
-                                Text(text = "Master OSD Control", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                                Text(text = "إظهار أو إخفاء مؤشرات الأداء العائمة", color = Color.Gray, fontSize = 10.sp)
+                                Text(text = stringResource(R.string.master_osd_control), color = primaryTextColor, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(text = stringResource(R.string.master_osd_desc), color = secondaryTextColor, fontSize = 10.sp)
                             }
                         }
 
@@ -178,16 +207,16 @@ fun FpsAndOtherScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(100.dp)
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(12.dp)
                     ) {
-                        Text(text = "Frametime Live Graph", color = NeonCyan, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text(text = stringResource(R.string.frametime_live_graph), color = NeonCyan, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(4.dp))
                         Canvas(modifier = Modifier.fillMaxSize()) {
                             val width = size.width
@@ -218,9 +247,9 @@ fun FpsAndOtherScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(uiAlpha)
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
@@ -228,13 +257,13 @@ fun FpsAndOtherScreen(
                             .padding(14.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        OsdToggleRow("CPU Temperature", showCpuTemp, { ZentixMonitorEngine.showCpuTemp.value = it }, isMasterOsdEnabled, NeonRed)
-                        HorizontalDivider(color = CardBorder, thickness = 1.dp)
-                        OsdToggleRow("GPU Temperature", showGpuTemp, { ZentixMonitorEngine.showGpuTemp.value = it }, isMasterOsdEnabled, NeonRed)
-                        HorizontalDivider(color = CardBorder, thickness = 1.dp)
-                        OsdToggleRow("Framerate (FPS Counter)", showFramerate, { ZentixMonitorEngine.showFps.value = it }, isMasterOsdEnabled, NeonGreen)
-                        HorizontalDivider(color = CardBorder, thickness = 1.dp)
-                        OsdToggleRow("Frametime Graph", showFrametime, { ZentixMonitorEngine.showFrametime.value = it }, isMasterOsdEnabled, NeonCyan)
+                        OsdToggleRow(stringResource(R.string.cpu_temperature), showCpuTemp, { ZentixMonitorEngine.showCpuTemp.value = it }, isMasterOsdEnabled, NeonRed, primaryTextColor, secondaryTextColor, cardBorder, backgroundColor)
+                        HorizontalDivider(color = cardBorder, thickness = 1.dp)
+                        OsdToggleRow(stringResource(R.string.gpu_temperature), showGpuTemp, { ZentixMonitorEngine.showGpuTemp.value = it }, isMasterOsdEnabled, NeonRed, primaryTextColor, secondaryTextColor, cardBorder, backgroundColor)
+                        HorizontalDivider(color = cardBorder, thickness = 1.dp)
+                        OsdToggleRow(stringResource(R.string.framerate_counter), showFramerate, { ZentixMonitorEngine.showFps.value = it }, isMasterOsdEnabled, NeonGreen, primaryTextColor, secondaryTextColor, cardBorder, backgroundColor)
+                        HorizontalDivider(color = cardBorder, thickness = 1.dp)
+                        OsdToggleRow(stringResource(R.string.frametime_graph), showFrametime, { ZentixMonitorEngine.showFrametime.value = it }, isMasterOsdEnabled, NeonCyan, primaryTextColor, secondaryTextColor, cardBorder, backgroundColor)
                     }
                 }
             }
@@ -248,7 +277,11 @@ private fun OsdToggleRow(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     isEnabled: Boolean,
-    color: Color
+    color: Color,
+    primaryTextColor: Color,
+    secondaryTextColor: Color,
+    cardBorder: Color,
+    backgroundDark: Color
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -262,11 +295,11 @@ private fun OsdToggleRow(
             Box(
                 modifier = Modifier
                     .size(10.dp)
-                    .background(if (checked && isEnabled) color else Color.Gray, CircleShape)
+                    .background(if (checked && isEnabled) color else secondaryTextColor, CircleShape)
             )
             Text(
                 text = label,
-                color = if (isEnabled) (if (checked) Color.White else Color.Gray) else Color.DarkGray,
+                color = if (isEnabled) (if (checked) primaryTextColor else secondaryTextColor) else secondaryTextColor.copy(alpha = 0.5f),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -277,14 +310,14 @@ private fun OsdToggleRow(
             onCheckedChange = onCheckedChange,
             enabled = isEnabled,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = BackgroundDark,
+                checkedThumbColor = backgroundDark,
                 checkedTrackColor = color,
-                uncheckedThumbColor = Color.Gray,
-                uncheckedTrackColor = CardBorder,
-                disabledCheckedThumbColor = Color.DarkGray,
-                disabledCheckedTrackColor = Color.Gray.copy(alpha = 0.3f),
-                disabledUncheckedThumbColor = Color.DarkGray,
-                disabledUncheckedTrackColor = Color.Gray.copy(alpha = 0.1f)
+                uncheckedThumbColor = secondaryTextColor,
+                uncheckedTrackColor = cardBorder,
+                disabledCheckedThumbColor = secondaryTextColor,
+                disabledCheckedTrackColor = color.copy(alpha = 0.3f),
+                disabledUncheckedThumbColor = secondaryTextColor,
+                disabledUncheckedTrackColor = secondaryTextColor.copy(alpha = 0.1f)
             )
         )
     }

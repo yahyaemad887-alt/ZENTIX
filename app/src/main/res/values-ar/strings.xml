@@ -1,173 +1,126 @@
 <resources>
-    <!-- App Branding & Top Bar -->
-    <string name="app_name">ZENTIX</string>
+    <string name="osd_monitor_subtitle">مراقب أداء الـ OSD</string>
+    <string name="master_osd_control">التحكم الرئيسي في الـ OSD</string>
+    <string name="master_osd_desc">إظهار أو إخفاء مؤشرات الأداء العائمة</string>
+    <string name="frametime_live_graph">رسم بياني مباشر لوقت الإطارات</string>
+    <string name="cpu_temperature">حرارة المعالج المركزي</string>
+    <string name="gpu_temperature">حرارة معالج الرسوميات</string>
+    <string name="framerate_counter">عداد الإطارات (FPS)</string>
+    <string name="frametime_graph">مخطط وقت الإطارات</string>
+    <string name="game_logger_subtitle">حزمة الأداء والهاردوير الفوري</string>
+    <string name="device_identification">تعريف الجهاز</string>
+    <string name="device_model">موديل الجهاز</string>
+    <string name="cpu_processor">معالج الـ CPU</string>
+    <string name="system_version">إصدار النظام</string>
+    <string name="memory_storage_status">حالة الذاكرة والتخزين</string>
+    <string name="total_ram_available">إجمالي الرام / المتاح</string>
+    <string name="internal_storage">التخزين الداخلي (مسار التطبيق)</string>
+    <string name="storage_format">الإجمالي: %1$s | المتاح: %2$s</string>
+    <string name="bypass_charging">الشحن المباشر (Bypass)</string>
+    <string name="direct_board_active">الطاقة المباشرة للوحة مفعلة</string>
+    <string name="standard_charging_mode">وضع الشحن القياسي</string>
+    <string name="battery_level_format">مستوى البطارية: %1$d%%</string>
+    <string name="status_charging">الحالة: جاري الشحن</string>
+    <string name="status_discharging">الحالة: تفريغ الطاقة</string>
+    <string name="cpu_cores">أنوية المعالج</string>
+    <string name="active_cores_format">%1$d نشط</string>
+    <string name="power_state">حالة الطاقة</string>
+    <string name="connected">متصل</string>
+    <string name="battery_mode">وضع البطارية</string>
+    <string name="power_source">مصدر الطاقة</string>
+    <string name="previous">السابق</string>
+    <string name="next">التالي</string>
+    <string name="add_games">إضافة ألعاب</string>
+    <string name="options">الخيارات</string>
+    <string name="done_count">تم (%1$d)</string>
     <string name="app_subtitle">مركز الأداء العالي</string>
-    <string name="settings_cd">الإعدادات واللغة</string>
-
-    <!-- Quick Stats Bar -->
-    <string name="stat_cpu_temp">حرارة المعالج</string>
-    <string name="stat_ram_usage">استهلاك الرام</string>
-    <string name="stat_battery_temp">حرارة البطارية</string>
-
-    <!-- System Action Button -->
-    <string name="btn_boost_now">تسريع</string>
-    <string name="btn_boosting">جاري التسريع...</string>
-
-    <!-- 1. FPS & Other Suite -->
-    <string name="sec_msi_title">عداد الفريمات والأدوات</string>
-    <string name="sec_msi_desc">شاشة عائمة حية، عداد FPS، مسجل الشاشة، ومراقبة الهاردوير.</string>
-
-    <!-- 2. Benchmark Logger -->
+    <string name="settings_cd">الإعدادات</string>
+    <string name="sec_msi_title">حزمة الصوت والإطارات</string>
+    <string name="sec_msi_desc">شاشة عائمة مباشرة، مسجل شاشة للإطارات، ومراقبة الهاردوير.</string>
     <string name="sec_benchmark_title">سجل الألعاب</string>
     <string name="sec_benchmark_desc">تسجيل جلسات اللعب، تتبع الحرارة، وتصدير تقارير PDF.</string>
-
-    <!-- 3. Dynamic Profiles -->
-    <string name="sec_profiles_title">البروفايل التلقائي</string>
-    <string name="sec_profiles_desc">التعرف التلقائي على الألعاب مع تنظيف الذاكرة وتخصيص موارد الهاردوير.</string>
-
-    <!-- 4. Kernel Overclock -->
     <string name="sec_overclock_title">محرك الكيرنيل</string>
-    <string name="sec_overclock_desc">التحكم المباشر في ترددات CPU/GPU وأنماط Governors للأجهزة الصلاحية الجذرية (Root).</string>
-
-    <!-- Settings Screen -->
+    <string name="sec_overclock_desc">تحكم مباشر في ترددات وحكام المعالج للأجهزة التي تمتلك روت.</string>
+    <string name="superuser_active">ثنائي المستخدم الخارق نشط ومستجيب</string>
+    <string name="non_root_space">الجهاز يعمل بمساحة مستخدم قياسية بدون روت.</string>
+    <string name="reverify_root">إعادة التحقق من صلاحيات الروت</string>
+    <string name="base_freq">الأساسي: 1.8 جيجاهرتز</string>
+    <string name="extreme_freq">كسر السرعة الأقصى: 3.8 جيجاهرتز</string>
+    <string name="thermal_warning_title">تحذير خطر حراري مرتفع</string>
+    <string name="thermal_warning_desc">منحنى تردد أقصى مطبق عبر صلاحيات روت الكيرنيل.</string>
+    <string name="apply">تطبيق</string>
+    <string name="toast_root_granted">تم منح صلاحيات الروت بنجاح!</string>
+    <string name="toast_root_failed">فشل الحصول على صلاحيات الروت</string>
+    <string name="toast_cpu_applied">تم تطبيق ترددات المعالج بنجاح!</string>
+    <string name="toast_cpu_failed">تعذر تطبيق التردد (مسار غير مدعوم)</string>
+    <string name="toast_extreme_applied">تم تطبيق ترددات الأداء العالي القصوى!</string>
+    <string name="timer_active_format">نشط: %1$02d:%2$02d</string>
+    <string name="time_up_title">انتهت جلسة اللعب!</string>
+    <string name="time_up_desc">لقد انتهى وقت الجلسة المحدد للحفاظ على صحة البطارية والحدود الحرارية.</string>
+    <string name="about_zentix_center">مركز قيادة ZENTIX</string>
+    <string name="about_version">الإصدار: 1.0</string>
+    <string name="about_description">أداة تحسين ألعاب الأداء العالي\nلنظام أندرويد</string>
+    <string name="about_built_with">تم البناء باستخدام Kotlin &amp; Jetpack Compose</string>
+    <string name="ok">حسناً</string>
+    <string name="config_title">إعدادات ألعاب ZENTIX</string>
+    <string name="color_enhance_title">تحسين الألوان</string>
+    <string name="color_enhance_desc">تفعيل فلتر التشبع البصري ووضوح الألوان (Vivid HDR)</string>
+    <string name="game_accel_title">تسريع الألعاب</string>
+    <string name="game_accel_desc">تفريغ الكاش وتنظيف مسار المعالج</string>
+    <string name="dnd_mode_title">وضع عدم الإزعاج</string>
+    <string name="dnd_mode_desc">حظر المكالمات والإشعارات وجعل الهاتف صامتاً</string>
+    <string name="mute_audio_title">كتم الصوت</string>
+    <string name="mute_audio_desc">خفض صوت الوسائط والنظام إلى الصفر فوراً</string>
+    <string name="airplane_mode_title">وضع الطيران</string>
+    <string name="airplane_mode_desc">فتح إعدادات الشبكة السريعة</string>
+    <string name="net_booster_title">مُعزز الشبكة</string>
+    <string name="net_booster_desc">تثبيت حزم البيانات وإعطاء الأولوية للاتصال</string>
+    <string name="perf_mode_title">وضع الأداء</string>
+    <string name="perf_mode_desc">تعزيز أولوية المعالج لأقصى تردد والإطارات المتاحة</string>
+    <string name="overlay_channel_name">خدمة تراكب Zentix OSD</string>
+    <string name="overlay_channel_desc">خدمة مراقبة الأداء العائمة نشطة</string>
+    <string name="overlay_notification_title">Zentix OSD نشط فوق الألعاب</string>
+    <string name="overlay_notification_text">عرض مؤشرات الأداء الأساسية بدقة</string>
+    <string name="overlay_notification_title_simple">Zentix OSD نشط</string>
+    <string name="back">رجوع</string>
+    <string name="fps_monitor_title">حزمة الصوت والإطارات</string>
+    <string name="game_logger_title">سجل الألعاب</string>
+    <string name="console_title">منصة ZENTIX XMB</string>
+    <string name="search_games">بحث عن الألعاب...</string>
+    <string name="search">بحث</string>
+    <string name="settings">الإعدادات</string>
+    <string name="play_game">تشغيل اللعبة</string>
+    <string name="remove_from_hub">إزالة من المركز</string>
+    <string name="no_games_added">لم تتم إضافة ألعاب</string>
+    <string name="add_games_hint">اضغط على + في الشريط لإضافة تطبيقاتك وألعابك.</string>
+    <string name="select_apps_title">اختر التطبيقات والألعاب</string>
+    <string name="cancel">إلغاء</string>
+    <string name="search_all_apps">البحث في جميع التطبيقات المثبتة...</string>
+    <string name="app_name">ZENTIX</string>
+    <string name="game_mode_btn">وضع اللعب</string>
+    <string name="kernel_title">محرك الكيرنيل</string>
+    <string name="kernel_subtitle">التحكم المباشر في الهاردوير وترددات المعالج</string>
+    <string name="root_status_locked">صلاحيات الروت مقفلة</string>
+    <string name="status_root_detected">تم اكتشاف صلاحيات الروت</string>
+    <string name="root_failed_msg">فشل الحصول على صلاحيات المستخدم الخارق.</string>
+    <string name="root_required_msg">تتطلب تحكمات الكيرنيل صلاحيات الروت لتعديل ملفات النظام.</string>
+    <string name="btn_check_root">التحقق من حالة الروت</string>
+    <string name="section_cpu_oc">حاكم ترددات المعالج</string>
+    <string name="section_gpu_oc">مستوى أداء معالج الرسوميات</string>
+    <string name="section_extra_oc">تعديلات الكيرنيل المتقدمة</string>
+    <string name="feature_undervolt">خفض الفولتية للمعالج</string>
+    <string name="feature_undervolt_desc">تقليل الفولتية لخفض الحرارة دون فقدان الأداء</string>
+    <string name="feature_high_priority">تعزيز أولوية العمليات</string>
+    <string name="feature_high_priority_desc">تعيين أولوية عرض عاجلة لمهام اللعبة النشطة</string>
+    <string name="btn_apply_kernel">تطبيق إعدادات الكيرنيل</string>
     <string name="settings_title">الإعدادات</string>
-    <string name="setting_dark_mode">الوضع الداكن</string>
-    <string name="setting_dark_mode_desc">تفعيل الثيم الداكن المخصص للجيمنج</string>
-
-    <string name="setting_ai_mode">حارس الحرارة واللاجو بالذكاء الاصطناعي</string>
-    <string name="setting_ai_mode_desc">مراقبة تنبؤية محلية بالتعلم الآلي لمنع اختناق المعالج</string>
-
-    <string name="setting_language">اللغة / Language</string>
-    <string name="setting_game_timer">مؤقت جلسة اللعب</string>
-    <string name="setting_info">عن ZENTIX</string>
-    <string name="setting_info_desc">الإصدار 1.0.0 - مركز التحكم في الأداء</string>
-
-    <!-- Dialog Actions -->
-    <string name="dialog_cancel">إلغاء</string>
-    <string name="dialog_apply">تطبيق</string>
-
-    <!-- Game Launcher Section -->
-    <string name="launcher_title">مشغل الألعاب والتسريع</string>
-    <string name="add_game_cd">إضافة لعبة</string>
-    <string name="dialog_add_game_title">إضافة اختصار لعبة</string>
-    <string name="dialog_add_game_desc">اختر من الألعاب المثبتة لإضافتها لمشغل التسريع المباشر.</string>
-    <string name="btn_add_sample">إضافة نموذج</string>
-
-    <!-- Game Logger Advanced Gaming Strings -->
-    <string name="game_logger_title">بيانات الجيمنج والهاردوير</string>
-    <string name="tab_analytics">الهاردوير والأداء</string>
-    <string name="tab_history">سجلات الجلسات</string>
-
-    <string name="metric_stability">مؤشر الاستقرار</string>
-    <string name="metric_power">سحب الطاقة</string>
-    <string name="metric_driver">التعريف النشط</string>
-    <string name="metric_vram">استهلاك VRAM</string>
-
-    <string name="section_thermal_health">الحالة الحرارية والاختناق</string>
-    <string name="section_fps_breakdown">توزيع استقرار الفريمات</string>
-    <string name="section_active_engines">بروفايلات المحاكيات والمحركات</string>
-    <string name="section_all_sessions">جلسات اللعب المسجلة</string>
-
-    <string name="filter_all">كل الألعاب</string>
-    <string name="filter_heavy">ألعاب الكمبيوتر الثقيلة</string>
-
-    <!-- Advanced Hardware Features -->
-    <string name="section_bypass_charging">الشحن المباشر والتحكم بالكهرباء</string>
-    <string name="desc_bypass_charging">تغذية المعالج بالكهرباء مباشرة دون المرور بالبطارية لتقليل الحرارة حتى 12 درجة.</string>
-    <string name="status_bypass_active">الشحن المباشر نشط (تغذية المعالج فوراً)</string>
-    <string name="status_bypass_disabled">وضع الشحن العادي</string>
-
-    <!-- Auto Profiles Screen Strings -->
-    <string name="auto_profiles_title">البروفايلات والأتمتة التلقائية</string>
-    <string name="master_auto_switch">الرصد التلقائي الشامل</string>
-    <string name="master_auto_desc">التعرف التلقائي على الألعاب المفتوحة وتطبيق الإعدادات الأنسب لها.</string>
-    <string name="section_profiles">بروفايلات أداء الهاردوير</string>
-    <string name="section_app_mapping">ربط الألعاب والتطبيقات بالبروفايلات</string>
-    <string name="btn_create_profile">بروفايل جديد</string>
-
-    <!-- Profile Names & Details -->
-    <string name="profile_extreme">أقصى تسريع للجيمنج Turbo</string>
-    <string name="profile_balanced">أداء متوازن</string>
-    <string name="profile_saver">موفّر الحرارة والبطارية</string>
-
-    <!-- Auto Profiles & Automation Strings -->
-    <string name="auto_profiles_subtitle">الرصد الذكي للألعاب ومحرك الهاردوير</string>
-
-    <string name="section_auto_engine">خدمة الأتمتة والقواعد</string>
-    <string name="rule_auto_detect">الرصد الذكي التلقائي للألعاب</string>
-    <string name="rule_auto_detect_desc">التبديل التلقائي لبروفايل الهاردوير بمجرد فتح اللعبة في الشاشة الرئيسية.</string>
-    <string name="rule_ram_clean">تنظيف الرام التلقائي عند التشغيل</string>
-    <string name="rule_ram_clean_desc">تفريغ الذاكرة في الخلفية قبل البدء في جلسات المحاكاة الثقيلة.</string>
-    <string name="rule_thermal_guard">حارس الاختناق الحراري التلقائي</string>
-    <string name="rule_thermal_guard_desc">التحويل لبروفايل توفير الحرارة تلقائياً إذا تجاوزت حرارة المعالج 50°C.</string>
-
-    <string name="section_hardware_presets">أنماط الهاردوير الجاهزة</string>
-    <string name="section_game_rules">قواعد ربط الألعاب بالبروفايل</string>
-
-    <string name="dialog_create_profile">إنشاء بروفايل هاردوير</string>
-    <string name="dialog_profile_name">اسم البروفايل (مثال: Winlator Turbo)</string>
-    <string name="dialog_gov_select">اختر نمط المعالج (CPU Governor)</string>
-    <string name="btn_save_profile">حفظ وتطبيق</string>
-    <string name="btn_cancel">إلغاء</string>
-
-    <!-- Profile Detail & Game Selection Strings -->
-    <string name="profile_detail_title">تخصيص البروفايل وربط الألعاب</string>
-    <string name="section_assigned_games">الألعاب المربوطة بهذا البروفايل</string>
-    <string name="desc_assigned_games">حدد الألعاب التي تفعل هذا البروفايل تلقائياً فور تشغيلها.</string>
-    <string name="section_preset_tuning">إعدادات الهاردوير التفصيلية</string>
-    <string name="btn_save_changes">حفظ قواعد البروفايل</string>
-
-    <!-- Kernel Engine & Overclocking Strings -->
-    <string name="kernel_title">محرك الكيرنيل وكسر السرعة</string>
-    <string name="kernel_subtitle">كسر سرعة الهاردوير وضبط Governors</string>
-
-    <string name="status_root_detected">صلاحية الروت: مفعلة (التحكم بالكيرنيل نشط)</string>
-    <string name="status_no_root">وضع بدون روت: تحسينات مساحة المستخدم نشطة</string>
-
-    <string name="section_cpu_oc">التحكم بتردد أنوية المعالج (CPU)</string>
-    <string name="section_gpu_oc">تردد معالج الجرافيك (GPU)</string>
-    <string name="section_extra_oc">ميزات الكيرنيل المتقدمة</string>
-
-    <string name="label_stock_freq">التردد الأساسي الافتراضي</string>
-    <string name="label_target_freq">أقصى تردد مستهدف</string>
-
-    <string name="warn_safe">الحالة: آمن (الحدود الافتراضية)</string>
-    <string name="warn_moderate">الحالة: كسر سرعة متوسط (حرارة تحت المراقبة)</string>
-    <string name="warn_extreme">خطر: كسر سرعة متطرف (خطر الإغلاق الحراري)</string>
-
-    <string name="feature_undervolt">تقليل خفض الفولت (-50mV Undervolt)</string>
-    <string name="feature_undervolt_desc">يقلل سحب الطاقة وحرارة المعالج أثناء الضغط العالي.</string>
-
-    <string name="feature_high_priority">أولوية قصوى لعمليات اللعبة</string>
-    <string name="feature_high_priority_desc">إجبار النظام على تخصيص 90% من دورات المعالج للعبة المفتوحة.</string>
-
-    <string name="btn_apply_kernel">تطبيق الترددات الجديدة</string>
-
-    <!-- Kernel Root Check Strings -->
-    <string name="btn_check_root">فحص صلاحيات الروت</string>
-    <string name="root_status_locked">محرك الكيرنيل مغلق - يلزم التأكد من الروت</string>
-    <string name="root_required_msg">صلاحيات الروت مطلوبة لفتح سلايدرات الترددات والتحكم بالفولت.</string>
-    <string name="root_success_msg">تم منح صلاحيات الروت! واجهة الكيرنيل مفتوحة.</string>
-    <string name="root_failed_msg">لم يتم رصد الروت! يعمل النظام بالوضع المحدود.</string>
-
-    <!-- FPS & MSI OSD Suite Strings -->
-    <string name="fps_screen_title">الشاشة العائمة ومسجل الفيديو</string>
-    <string name="fps_screen_subtitle">أدوات مراقبة MSI Afterburner ومسجل الشاشة</string>
-
-    <string name="tab_osd_monitoring">مراقبة OSD</string>
-    <string name="tab_recorder">تسجيل الفيديو</string>
-
-    <string name="section_polling_rate">معدل تحديث القراءة (Polling Period)</string>
-    <string name="section_monitoring_graphs">رسوم المراقبة النشطة (نمط MSI)</string>
-    <string name="section_video_properties">خصائص تسجيل الفيديو</string>
-
-    <string name="btn_open_recorder_config">ضبط محرك التسجيل</string>
-    <string name="label_poll_ms">معدل التحديث: 1000 ملي ثانية</string>
-
-    <!-- Enhanced OSD & Video Recorder Strings -->
-    <string name="master_osd_switch">خدمة الشاشة العائمة الرئيسية</string>
-    <string name="master_osd_desc">تفعيل العداد العائم فوق الألعاب النشطة.</string>
-    <string name="section_all_graphs">مراقبة MSI Afterburner الشاملة</string>
-    <string name="btn_open_folder">فتح مجلد الفيديوهات المسجلة</string>
-    <string name="recorder_status_active">محرك التسجيل: جاهز / نشط</string>
+    <string name="dark_mode_title">الوضع الداكن</string>
+    <string name="dark_mode_desc">تفعيل الثيم الداكن المخصص للألعاب</string>
+    <string name="ai_guardian_title">حارس الذكاء الاصطناعي للحرارة واللاغ</string>
+    <string name="ai_guardian_desc">مراقبة محلية بالتعلم الآلي لمنع اختناق حرارة المعالج</string>
+    <string name="language_title">اللغة / Language</string>
+    <string name="game_timer_title">مؤقت جلسة اللعب</string>
+    <string name="about_zentix_title">حول ZENTIX</string>
+    <string name="about_zentix_desc">الإصدار 1.0.0 - مركز تحكم الأداء</string>
+    <string name="select_app_language">اختر لغة التطبيق</string>
 </resources>

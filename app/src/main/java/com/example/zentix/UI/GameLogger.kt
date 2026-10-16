@@ -6,20 +6,46 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Build
-import android.os.Environment
 import android.os.StatFs
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.Power
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,16 +59,11 @@ import com.example.zentix.R
 import java.io.File
 import java.util.Locale
 
-// ألوان ثيم ZENTIX الداكن الاحترافي
-private val BackgroundDark = Color(0xFF090A0F)
-private val CardBackground = Color(0xFF12141D)
-private val CardBorder = Color(0xFF1E2230)
 private val NeonCyan = Color(0xFF00E5FF)
 private val NeonGreen = Color(0xFF00E676)
 private val NeonAmber = Color(0xFFFFD600)
 private val NeonPurple = Color(0xFFB388FF)
 
-// دالة ديناميكية لقراءة اسم المعالج الحقيقي من نظام الهاتف
 private fun getCpuHardwareInfo(): String {
     return try {
         val cpuInfo = File("/proc/cpuinfo").readText()
@@ -57,7 +78,6 @@ private fun getCpuHardwareInfo(): String {
     }
 }
 
-// دالة لحساب عدد الأنوية الحقيقية المتاحة في معالج الهاتف الحالي
 private fun getCpuCoresCount(): Int {
     return Runtime.getRuntime().availableProcessors()
 }
@@ -73,25 +93,21 @@ fun GameLoggerScreen(
     val context = LocalContext.current
     var isBypassChargingEnabled by remember { mutableStateOf(true) }
 
-    // --- قراءة بيانات الهاردوير الحقيقية للجهاز الحالي ديناميكياً ---
     val deviceModel = "${Build.MANUFACTURER.replaceFirstChar { it.uppercase() }} ${Build.MODEL}"
     val androidVersion = "Android ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})"
     val cpuProcessor = getCpuHardwareInfo()
     val coresCount = getCpuCoresCount()
 
-    // قراءة الرامات الحقيقية
     val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     val memInfo = ActivityManager.MemoryInfo()
     activityManager.getMemoryInfo(memInfo)
     val totalRamGb = String.format(Locale.US, "%.1f GB", memInfo.totalMem / (1024.0 * 1024.0 * 1024.0))
     val availRamGb = String.format(Locale.US, "%.1f GB", memInfo.availMem / (1024.0 * 1024.0 * 1024.0))
 
-    // قراءة التخزين الداخلي الحقيقي بطريقة سليمة
     val stat = StatFs(context.filesDir.path)
     val totalStorageGb = String.format(Locale.US, "%.1f GB", stat.totalBytes / (1024.0 * 1024.0 * 1024.0))
     val freeStorageGb = String.format(Locale.US, "%.1f GB", stat.availableBytes / (1024.0 * 1024.0 * 1024.0))
 
-    // قراءة حالة البطارية الحقيقية
     val batteryStatus: Intent? = IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
         context.registerReceiver(null, ifilter)
     }
@@ -99,10 +115,18 @@ fun GameLoggerScreen(
     val batteryPlugged = batteryStatus?.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1) ?: 0
     val isCharging = batteryPlugged > 0
 
+    // ألوان تفاعلية بناءً على الوضع الداكن العام للتطبيق
+    val isDark = ZentixGlobalSettings.isDarkMode
+    val backgroundColor by animateColorAsState(if (isDark) Color(0xFF090A0F) else Color(0xFFF4F6FA), animationSpec = tween(300), label = "bg")
+    val cardBackground by animateColorAsState(if (isDark) Color(0xFF12141D) else Color(0xFFFFFFFF), animationSpec = tween(300), label = "card")
+    val cardBorder by animateColorAsState(if (isDark) Color(0xFF1E2230) else Color(0xFFE0E5F0), animationSpec = tween(300), label = "border")
+    val primaryTextColor by animateColorAsState(if (isDark) Color.White else Color(0xFF1A1D26), animationSpec = tween(300), label = "text1")
+    val secondaryTextColor by animateColorAsState(if (isDark) Color.Gray else Color(0xFF6B7280), animationSpec = tween(300), label = "text2")
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundDark)
+            .background(backgroundColor)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -111,7 +135,6 @@ fun GameLoggerScreen(
             contentPadding = PaddingValues(top = 16.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // 1. الهيدر العلوي
             item {
                 Row(
                     modifier = Modifier
@@ -123,14 +146,14 @@ fun GameLoggerScreen(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = stringResource(id = R.string.game_logger_title),
-                            color = Color.White,
+                            color = primaryTextColor,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Black,
                             letterSpacing = 1.2.sp
                         )
                         Text(
-                            text = "Real-Time Hardware & Performance Suite",
-                            color = Color.Gray,
+                            text = stringResource(id = R.string.game_logger_subtitle),
+                            color = secondaryTextColor,
                             fontSize = 10.sp
                         )
                     }
@@ -139,26 +162,25 @@ fun GameLoggerScreen(
                         onClick = onNavigateBack,
                         modifier = Modifier
                             .size(40.dp)
-                            .background(CardBackground, RoundedCornerShape(12.dp))
-                            .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+                            .background(cardBackground, RoundedCornerShape(12.dp))
+                            .border(1.dp, cardBorder, RoundedCornerShape(12.dp))
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
-                            tint = Color.White
+                            contentDescription = stringResource(id = R.string.back),
+                            tint = primaryTextColor
                         )
                     }
                 }
             }
 
-            // 2. كارت معلومات الهاتف الأساسية
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
@@ -171,24 +193,23 @@ fun GameLoggerScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(imageVector = Icons.Default.PhoneAndroid, contentDescription = null, tint = NeonCyan, modifier = Modifier.size(18.dp))
-                            Text(text = "Device Identification", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            Text(text = stringResource(id = R.string.device_identification), color = primaryTextColor, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                         }
-                        HorizontalDivider(color = CardBorder)
-                        HardwareInfoRow(label = "Device Model", value = deviceModel)
-                        HardwareInfoRow(label = "CPU Processor", value = cpuProcessor)
-                        HardwareInfoRow(label = "System Version", value = androidVersion)
+                        HorizontalDivider(color = cardBorder)
+                        HardwareInfoRow(label = stringResource(id = R.string.device_model), value = deviceModel, primaryTextColor, secondaryTextColor)
+                        HardwareInfoRow(label = stringResource(id = R.string.cpu_processor), value = cpuProcessor, primaryTextColor, secondaryTextColor)
+                        HardwareInfoRow(label = stringResource(id = R.string.system_version), value = androidVersion, primaryTextColor, secondaryTextColor)
                     }
                 }
             }
 
-            // 3. كارت الذاكرة العشوائية (RAM) والتخزين
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
@@ -201,23 +222,22 @@ fun GameLoggerScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(imageVector = Icons.Default.Storage, contentDescription = null, tint = NeonGreen, modifier = Modifier.size(18.dp))
-                            Text(text = "Memory & Storage Status", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            Text(text = stringResource(id = R.string.memory_storage_status), color = primaryTextColor, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                         }
-                        HorizontalDivider(color = CardBorder)
-                        HardwareInfoRow(label = "Total RAM / Available", value = "$totalRamGb / $availRamGb")
-                        HardwareInfoRow(label = "Internal Storage (App Dir)", value = "Total: $totalStorageGb | Free: $freeStorageGb")
+                        HorizontalDivider(color = cardBorder)
+                        HardwareInfoRow(label = stringResource(id = R.string.total_ram_available), value = "$totalRamGb / $availRamGb", primaryTextColor, secondaryTextColor)
+                        HardwareInfoRow(label = stringResource(id = R.string.internal_storage), value = stringResource(id = R.string.storage_format, totalStorageGb, freeStorageGb), primaryTextColor, secondaryTextColor)
                     }
                 }
             }
 
-            // 4. ميزة Bypass Charging والبطارية
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+                        .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground)
+                    colors = CardDefaults.cardColors(containerColor = cardBackground)
                 ) {
                     Column(
                         modifier = Modifier
@@ -250,14 +270,14 @@ fun GameLoggerScreen(
                                 }
                                 Column {
                                     Text(
-                                        text = "Bypass Charging",
-                                        color = Color.White,
+                                        text = stringResource(id = R.string.bypass_charging),
+                                        color = primaryTextColor,
                                         fontSize = 13.sp,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        text = if (isBypassChargingEnabled) "Direct Board Power Active" else "Standard Charging Mode",
-                                        color = if (isBypassChargingEnabled) NeonGreen else Color.Gray,
+                                        text = if (isBypassChargingEnabled) stringResource(id = R.string.direct_board_active) else stringResource(id = R.string.standard_charging_mode),
+                                        color = if (isBypassChargingEnabled) NeonGreen else secondaryTextColor,
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -268,28 +288,27 @@ fun GameLoggerScreen(
                                 checked = isBypassChargingEnabled,
                                 onCheckedChange = { isBypassChargingEnabled = it },
                                 colors = SwitchDefaults.colors(
-                                    checkedThumbColor = BackgroundDark,
+                                    checkedThumbColor = backgroundColor,
                                     checkedTrackColor = NeonCyan,
-                                    uncheckedThumbColor = Color.Gray,
-                                    uncheckedTrackColor = CardBorder
+                                    uncheckedThumbColor = secondaryTextColor,
+                                    uncheckedTrackColor = cardBorder
                                 )
                             )
                         }
 
-                        HorizontalDivider(color = CardBorder)
+                        HorizontalDivider(color = cardBorder)
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(text = "Battery Level: $batteryLevel%", color = Color.Gray, fontSize = 11.sp)
-                            Text(text = if (isCharging) "Status: Charging" else "Status: Discharging", color = NeonAmber, fontSize = 11.sp)
+                            Text(text = stringResource(id = R.string.battery_level_format, batteryLevel), color = secondaryTextColor, fontSize = 11.sp)
+                            Text(text = if (isCharging) stringResource(id = R.string.status_charging) else stringResource(id = R.string.status_discharging), color = NeonAmber, fontSize = 11.sp)
                         }
                     }
                 }
             }
 
-            // 5. مؤشرات الأداء الديناميكية
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -297,19 +316,27 @@ fun GameLoggerScreen(
                 ) {
                     TelemetryMetricCard(
                         modifier = Modifier.weight(1f),
-                        title = "CPU Cores",
-                        value = "$coresCount Active",
+                        title = stringResource(id = R.string.cpu_cores),
+                        value = stringResource(id = R.string.active_cores_format, coresCount),
                         subtitle = Build.SUPPORTED_ABIS.firstOrNull() ?: "ARM64",
                         accentColor = NeonPurple,
-                        icon = Icons.Default.Memory
+                        icon = Icons.Default.Memory,
+                        cardBackground = cardBackground,
+                        cardBorder = cardBorder,
+                        primaryTextColor = primaryTextColor,
+                        secondaryTextColor = secondaryTextColor
                     )
                     TelemetryMetricCard(
                         modifier = Modifier.weight(1f),
-                        title = "Power State",
-                        value = if (isCharging) "Connected" else "Battery Mode",
-                        subtitle = "Power Source",
+                        title = stringResource(id = R.string.power_state),
+                        value = if (isCharging) stringResource(id = R.string.connected) else stringResource(id = R.string.battery_mode),
+                        subtitle = stringResource(id = R.string.power_source),
                         accentColor = NeonCyan,
-                        icon = Icons.Default.Bolt
+                        icon = Icons.Default.Bolt,
+                        cardBackground = cardBackground,
+                        cardBorder = cardBorder,
+                        primaryTextColor = primaryTextColor,
+                        secondaryTextColor = secondaryTextColor
                     )
                 }
             }
@@ -317,16 +344,14 @@ fun GameLoggerScreen(
     }
 }
 
-// ---------------- مكونات فرعية ---------------- //
-
 @Composable
-private fun HardwareInfoRow(label: String, value: String) {
+private fun HardwareInfoRow(label: String, value: String, primaryTextColor: Color, secondaryTextColor: Color) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, color = Color.Gray, fontSize = 11.sp)
-        Text(text = value, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+        Text(text = label, color = secondaryTextColor, fontSize = 11.sp)
+        Text(text = value, color = primaryTextColor, fontSize = 11.sp, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -337,14 +362,18 @@ private fun TelemetryMetricCard(
     value: String,
     subtitle: String,
     accentColor: Color,
-    icon: ImageVector
+    icon: ImageVector,
+    cardBackground: Color,
+    cardBorder: Color,
+    primaryTextColor: Color,
+    secondaryTextColor: Color
 ) {
     Card(
         modifier = modifier
             .height(115.dp)
-            .border(1.dp, CardBorder, RoundedCornerShape(16.dp)),
+            .border(1.dp, cardBorder, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackground)
+        colors = CardDefaults.cardColors(containerColor = cardBackground)
     ) {
         Column(
             modifier = Modifier
@@ -357,7 +386,7 @@ private fun TelemetryMetricCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = title, color = Color.Gray, fontSize = 11.sp)
+                Text(text = title, color = secondaryTextColor, fontSize = 11.sp)
                 Box(
                     modifier = Modifier
                         .size(28.dp)
@@ -369,7 +398,7 @@ private fun TelemetryMetricCard(
             }
 
             Column {
-                Text(text = value, color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Black)
+                Text(text = value, color = primaryTextColor, fontSize = 14.sp, fontWeight = FontWeight.Black)
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(text = subtitle, color = accentColor, fontSize = 10.sp, fontWeight = FontWeight.Bold)
             }

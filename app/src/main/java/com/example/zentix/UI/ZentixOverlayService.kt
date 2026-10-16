@@ -14,9 +14,13 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import com.example.zentix.R
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
 class ZentixOverlayService : Service() {
     private lateinit var windowManager: WindowManager
@@ -32,7 +36,6 @@ class ZentixOverlayService : Service() {
 
         val inflater = LayoutInflater.from(this)
 
-        // نافذة العوامة الأساسية للـ FPS والحرارة
         floatingView = try {
             inflater.inflate(R.layout.zentix_floating_overlay, null)
         } catch (e: Exception) {
@@ -46,7 +49,6 @@ class ZentixOverlayService : Service() {
                 WindowManager.LayoutParams.TYPE_PHONE
             }
 
-            // إعدادات العوامة الأساسية (مرور اللمس عشان ما تعطلش اللعب)
             val params = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -77,10 +79,10 @@ class ZentixOverlayService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "Zentix OSD Overlay Service",
+                getString(R.string.overlay_channel_name),
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "خدمة مراقبة الأداء العائمة نشطة الآن"
+                description = getString(R.string.overlay_channel_desc)
             }
             val manager = getSystemService(NotificationManager::class.java)
             manager?.createNotificationChannel(channel)
@@ -88,13 +90,13 @@ class ZentixOverlayService : Service() {
 
         val notification: Notification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder(this, channelId)
-                .setContentTitle("Zentix OSD نشط فوق الألعاب")
-                .setContentText("جاري عرض مؤشرات الأداء الأساسية بدقة")
+                .setContentTitle(getString(R.string.overlay_notification_title))
+                .setContentText(getString(R.string.overlay_notification_text))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .build()
         } else {
             Notification.Builder(this)
-                .setContentTitle("Zentix OSD نشط")
+                .setContentTitle(getString(R.string.overlay_notification_title_simple))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .build()
         }
@@ -114,7 +116,6 @@ class ZentixOverlayService : Service() {
 
         serviceScope.launch {
             try {
-                // 1. حرارة المعالج
                 launch {
                     combine(ZentixMonitorEngine.showCpuTemp, ZentixMonitorEngine.cpuTempFlow) { isShow, temp ->
                         isShow to temp
@@ -124,7 +125,6 @@ class ZentixOverlayService : Service() {
                     }
                 }
 
-                // 2. حرارة كارت الشاشة
                 launch {
                     combine(ZentixMonitorEngine.showGpuTemp, ZentixMonitorEngine.gpuTempFlow) { isShow, temp ->
                         isShow to temp
@@ -134,7 +134,6 @@ class ZentixOverlayService : Service() {
                     }
                 }
 
-                // 3. الـ FPS
                 launch {
                     combine(ZentixMonitorEngine.showFps, ZentixMonitorEngine.fpsFlow) { isShow, fps ->
                         isShow to fps
@@ -144,7 +143,6 @@ class ZentixOverlayService : Service() {
                     }
                 }
 
-                // 4. وقت الإطار Frametime
                 launch {
                     combine(ZentixMonitorEngine.showFrametime, ZentixMonitorEngine.frametimeFlow) { isShow, ft ->
                         isShow to ft

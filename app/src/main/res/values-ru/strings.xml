@@ -1,173 +1,126 @@
 <resources>
-    <!-- App Branding & Top Bar -->
+    <string name="osd_monitor_subtitle">Монитор производительности OSD</string>
+    <string name="master_osd_control">Главное управление OSD</string>
+    <string name="master_osd_desc">Показать или скрыть плавающие индикаторы производительности</string>
+    <string name="frametime_live_graph">График времени кадров в реальном времени</string>
+    <string name="cpu_temperature">Температура CPU</string>
+    <string name="gpu_temperature">Температура GPU</string>
+    <string name="framerate_counter">Частота кадров (Счетчик FPS)</string>
+    <string name="frametime_graph">График времени кадров</string>
+    <string name="game_logger_subtitle">Аппаратный пакет производительности в реальном времени</string>
+    <string name="device_identification">Идентификация устройства</string>
+    <string name="device_model">Модель устройства</string>
+    <string name="cpu_processor">Процессор CPU</string>
+    <string name="system_version">Версия системы</string>
+    <string name="memory_storage_status">Состояние памяти и хранилища</string>
+    <string name="total_ram_available">Общая ОЗУ / Доступно</string>
+    <string name="internal_storage">Внутренняя память (Каталог прил.)</string>
+    <string name="storage_format">Всего: %1$s | Свободно: %2$s</string>
+    <string name="bypass_charging">Обходная зарядка (Bypass)</string>
+    <string name="direct_board_active">Прямое питание платы активно</string>
+    <string name="standard_charging_mode">Стандартный режим зарядки</string>
+    <string name="battery_level_format">Уровень батареи: %1$d%%</string>
+    <string name="status_charging">Статус: Зарядка</string>
+    <string name="status_discharging">Статус: Разрядка</string>
+    <string name="cpu_cores">Ядра CPU</string>
+    <string name="active_cores_format">%1$d Активных</string>
+    <string name="power_state">Состояние питания</string>
+    <string name="connected">Подключено</string>
+    <string name="battery_mode">Режим батареи</string>
+    <string name="power_source">Источник питания</string>
+    <string name="previous">Назад</string>
+    <string name="next">Далее</string>
+    <string name="add_games">Добавить игры</string>
+    <string name="options">Опции</string>
+    <string name="done_count">Готово (%1$d)</string>
+    <string name="app_subtitle">Центр высокой производительности</string>
+    <string name="settings_cd">Настройки</string>
+    <string name="sec_msi_title">Пакет FPS и аудио</string>
+    <string name="sec_msi_desc">Плавающий экран, рекордер FPS и мониторинг оборудования.</string>
+    <string name="sec_benchmark_title">Логгер игр</string>
+    <string name="sec_benchmark_desc">Запись игровых сессий, отслеживание температуры и экспорт отчетов PDF.</string>
+    <string name="sec_overclock_title">Ядро-движок (Kernel)</string>
+    <string name="sec_overclock_desc">Прямое управление частотами CPU/GPU для рутированных устройств.</string>
+    <string name="superuser_active">Бинарный файл Superuser активен</string>
+    <string name="non_root_space">Устройство работает в стандартном пространстве без root.</string>
+    <string name="reverify_root">Перепроверить Root-доступ</string>
+    <string name="base_freq">Базовая: 1.8 ГГц</string>
+    <string name="extreme_freq">Экстремальный разгон: 3.8 ГГц</string>
+    <string name="thermal_warning_title">Предупреждение о высоком тепловом риске</string>
+    <string name="thermal_warning_desc">Экстремальная кривая частот применена через Root-права ядра.</string>
+    <string name="apply">Применить</string>
+    <string name="toast_root_granted">Root-права успешно предоставлены!</string>
+    <string name="toast_root_failed">Не удалось получить Root-права</string>
+    <string name="toast_cpu_applied">Частоты CPU успешно применены!</string>
+    <string name="toast_cpu_failed">Не удалось применить частоту (путь не поддерживается)</string>
+    <string name="toast_extreme_applied">Экстремальные частоты производительности применены!</string>
+    <string name="timer_active_format">Активно: %1$02d:%2$02d</string>
+    <string name="time_up_title">Игровая сессия завершена!</string>
+    <string name="time_up_desc">Выделенное время игровой сессии истекло для защиты здоровья батареи и тепловых лимитов.</string>
+    <string name="about_zentix_center">Командный центр ZENTIX</string>
+    <string name="about_version">Версия: 1.0</string>
+    <string name="about_description">Инструмент оптимизации игр для Android\nс высокой производительностью</string>
+    <string name="about_built_with">Создано на Kotlin &amp; Jetpack Compose</string>
+    <string name="ok">OK</string>
+    <string name="config_title">КОНФИГУРАЦИЯ ИГР ZENTIX</string>
+    <string name="color_enhance_title">Улучшение цвета</string>
+    <string name="color_enhance_desc">Активация фильтра визуальной насыщенности и четкости цвета (Vivid HDR)</string>
+    <string name="game_accel_title">Ускорение игр</string>
+    <string name="game_accel_desc">Очистка кэша и путей процессора</string>
+    <string name="dnd_mode_title">Не беспокоить</string>
+    <string name="dnd_mode_desc">Блокировка звонков и уведомлений, отключение звука телефона</string>
+    <string name="mute_audio_title">Отключить звук</string>
+    <string name="mute_audio_desc">Мгновенное снижение громкости медиа и системы до нуля</string>
+    <string name="airplane_mode_title">Режим полета</string>
+    <string name="airplane_mode_desc">Открыть быстрые настройки сети</string>
+    <string name="net_booster_title">Ускоритель сети</string>
+    <string name="net_booster_desc">Стабилизация пакетов данных и приоритизация соединения</string>
+    <string name="perf_mode_title">Режим производительности</string>
+    <string name="perf_mode_desc">Повышение приоритета процессора до макс. частоты и доступных кадров</string>
+    <string name="overlay_channel_name">Служба оверлея Zentix OSD</string>
+    <string name="overlay_channel_desc">Плавающая служба мониторинга производительности активна</string>
+    <string name="overlay_notification_title">Zentix OSD активен поверх игр</string>
+    <string name="overlay_notification_text">Точное отображение ключевых показателей производительности</string>
+    <string name="overlay_notification_title_simple">Zentix OSD активен</string>
+    <string name="back">Назад</string>
+    <string name="fps_monitor_title">Пакет FPS и аудио</string>
+    <string name="game_logger_title">Логгер игр</string>
+    <string name="console_title">КОНСОЛЬ ZENTIX XMB</string>
+    <string name="search_games">Поиск игр...</string>
+    <string name="search">Поиск</string>
+    <string name="settings">Настройки</string>
+    <string name="play_game">Играть</string>
+    <string name="remove_from_hub">Удалить из хаба</string>
+    <string name="no_games_added">Игры не добавлены</string>
+    <string name="add_games_hint">Нажмите + на панели, чтобы добавить приложения и игры.</string>
+    <string name="select_apps_title">Выбрать приложения и игры</string>
+    <string name="cancel">Отмена</string>
+    <string name="search_all_apps">Поиск по всем установленным приложениям...</string>
     <string name="app_name">ZENTIX</string>
-    <string name="app_subtitle">ЦЕНТР ПРОИЗВОДИТЕЛЬНОСТИ</string>
-    <string name="settings_cd">Настройки и Локализация</string>
-
-    <!-- Quick Stats Bar -->
-    <string name="stat_cpu_temp">Темп. ЦП</string>
-    <string name="stat_ram_usage">ОЗУ</string>
-    <string name="stat_battery_temp">Темп. Бат.</string>
-
-    <!-- System Action Button -->
-    <string name="btn_boost_now">УСКОРИТЬ</string>
-    <string name="btn_boosting">УСКОРЕНИЕ...</string>
-
-    <!-- 1. FPS & Other Suite -->
-    <string name="sec_msi_title">FPS и Утилиты</string>
-    <string name="sec_msi_desc">Оверлей HUD, счетчик FPS в реальном времени, запись экрана и мониторинг железа.</string>
-
-    <!-- 2. Benchmark Logger -->
-    <string name="sec_benchmark_title">Game Logger</string>
-    <string name="sec_benchmark_desc">Запись игровых сессий, отслеживание температуры и экспорт PDF-отчетов.</string>
-
-    <!-- 3. Dynamic Profiles -->
-    <string name="sec_profiles_title">Автопрофиль</string>
-    <string name="sec_profiles_desc">Автоопределение игр с моментальной очисткой кэша и выделением ресурсов.</string>
-
-    <!-- 4. Kernel Overclock -->
-    <string name="sec_overclock_title">Ядро (Kernel)</string>
-    <string name="sec_overclock_desc">Разгон ЦП/ГП и управление Governors для устройств с Root-правами.</string>
-
-    <!-- Settings Screen -->
-    <string name="settings_title">НАСТРОЙКИ</string>
-    <string name="setting_dark_mode">Тёмная тема</string>
-    <string name="setting_dark_mode_desc">Включить тёмный игровой интерфейс</string>
-
-    <string name="setting_ai_mode">ИИ-Защита от нагрева и лагов</string>
-    <string name="setting_ai_mode_desc">Локальный ИИ-мониторинг для предотвращения троттлинга</string>
-
-    <string name="setting_language">Язык / Language</string>
-    <string name="setting_game_timer">Таймер игровой сессии</string>
-    <string name="setting_info">О ZENTIX</string>
-    <string name="setting_info_desc">Версия 1.0.0 - Центр управления производительностью</string>
-
-    <!-- Dialog Actions -->
-    <string name="dialog_cancel">Отмена</string>
-    <string name="dialog_apply">Применить</string>
-
-    <!-- Game Launcher Section -->
-    <string name="launcher_title">Игровой лончер и Ускорение</string>
-    <string name="add_game_cd">Добавить игру</string>
-    <string name="dialog_add_game_title">Добавить ярлык игры</string>
-    <string name="dialog_add_game_desc">Выберите установленные игры для добавления в лончер прямого ускорения.</string>
-    <string name="btn_add_sample">Добавить пример</string>
-
-    <!-- Game Logger Advanced Gaming Strings -->
-    <string name="game_logger_title">ИГРОВАЯ ТЕЛЕМЕТРИЯ И ЖЕЛЕЗО</string>
-    <string name="tab_analytics">Железо и Производительность</string>
-    <string name="tab_history">Логи сессий</string>
-
-    <string name="metric_stability">Стабильность</string>
-    <string name="metric_power">Энергопотребление</string>
-    <string name="metric_driver">Активный драйвер</string>
-    <string name="metric_vram">Использование VRAM</string>
-
-    <string name="section_thermal_health">Температура и Троттлинг</string>
-    <string name="section_fps_breakdown">Распределение стабильности FPS</string>
-    <string name="section_active_engines">Профили эмуляторов и движков</string>
-    <string name="section_all_sessions">Записанные игровые сессии</string>
-
-    <string name="filter_all">Все игры</string>
-    <string name="filter_heavy">Тяжёлые ПК-игры</string>
-
-    <!-- Advanced Hardware Features -->
-    <string name="section_bypass_charging">Bypass-зарядка и Питание</string>
-    <string name="desc_bypass_charging">Питание ЦП напрямую в обход батареи для снижения нагрева до 12°C.</string>
-    <string name="status_bypass_active">Bypass активен (Прямое питание ЦП)</string>
-    <string name="status_bypass_disabled">Обычный режим зарядки</string>
-
-    <!-- Auto Profiles Screen Strings -->
-    <string name="auto_profiles_title">АВТОПРОФИЛИ И АВТОМАТИЗАЦИЯ</string>
-    <string name="master_auto_switch">Главное автоопределение</string>
-    <string name="master_auto_desc">Автоматическое определение игр и применение пресетов железа.</string>
-    <string name="section_profiles">Профили производительности</string>
-    <string name="section_app_mapping">Привязка профилей к играм</string>
-    <string name="btn_create_profile">Новый профиль</string>
-
-    <!-- Profile Names & Details -->
-    <string name="profile_extreme">Extreme Gaming Turbo</string>
-    <string name="profile_balanced">Сбалансированный</string>
-    <string name="profile_saver">Энергосбережение и Охлаждение</string>
-
-    <!-- Auto Profiles & Automation Strings -->
-    <string name="auto_profiles_subtitle">Умное определение игр и движок железа</string>
-
-    <string name="section_auto_engine">Служба автоматизации и Правила</string>
-    <string name="rule_auto_detect">Умное автоопределение игр</string>
-    <string name="rule_auto_detect_desc">Автоматическая смена профиля при запуске игры на переднем плане.</string>
-    <string name="rule_ram_clean">Автоочистка ОЗУ при запуске</string>
-    <string name="rule_ram_clean_desc">Очистка фоновой памяти перед запуском тяжёлых эмуляторов.</string>
-    <string name="rule_thermal_guard">Автозащита от перегрева</string>
-    <string name="rule_thermal_guard_desc">Переход в режим охлаждения, если температура ЦП превышает 50°C.</string>
-
-    <string name="section_hardware_presets">Пресеты железа</string>
-    <string name="section_game_rules">Правила привязки игр</string>
-
-    <string name="dialog_create_profile">Создать профиль железа</string>
-    <string name="dialog_profile_name">Название (напр. Winlator Turbo)</string>
-    <string name="dialog_gov_select">Выберите CPU Governor</string>
-    <string name="btn_save_profile">Сохранить и Применить</string>
-    <string name="btn_cancel">Отмена</string>
-
-    <!-- Profile Detail & Game Selection Strings -->
-    <string name="profile_detail_title">НАСТРОЙКА И НАЗНАЧЕНИЕ ПРОФИЛЯ</string>
-    <string name="section_assigned_games">Назначенные игры</string>
-    <string name="desc_assigned_games">Выберите игры, которые будут автоматически активировать этот профиль.</string>
-    <string name="section_preset_tuning">Параметры железа</string>
-    <string name="btn_save_changes">Сохранить правила</string>
-
-    <!-- Kernel Engine & Overclocking Strings -->
-    <string name="kernel_title">KERNEL ENGINE И РАЗГОН</string>
-    <string name="kernel_subtitle">Разгон железа и настройка Governors</string>
-
-    <string name="status_root_detected">Root-доступ: ПРЕДОСТАВЛЕН (Управление ядром активно)</string>
-    <string name="status_no_root">Режим без Root: Оптимизация на уровне пользователя</string>
-
-    <string name="section_cpu_oc">Управление частотой ядер ЦП</string>
-    <string name="section_gpu_oc">Частота ядра ГП (GPU)</string>
-    <string name="section_extra_oc">Дополнительные функции ядра</string>
-
-    <string name="label_stock_freq">Базовая заводская частота</string>
-    <string name="label_target_freq">Целевая максимальная частота</string>
-
-    <string name="warn_safe">Статус: Безопасно (Заводские лимиты)</string>
-    <string name="warn_moderate">Статус: Умеренный разгон (Контроль нагрева)</string>
-    <string name="warn_extreme">ОПАСНОСТЬ: Экстремальный разгон (Риск перегрева)</string>
-
-    <string name="feature_undervolt">Андервольтинг ядра (-50mV)</string>
-    <string name="feature_undervolt_desc">Снижает энергопотребление и нагрев под высокой нагрузкой.</string>
-
-    <string name="feature_high_priority">Высокий приоритет игрового процесса</string>
-    <string name="feature_high_priority_desc">Принуждает планировщик Android отдавать 90% ресурсов ЦП активной игре.</string>
-
-    <string name="btn_apply_kernel">Применить частоты</string>
-
-    <!-- Kernel Root Check Strings -->
-    <string name="btn_check_root">Проверить Root-доступ</string>
-    <string name="root_status_locked">Движок ядра заблокирован - Требуется проверка Root</string>
-    <string name="root_required_msg">Root-права необходимы для разблокировки ползунков частот и напряжения.</string>
-    <string name="root_success_msg">Root доступ предоставлен! Интерфейс ядра разблокирован.</string>
-    <string name="root_failed_msg">Root не обнаружен! Работа в ограниченном режиме.</string>
-
-    <!-- FPS & MSI OSD Suite Strings -->
-    <string name="fps_screen_title">HUD, OSD И ЗАПИСЬ ВИДЕО</string>
-    <string name="fps_screen_subtitle">Продвинутый оверлей MSI Afterburner и Запись экрана</string>
-
-    <string name="tab_osd_monitoring">OSD Мониторинг</string>
-    <string name="tab_recorder">Запись видео</string>
-
-    <string name="section_polling_rate">Частота обновления данных</string>
-    <string name="section_monitoring_graphs">Графики мониторинга (Стиль MSI)</string>
-    <string name="section_video_properties">Свойства записи видео</string>
-
-    <string name="btn_open_recorder_config">Настроить движок записи</string>
-    <string name="label_poll_ms">Интервал обновления: 1000 мс</string>
-
-    <!-- Enhanced OSD & Video Recorder Strings -->
-    <string name="master_osd_switch">Главная служба OSD-оверлея</string>
-    <string name="master_osd_desc">Включить плавающий счетчик над активными играми.</string>
-    <string name="section_all_graphs">Полный мониторинг в стиле MSI Afterburner</string>
-    <string name="btn_open_folder">Открыть папку с записанными видео</string>
-    <string name="recorder_status_active">Движок записи: ГОТОВ / АКТИВЕН</string>
+    <string name="game_mode_btn">ИГРОВОЙ РЕЖИМ</string>
+    <string name="kernel_title">Движок ядра (Kernel)</string>
+    <string name="kernel_subtitle">Прямое управление оборудованием и частотой CPU</string>
+    <string name="root_status_locked">Root-доступ заблокирован</string>
+    <string name="status_root_detected">Root-доступ обнаружен</string>
+    <string name="root_failed_msg">Не удалось получить права Superuser.</string>
+    <string name="root_required_msg">Элементы управления ядром требуют root-доступа для изменения системных файлов.</string>
+    <string name="btn_check_root">Проверить статус Root</string>
+    <string name="section_cpu_oc">Гувернер частоты CPU</string>
+    <string name="section_gpu_oc">Уровень производительности GPU</string>
+    <string name="section_extra_oc">Расширенные твики ядра</string>
+    <string name="feature_undervolt">Понижение напряжения CPU (Undervolt)</string>
+    <string name="feature_undervolt_desc">Снижение напряжения для уменьшения температуры без потери производительности</string>
+    <string name="feature_high_priority">Приоритет процессов (Boost)</string>
+    <string name="feature_high_priority_desc">Назначение срочного приоритета отображения активным потокам игры</string>
+    <string name="btn_apply_kernel">Применить настройки ядра</string>
+    <string name="settings_title">Настройки</string>
+    <string name="dark_mode_title">Темный режим</string>
+    <string name="dark_mode_desc">Включить пользовательскую темную тему для игр</string>
+    <string name="ai_guardian_title">ИИ-страж температуры и лагов</string>
+    <string name="ai_guardian_desc">Мониторинг машинного обучения для предотвращения троттлинга CPU</string>
+    <string name="language_title">Язык / Language</string>
+    <string name="game_timer_title">Таймер игровой сессии</string>
+    <string name="about_zentix_title">О приложении ZENTIX</string>
+    <string name="about_zentix_desc">Версия 1.0.0 - Центр управления производительностью</string>
+    <string name="select_app_language">Выберите язык приложения</string>
 </resources>
